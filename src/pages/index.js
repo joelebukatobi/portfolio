@@ -44,7 +44,7 @@ export default function Home({ posts, projects }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const projects = qs.stringify(
     {
       populate: ['image'],
