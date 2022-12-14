@@ -1,0 +1,97 @@
+#global {
+  button {
+    width: 22.1rem;
+    height: 6.4rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    background-color: $color-orange;
+    font-size: 2.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $color-white;
+  }
+
+  input {
+    font-size: 2.1rem;
+    text-transform: lowercase;
+    line-height: 1.95rem;
+    height: 6.4rem;
+    border-radius: 0.5rem;
+    padding: 0 1.6rem;
+    background: transparent;
+    color: $color-grey;
+    background-color: #353432;
+    outline: none;
+    border: none;
+    text-transform: none;
+  }
+
+  textarea {
+    outline: none;
+    font-size: 2.1rem;
+    text-transform: lowercase;
+    border-radius: 0.5rem;
+    height: 22.4rem;
+    padding: 1.6rem;
+    color: $color-grey;
+    background-color: #353432;
+    border-color: transparent;
+    text-transform: none;
+  }
+
+  input,
+  textarea {
+    &:focus {
+      background-color: $color-off-white;
+      color: $color-dark-orange;
+    }
+  }
+
+  pre {
+    background-color: #353432;
+    border-left: 1rem solid rgba($color-off-white, 0.8);
+    margin: 3.2rem 1.6rem;
+    padding: 1.6rem;
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+    font-family: $font-secondary;
+
+    @media all and (min-width: 320px) and (max-width: 576px) {
+      overflow-x: scroll;
+      &::-webkit-scrollbar {
+        &-thumb {
+          background: rgba($color-soft-orange, 0.3);
+          &:hover {
+            background: rgba($color-off-white, 0.2);
+          }
+        }
+      }
+    }
+  }
+
+  code {
+    // font-family: $font-secondary;
+    // color: $color-white;
+    // font-size: 1.4rem;
+  }
+
+  blockquote {
+    // background-color: #3b3a38;
+    // border-left: 1rem solid rgba($color-off-white, 0.8);
+    // margin-left: 1.6rem;
+    // padding: 1.6rem;
+    // quotes: '\201C''\201D''\2018''\2019';
+    // font-family: $font-secondary;
+    // color: $color-white;
+    // font-size: 1.4rem;
+  }
+
+  .pt-16 {
+    padding-top: 16rem;
+  }
+
+  .hide {
+    display: none !important;
+  }
+}

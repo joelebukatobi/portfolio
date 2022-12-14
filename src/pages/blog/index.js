@@ -1,16 +1,15 @@
-import Layout from '@/components/Layout';
-import Aside from '@/components/Aside';
-
+import Layout from '@/global//layouts/Layout';
+import Aside from '@/global//components/Aside';
+import Posts from '@/global//components/Posts';
+// Config & Helpers
 import { API_URL } from '@/config/index';
-import Posts from '@/components/Posts';
-const qs = require('qs');
 
 export default function index({ posts, categories }) {
   return (
     <Layout blog={'navbar__blog'} title="_blog" pagetitle={'Blog | JetDev'} url="blog">
       <section className="blog container">
         <div className="blog__right">
-          <Aside categories={categories} />
+          <Aside categories={categories} />{' '}
         </div>
         {/* <div className="blog__left">
           {posts.map((post) => (
@@ -28,27 +27,13 @@ export default function index({ posts, categories }) {
 }
 
 export async function getServerSideProps() {
-  const posts = qs.stringify(
-    {
-      sort: ['createdAt:asc'],
-      pagination: {
-        start: 0,
-        limit: 6,
-      },
-    },
-    {
-      encodeValuesOnly: true,
-    }
-  );
-
-  const res = await Promise.all([fetch(`${API_URL}/api/blogposts?${posts}`), fetch(`${API_URL}/api/categories`)]);
-  const content = await Promise.all(res.map((res) => res.json()));
-  // console.log(res);
+  const res = await Promise.all([fetch(`${API_URL}/api/posts`), fetch(`${API_URL}/api/categories`)]);
+  const data = await Promise.all(res.map((res) => res.json()));
 
   return {
     props: {
-      posts: content[0].data,
-      categories: content[1].data,
+      posts: data[0].posts,
+      categories: data[1].categories,
     },
   };
 }

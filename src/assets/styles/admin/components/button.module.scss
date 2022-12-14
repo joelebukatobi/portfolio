@@ -1,0 +1,30 @@
+#admin {
+  // Modal Buttons
+  .modal {
+    & footer {
+      & button {
+        width: 100% !important;
+        //
+        &:first-of-type {
+          @apply h-[4rem] border-[.16rem] border-black/10 bg-white hover:bg-black/10;
+        }
+
+        &:last-of-type {
+          @apply h-[4rem] border-[.16rem] border-red-600 bg-red-400 hover:bg-red-600 text-white;
+        }
+      }
+    }
+  }
+
+  .register {
+    // Form Buttons
+    & form {
+      & button {
+        @apply h-[4.8rem] hover:bg-black/80 text-white;
+        //
+        background-color: black !important;
+        width: 100% !important;
+      }
+    }
+  }
+}

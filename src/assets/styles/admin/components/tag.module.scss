@@ -1,0 +1,5 @@
+#admin {
+  .tag {
+    @apply h-[3.2rem] px-[1.6rem] flex items-center justify-center bg-black/5 rounded-[.2rem] hover:bg-black/10 cursor-pointer;
+  }
+}

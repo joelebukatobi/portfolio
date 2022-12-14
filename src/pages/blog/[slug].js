@@ -1,37 +1,40 @@
-import Head from 'next/head';
+// React
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+// Next JS
+import Head from 'next/head';
+// Components
+import Aside from '@/global//components/Aside';
+import Share from '@/global//components/Share.js';
+import Navbar from '@/global//layouts/Navbar';
+import Copyright from '@/global//layouts/Copyright';
 
-import Aside from '@/components/Aside.js';
-import Share from '@/components/Share.js';
-import Navbar from '@/components/Navbar';
-import Copyright from '@/components/Copyright';
-
+// Config & Helpers
 import { API_URL } from '@/config/index';
-const qs = require('qs');
 
-export default function Post({ post, keywords }) {
+export default function Post({ post, categories, keywords }) {
   return (
-    <div>
+    <div id="global">
       <Head>
-        <meta name="description" content={post.attributes.description.substring(0, 100)} />
-        <meta property="og:description" content={post.attributes.description.substring(0, 100)} />
-        <meta property="og:url" content={`https://joelebukatobi.dev/blog/${post.attributes.slug} `} />
+        <meta name="description" content={post.description.substring(0, 100)} />
+        <meta property="og:description" content={post.description.substring(0, 100)} />
+        <meta property="og:url" content={`https://joelebukatobi.dev/blog/${post.slug} `} />
         <meta name="keywords" content={keywords} />
       </Head>
       <Navbar blog={'navbar__blog'} title="_blog" pagetitle={'Blog | JetDev'} />
       <section className="blogpost container">
         <div className="blogpost__image">
-          <img src={post.attributes.image.data.attributes.formats.large.url} alt="blog image" />
+          <img src={`${API_URL}/storage/${post.image}`} alt="post-thumbnail" />
+          {/* <img src={post.attributes.image.data.attributes.formats.large.url} alt="blog image" /> */}
         </div>
         <div className="blogpost__main">
           <div className="blogpost__aside">
-            <Aside categories={post.attributes.categories.data} className={'blogpost__categories'} />
+            <Aside categories={categories} className={'blogpost__categories'} />
             <Share className={'blogpost__share'} />
           </div>
           <div className="blogpost__content">
-            <h3>{post.attributes.title}</h3>
-            <ReactMarkdown>{post.attributes.content}</ReactMarkdown>
+            <h3>{post.title}</h3>
+            <div dangerouslySetInnerHTML={{ __html: post.post }} />
           </div>
         </div>
       </section>
@@ -41,21 +44,12 @@ export default function Post({ post, keywords }) {
 }
 
 export async function getServerSideProps({ query: { slug } }) {
-  const query = qs.stringify(
-    {
-      populate: ['tags', 'user', 'image', 'categories'],
-    },
-    {
-      encodeValuesOnly: true,
-    }
-  );
-
-  const res = await Promise.all([fetch(`${API_URL}/api/blogposts?filters[slug][$eq]=${slug}&${query}`)]);
-  const content = await Promise.all(res.map((res) => res.json()));
-  console.log(res);
+  const res = await Promise.all([fetch(`${API_URL}/api/posts/${slug}`), fetch(`${API_URL}/api/categories`)]);
+  const data = await Promise.all(res.map((res) => res.json()));
   return {
     props: {
-      post: content[0].data[0],
+      post: data[0].post,
+      categories: data[1].categories,
     },
   };
 }

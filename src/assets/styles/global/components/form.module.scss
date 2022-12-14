@@ -1,0 +1,43 @@
+#global {
+  .form {
+    margin-top: 10vh;
+    padding-bottom: 10vh;
+    &__content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    &__text {
+      width: 51%;
+      & h1 {
+        width: 100%;
+        margin-bottom: 2.4rem;
+        color: $color-white;
+        & span {
+          color: $color-orange;
+          font-family: $font-secondary;
+        }
+      }
+    }
+
+    &__input {
+      width: 40%;
+      & > * {
+        width: 100%;
+        &:not(:last-child) {
+          margin-bottom: 3.2rem;
+        }
+        &:last-child {
+          width: 31.26%;
+        }
+      }
+      & .group {
+        display: flex;
+        justify-content: space-between;
+        & > * {
+          width: 46.8%;
+        }
+      }
+    }
+  }
+}

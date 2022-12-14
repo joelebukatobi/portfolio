@@ -1,0 +1,48 @@
+#global {
+  .copyright {
+    padding-bottom: 4rem;
+    &__design {
+      & p {
+        text-transform: capitalize;
+        & span {
+          color: $color-soft-orange;
+        }
+      }
+    }
+    &__list {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 0.8rem;
+      & > * {
+        &:not(:last-child) {
+          margin-right: 1.6rem;
+        }
+      }
+      & li {
+        list-style: none;
+        // cursor: pointer;
+        & a {
+          display: flex;
+          align-items: center;
+        }
+        & svg {
+          fill: $color-soft-orange;
+          height: 1.6rem;
+          width: 1.6rem;
+          margin-right: 0.4rem;
+        }
+
+        & p {
+          text-transform: capitalize;
+          &:hover {
+            color: $color-off-white;
+          }
+        }
+      }
+    }
+    & p {
+      font-size: 1.8rem;
+      font-weight: 500;
+    }
+  }
+}

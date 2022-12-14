@@ -1,0 +1,12 @@
+#admin {
+  .card {
+    @apply w-[23%] h-[16rem] rounded-[.8rem] px-[1.6rem] pt-[1.6rem] pb-[.8rem] shadow-md text-black/70;
+
+    & h3 {
+      @apply text-black/90;
+    }
+    & svg {
+      @apply h-[6.4rem] w-[6.4rem] mt-[1.6rem] mr-[1.6rem] fill-none stroke-black;
+    }
+  }
+}

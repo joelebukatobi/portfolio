@@ -1,0 +1,40 @@
+#admin {
+  .modal {
+    @apply absolute h-[100vh] w-[100vw] bg-black/20 top-0 left-0 flex items-center justify-center;
+    & main {
+      @apply w-[25%] bg-white py-[1.6rem] rounded-[.4rem];
+
+      & header {
+        @apply border-b-[.1rem] border-black/10 px-[1.6rem] pb-[1.6rem];
+        & h4 {
+          @apply text-center;
+        }
+      }
+
+      & section {
+        @apply py-[1.6rem] flex flex-col items-center justify-center;
+        & p {
+          @apply w-3/4 text-center;
+        }
+
+        & svg {
+          @apply h-full w-full;
+        }
+      }
+
+      & footer {
+        @apply border-t-[.1rem] border-black/10 flex px-[1.6rem] pt-[1.6rem] gap-x-[1.6rem];
+
+        & button {
+          &:first-of-type {
+            @apply h-[4rem] border-[.16rem] border-black/10 bg-white hover:bg-black/10;
+          }
+
+          &:last-of-type {
+            @apply h-[4rem] border-[.16rem] border-red-600 bg-red-400 hover:bg-red-600 text-white;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+// Color Variables //
+// ---------------------------------------------------------------------//
+$color-white: #ffffff;
+$color-black: #000000;
+$color-grey: #bebdbd;
+$color-orange: #d45524;
+$color-off-white: #fffcf2;
+$color-soft-orange: #f9b171;
+$color-dark-orange: #252422;
+
+// Font Variables //
+// ---------------------------------------------------------------------//
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@600;700&display=swap');
+@font-face {
+  font-family: 'Hurme Geometric Sans';
+  src: url('/fonts/Hurme Geometric Sans.otf');
+}
+
+$font-primary: 'Hurme Geometric Sans', sans-serif;
+$font-secondary: 'Fira Code', monospace;
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+  &:hover {
+    width: 1rem;
+  }
+  &-track {
+    background: $color-dark-orange;
+  }
+  &-thumb {
+    background: rgba($color-off-white, 0.05);
+    &:hover {
+      background: rgba($color-off-white, 0.2);
+    }
+  }
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+  font-size: 62.5%; //10px/16px = 62.5% 1rem
+  color: $color-grey;
+
+  @media (min-width: 320px) and (max-width: 390px) {
+    font-size: 48%;
+  }
+  @media (min-width: 390px) and (max-width: 480px) {
+    font-size: 50%;
+  }
+  @media (min-width: 769px) and (max-width: 1024px) {
+    font-size: 40%;
+  }
+  @media (min-width: 1024px) and (max-width: 1366px) {
+    font-size: 50%;
+  }
+}
+
+.no-highlight {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.no-highlight:focus {
+  outline: none !important;
+}

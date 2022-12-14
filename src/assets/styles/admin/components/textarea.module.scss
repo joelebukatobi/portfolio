@@ -1,0 +1,16 @@
+#admin {
+  .textarea-group {
+    @apply relative w-full;
+
+    & label {
+      @apply text-black/70;
+    }
+    & textarea {
+      @apply h-[24rem] outline-none bg-transparent focus:text-black p-[1.6rem] rounded-[.4rem] w-full;
+
+      &:focus {
+        box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px -1px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+}

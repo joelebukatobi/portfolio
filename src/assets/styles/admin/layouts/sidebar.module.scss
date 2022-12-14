@@ -1,0 +1,32 @@
+#admin {
+  .sidebar {
+    @apply grid-cols-3 col-span-2 h-[89.6vh] px-[1.6rem] py-[1.6rem] border-r-[.1rem] border-black/10 flex flex-col justify-between;
+    & ul {
+      & li {
+        @apply flex items-center flex-wrap justify-between gap-x-[.8rem] mb-[1.6rem] cursor-pointer;
+
+        & svg {
+          @apply h-full fill-none;
+
+          &:first-of-type {
+            @apply mr-[.8rem];
+          }
+        }
+
+        &:hover {
+          @apply text-black;
+
+          & svg {
+            stroke: rgba(0, 0, 0, 1);
+          }
+        }
+        & ul {
+          @apply w-full order-last mt-[.4rem] pt-[.8rem] space-y-[.8rem];
+          & li {
+            @apply text-[1.4rem] block m-0 ml-[2.7rem] text-black/70 font-normal;
+          }
+        }
+      }
+    }
+  }
+}

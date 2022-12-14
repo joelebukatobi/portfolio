@@ -1,0 +1,66 @@
+#admin {
+  h1 {
+    @apply text-[3.7rem] font-semibold;
+  }
+
+  h2 {
+    @apply text-[2.8rem] font-semibold;
+  }
+
+  p {
+    @apply text-[1.6rem];
+  }
+
+  h3 {
+    @apply text-[2.1rem] font-semibold;
+  }
+
+  h4 {
+    @apply text-[1.8rem] font-semibold;
+  }
+
+  h5 {
+    @apply text-[1.4rem] font-medium;
+  }
+
+  h6 {
+    @apply text-[1.2rem] font-medium;
+  }
+
+  input {
+    @apply text-[1.6rem] font-medium placeholder:font-normal;
+  }
+
+  select {
+    @apply text-[1.6rem] font-medium placeholder:font-normal;
+  }
+
+  textarea {
+    @apply text-[1.6rem] font-medium placeholder:font-normal;
+  }
+
+  label {
+    @apply text-[1.4rem] font-normal;
+  }
+
+  button {
+    @apply text-[1.6rem] font-bold;
+  }
+
+  th {
+    @apply text-[1.6rem] font-bold;
+  }
+
+  td {
+    @apply text-[1.6rem] font-medium;
+  }
+
+  li {
+    @apply text-[1.6rem];
+    & a {
+      &:active {
+        // @apply font-bold;
+      }
+    }
+  }
+}

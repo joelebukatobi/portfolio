@@ -1,36 +1,50 @@
-import Layout from '@/components/Layout';
-import Projects from '@/components/Projects';
+// Components
+import Layout from '@/global//layouts/Layout';
+// Config & Helpers
 import { API_URL } from '@/config/index';
-const qs = require('qs');
 export default function projects({ projects }) {
   return (
     <Layout project={'navbar__projects'} title="_projects" pagetitle={'Projects | JetDev'} url="projects">
       <section id="projects" className={`works container`}>
-        <Projects projects={projects} />
+        <div className="works__grid">
+          {projects.map((project) => (
+            <div
+              href={project.website}
+              className="works__card"
+              onClick={() => window.open(`${project.website}`, '_blank')}
+              key={project.id}
+            >
+              <figure>
+                <img src={`${API_URL}/storage/${project.image}`} alt="project-thumbnail" />
+              </figure>
+              <h5>{project.name}</h5>
+              <p>{project.description}</p>
+              <p>{project.technologies}</p>
+              <div className="works__card__group">
+                <a href={project.website} target="_blank">
+                  <div className="works__card__project">
+                    <svg>
+                      <use href="/images/sprite.svg#icon-link" />
+                    </svg>
+                    <p>Live</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
     </Layout>
   );
 }
 
 export async function getServerSideProps() {
-  const projects = qs.stringify(
-    {
-      populate: ['image'],
-      sort: ['createdAt:desc'],
-    },
-    {
-      encodeValuesOnly: true,
-    }
-  );
-
-  const res = await Promise.all([fetch(`${API_URL}/api/projects?${projects}`)]);
-
-  const content = await Promise.all(res.map((res) => res.json()));
-  console.log(res);
+  const res = await Promise.all([fetch(`${API_URL}/api/projects`)]);
+  const data = await Promise.all(res.map((res) => res.json()));
 
   return {
     props: {
-      projects: content[0].data,
+      projects: data[0].projects,
     },
   };
 }

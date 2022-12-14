@@ -1,0 +1,28 @@
+#admin {
+  table {
+    @apply border-collapse border-black/10 table-fixed w-full text-black/70;
+
+    & th {
+      @apply text-left border-b-[.1rem] px-[1.6rem] py-[1rem] text-black/90;
+      &:first-of-type {
+        @apply rounded-tl-[.8rem] w-[10%];
+      }
+    }
+
+    & td {
+      @apply border-t-[.1rem] border-black/10 text-left;
+      & svg {
+        @apply h-[2.6rem] w-[2.6rem] fill-none stroke-[.1rem] stroke-black/70 hover:stroke-[.2rem] cursor-pointer;
+      }
+    }
+    & tbody {
+      & tr {
+        & > * {
+          &:not(:last-child) {
+            @apply pr-[1.6rem] py-[.8rem] pl-[1.6rem];
+          }
+        }
+      }
+    }
+  }
+}
