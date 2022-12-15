@@ -43,7 +43,7 @@ export default function Listing({ project, token }) {
     body.append('technologies', technologies);
     body.append('website', website);
     body.append('design', design);
-    body.append('image', image);
+    body.append('new_image', image);
 
     // Post Requests
     const res = await fetch(`${API_URL}/api/projects/${project.slug}`, {
