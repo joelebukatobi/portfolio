@@ -2,6 +2,7 @@
 import Layout from '@/global//layouts/Layout';
 // Config & Helpers
 import { API_URL } from '@/config/index';
+//
 export default function projects({ projects }) {
   return (
     <Layout project={'navbar__projects'} title="_projects" pagetitle={'Projects | JetDev'} url="projects">

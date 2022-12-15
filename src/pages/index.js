@@ -58,7 +58,7 @@ export default function Home({ posts, projects }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const res = await Promise.all([fetch(`${API_URL}/api/posts`), fetch(`${API_URL}/api/projects`)]);
   const data = await Promise.all(res.map((res) => res.json()));
   return {
