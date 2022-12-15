@@ -7,12 +7,12 @@ import Input from '@/admin//elements/Input';
 import Button from '@/admin//elements/Button';
 import Loading from '@/admin//components//Loading';
 // External Libraries
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { userLogin } from '@/features//user/userActions';
 
-export default function Login() {
+export default function Login({ loading }) {
   const reload = useRouter().reload;
-  const { loading } = useSelector((state) => state.user);
+  // const { loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
@@ -33,9 +33,7 @@ export default function Login() {
 
   return (
     <>
-      {loading === true ? (
-        <Loading />
-      ) : (
+      {loading === false ? (
         <div className="register">
           <section>
             <header>
@@ -78,6 +76,8 @@ export default function Login() {
             </form>
           </section>
         </div>
+      ) : (
+        <Loading />
       )}
     </>
   );

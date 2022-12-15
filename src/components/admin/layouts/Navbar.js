@@ -7,10 +7,9 @@ import Input from '@/admin//elements/Input';
 // Config
 import { API_URL } from '@/config//index';
 // Redux Toolkit/admin
-import { useSelector } from 'react-redux';
 
-export default function Navbar() {
-  const { data } = useSelector((state) => state.user);
+export default function Navbar({ data }) {
+  // const { data } = useSelector((state) => state.user);
   return (
     <nav className="nav">
       <Link href="/admin">

@@ -1,6 +1,7 @@
 #global {
   font-family: $font-primary;
   background-color: $color-dark-orange;
+  min-height: 90vh;
   //
   .container {
     @media all and (min-width: 320px) and (max-width: 480px) {

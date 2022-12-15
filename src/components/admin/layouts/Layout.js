@@ -15,29 +15,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '@/features//user/userActions';
 
 export default function Layout({ children }) {
-  const { data } = useSelector((state) => state.user);
+  const { data, loading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getUser());
   }, []);
-
   return (
     <>
-      {data && (
-        <div id="admin">
+      <div id="admin">
+        {data ? (
           <>
-            <Navbar />
+            <Navbar data={data} />
             <Sidebar state={data} />
             <Body>{children}</Body>
           </>
-        </div>
-      )}
-
-      {!data && (
-        <div id="admin">
+        ) : (
           <Login />
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 }
