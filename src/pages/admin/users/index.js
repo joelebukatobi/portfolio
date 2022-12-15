@@ -1,5 +1,5 @@
 // React
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // Next JS
 import Link from 'next/link';
 // Components
@@ -9,17 +9,31 @@ import Modal from '@/admin//components/Modal';
 import { API_URL } from '@/config/index';
 import { parseCookies } from '@/helpers//index';
 // External Libraries
-import moment from 'moment/moment';
 
-export default function index({ token, users }) {
+export default function index({ token }) {
   // State
   const [slug, setSlug] = useState('');
   const [open, setOpen] = useState(false);
+  const [users, setUsers] = useState(null);
 
   // Toggle Modal
   const toggle = () => {
     setOpen(true);
   };
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/users`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUsers(data.users);
+      });
+  }, []);
 
   // Set ID
   let id = 1;
@@ -47,31 +61,32 @@ export default function index({ token, users }) {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => {
-                return (
-                  <tr key={user.id}>
-                    <td>{id++}</td>
-                    <td className="first-letter:capitalize">{user.first_name + ' ' + user.last_name}</td>
-                    <td className="lowercase">{user.email}</td>
-                    <td className="lowercase">{user.username}</td>
-                    <td>{user.role.name}</td>
-                    <td>
-                      <div className="flex items-center gap-x-[.8rem] pl-[1.6rem]">
-                        <Link href={`/admin/users/${user.username}/`}>
-                          <svg className="hover:stroke-green-600">
-                            <use href={`/images/sprite.svg#icon-post`} />
-                          </svg>
-                        </Link>
-                        <div onClick={(e) => (e.preventDefault(), setSlug(user.username), setOpen(toggle))}>
-                          <svg className="hover:stroke-red-600">
-                            <use href={`/images/sprite.svg#icon-trash`} />
-                          </svg>
+              {users &&
+                users.map((user) => {
+                  return (
+                    <tr key={user.id}>
+                      <td>{id++}</td>
+                      <td className="first-letter:capitalize">{user.first_name + ' ' + user.last_name}</td>
+                      <td className="lowercase">{user.email}</td>
+                      <td className="lowercase">{user.username}</td>
+                      <td>{user.role.name}</td>
+                      <td>
+                        <div className="flex items-center gap-x-[.8rem] pl-[1.6rem]">
+                          <Link href={`/admin/users/${user.username}/`}>
+                            <svg className="hover:stroke-green-600">
+                              <use href={`/images/sprite.svg#icon-post`} />
+                            </svg>
+                          </Link>
+                          <div onClick={(e) => (e.preventDefault(), setSlug(user.username), setOpen(toggle))}>
+                            <svg className="hover:stroke-red-600">
+                              <use href={`/images/sprite.svg#icon-trash`} />
+                            </svg>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                      </td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </table>
         </div>
@@ -83,18 +98,9 @@ export default function index({ token, users }) {
 
 export async function getServerSideProps({ req }) {
   const { token } = parseCookies(req);
-  const res = await fetch(`${API_URL}/api/users`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const data = await res.json();
   return {
     props: {
       token,
-      users: data.users,
     },
   };
 }
