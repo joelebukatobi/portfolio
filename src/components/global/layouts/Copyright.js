@@ -1,8 +1,8 @@
 import Link from 'next/link';
 export default function Copyright() {
   return (
-    <div className="container">
-      <section className="copyright">
+    <section className="copyright">
+      <div className="container">
         <div className="copyright__design">
           <p>
             Designed and Develop by
@@ -46,8 +46,7 @@ export default function Copyright() {
             </li>
           </ul>
         </div>
-      </section>
-      <script src="/js/index.js"></script>
-    </div>
+      </div>
+    </section>
   );
 }
