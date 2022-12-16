@@ -19,7 +19,7 @@ $color-dark-orange: #252422;
 $font-primary: 'Hurme Geometric Sans', sans-serif;
 $font-secondary: 'Fira Code', monospace;
 
-::-webkit-scrollbar {
+body::-webkit-scrollbar {
   width: 0.5rem;
   &:hover {
     width: 1rem;

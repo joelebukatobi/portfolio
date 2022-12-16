@@ -106,7 +106,6 @@ export async function getServerSideProps({ req, query: { tag } }) {
     },
   });
   const data = await res.json();
-  console.log(data);
   return {
     props: {
       token,

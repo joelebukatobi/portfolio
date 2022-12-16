@@ -175,7 +175,6 @@ export default function Register({ token }) {
                     required
                     onChange={(e) => {
                       setRole(e.target.value);
-                      console.log(e.target.value);
                     }}
                   >
                     <option value={''}>Select role </option>

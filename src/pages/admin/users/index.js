@@ -31,7 +31,6 @@ export default function index({ token }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setUsers(data.users);
       });
   }, []);

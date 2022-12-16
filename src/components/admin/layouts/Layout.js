@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 // Next JS
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 // Components
 import Navbar from '@/admin//layouts/Navbar';
 import Body from '@/admin//layouts/Body';
@@ -22,6 +23,10 @@ export default function Layout({ children }) {
   }, []);
   return (
     <>
+      <Head>
+        <title>Admin | JetDev</title>
+        <link rel="icon" type="image/x-icon" href="/images/favicon.svg" />
+      </Head>
       <div id="admin">
         {data ? (
           <>

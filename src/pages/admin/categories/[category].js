@@ -19,8 +19,6 @@ export default function index({ category, token }) {
   // Store values gotten from form
   const [name, setName] = useState(category.name);
   const [description, setDescription] = useState(category.description);
-
-  console.log(category.slug);
   // handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();

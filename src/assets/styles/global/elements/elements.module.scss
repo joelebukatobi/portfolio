@@ -51,22 +51,13 @@
   pre {
     background-color: #353432;
     border-left: 1rem solid rgba($color-off-white, 0.8);
-    margin: 3.2rem 1.6rem;
+    margin: 1.6rem 0;
     padding: 1.6rem;
     border-radius: 0.5rem;
     font-size: 1.6rem;
     font-family: $font-secondary;
-
     @media all and (min-width: 320px) and (max-width: 576px) {
       overflow-x: scroll;
-      &::-webkit-scrollbar {
-        &-thumb {
-          background: rgba($color-soft-orange, 0.3);
-          &:hover {
-            background: rgba($color-off-white, 0.2);
-          }
-        }
-      }
     }
   }
 

@@ -50,7 +50,6 @@ export async function getServerSideProps({ query: { category } }) {
     fetch(`${API_URL}/api/categories`),
   ]);
   const data = await Promise.all(res.map((res) => res.json()));
-  console.log(res);
   return {
     props: {
       posts: data[0].posts,
