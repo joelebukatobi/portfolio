@@ -1,6 +1,7 @@
 #global {
   .copyright {
-    padding-bottom: 4rem;
+    position: absolute;
+    bottom: 4rem;
     &__design {
       & p {
         text-transform: capitalize;
