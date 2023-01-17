@@ -20,7 +20,7 @@ export default function Sidebar({ user }) {
   const logout = () => {
     dispatch(userLogout())
       .unwrap()
-      .then(() => navigate('/admin'));
+      .then(() => navigate('/admin/login'));
   };
 
   // Toggle Menu

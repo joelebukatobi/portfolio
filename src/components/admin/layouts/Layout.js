@@ -1,6 +1,7 @@
 // React
 import { useEffect, useState } from 'react';
 // Next JS
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 // Components
 import Navbar from '@/admin//layouts/Navbar';
@@ -30,16 +31,22 @@ export default function Layout({ children }) {
   }, []);
 
   return (
-    <div id="admin">
-      {user ? (
-        <>
-          <Navbar user={user} />
-          <Sidebar user={user} />
-          <Body>{children}</Body>
-        </>
-      ) : (
-        <Loading />
-      )}
-    </div>
+    <>
+      <Head>
+        <title>Admin | Joel Ebuka Tobi</title>
+        <link rel="icon" type="image/x-icon" href="/images/favicon.svg" />
+      </Head>
+      <div id="admin">
+        {user ? (
+          <>
+            <Navbar user={user} />
+            <Sidebar user={user} />
+            <Body>{children}</Body>
+          </>
+        ) : (
+          <Loading />
+        )}
+      </div>
+    </>
   );
 }
