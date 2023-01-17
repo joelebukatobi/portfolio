@@ -23,10 +23,10 @@ export default function Post({ tags, categories, users, token }) {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [tag, setTag] = useState();
-  const [category, setCategory] = useState(null);
-  const [author, setAuthor] = useState(null);
-  const [image, setImage] = useState(null);
-  const [content, setContent] = useState(null);
+  const [category, setCategory] = useState('');
+  const [author, setAuthor] = useState('');
+  const [image, setImage] = useState('');
+  const [content, setContent] = useState('');
   const [article, setArticle] = useState();
 
   // Tags Options
@@ -128,20 +128,17 @@ export default function Post({ tags, categories, users, token }) {
               onChange={(e) => setTitle(e.target.value)}
               required={'required'}
               className={'mb-[2.4rem]'}
-              classInput={'mt-[.8rem] capitalize'}
+              classInput={'capitalize'}
             />
             <Input
               label={'Image'}
               placeholder={'Thumbnail'}
-              name={'new_image'}
+              name={'image'}
               type={'file'}
               onChange={(e) => imageChange(e.target.files)}
               required={'required'}
-              after={content || 'Upload an image'}
-              className={'mb-[2.4rem] '}
-              classInput={
-                'mt-[.8rem] relative after:content-[attr(after)] after:bg-white after:h-full after:w-full after:absolute after:top-0  after:left-[1.6rem] after:z-10 after:flex after:items-center after:font-light after:text-[#b9bec7]'
-              }
+              after={content.substring(0, 30) || 'Upload An Image'}
+              className={'mb-[2.4rem]'}
             />
           </div>
           <div className="flex items-start gap-x-[3.2rem] mb-[2.4rem]">
@@ -168,7 +165,6 @@ export default function Post({ tags, categories, users, token }) {
               name={'description'}
               onChange={(e) => setDescription(e.target.value)}
               required={'required'}
-              className={'mb-[2.4rem]'}
               classTextArea={'mt-[.8rem] !h-[12rem]'}
             />
           </div>

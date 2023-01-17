@@ -6,11 +6,34 @@
       @apply text-black/70;
     }
 
+    & div {
+      &::after {
+        position: absolute;
+        height: 4.8rem;
+        width: 100%;
+        background-color: white;
+        left: 0;
+        top: 0;
+        padding-left: 1.6rem;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        color: rgba(black, 0.7);
+        border-radius: 0.4rem;
+      }
+    }
+
     & input {
-      @apply h-[4.8rem] w-full outline-none bg-transparent focus:text-black px-[1.6rem] rounded-[.4rem];
+      @apply h-[4.8rem] relative z-10 w-full outline-none bg-transparent focus:text-black px-[1.6rem] rounded-[.4rem];
 
       &:focus {
         box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      &[type='file'] {
+        position: relative;
+        opacity: 0;
+        background-color: transparent;
       }
     }
     & button {

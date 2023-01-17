@@ -112,7 +112,6 @@ export default function Register({ token }) {
                 onChange={(e) => setFirstName(e.target.value)}
                 required
                 className={'mb-[2.4rem]'}
-                classInput={'mt-[.8rem]'}
               />
               <Input
                 name={'last_name'}
@@ -123,7 +122,6 @@ export default function Register({ token }) {
                 onChange={(e) => setLastName(e.target.value)}
                 required
                 className={'mb-[2.4rem]'}
-                classInput={'mt-[.8rem]'}
               />
             </div>
             <div className="flex items-start gap-x-[3.2rem] mb-[2.4rem];">
@@ -136,10 +134,9 @@ export default function Register({ token }) {
                 onChange={(e) => setUserName(e.target.value)}
                 required
                 className={'mb-[2.4rem]'}
-                classInput={'mt-[.8rem]'}
-              />{' '}
+              />
               <Input
-                name={'new_image'}
+                name={'image'}
                 label={'Profile Picture'}
                 placeholder={'Profile Picture'}
                 type={'file'}
@@ -147,9 +144,6 @@ export default function Register({ token }) {
                 required
                 after={content || 'Upload an image'}
                 className={'mb-[2.4rem] '}
-                classInput={
-                  'mt-[.8rem] relative after:content-[attr(after)] after:bg-white after:h-full after:w-full after:absolute after:top-0  after:left-[1.6rem] after:z-5 after:flex after:items-center after:font-light after:text-[#b9bec7]'
-                }
               />
             </div>
             <div className="flex items-start gap-x-[3.2rem] mb-[2.4rem];">
@@ -162,25 +156,21 @@ export default function Register({ token }) {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className={'mb-[2.4rem]'}
-                classInput={'mt-[.8rem]'}
               />
               <div className="w-full">
                 <label className="text-black/70" htmlFor="role">
                   Role
                 </label>
-                <section className="!w-full border-[.16rem] !h-[4.8rem] border-[#ECECEC] rounded-[.4rem] mt-[.8rem] pr-[.8rem]">
+                <section className="!w-full !h-[5rem] border-[.16rem]  border-[#ECECEC] rounded-[.4rem] mt-[.8rem] pr-[.8rem]">
                   <select
                     name="role"
                     className="w-full h-full bg-white outline-none rounded-[.4rem] pl-[.8rem] mb-0"
                     required
-                    onChange={(e) => {
-                      setRole(e.target.value);
-                    }}
+                    onChange={(e) => setRole(e.target.value)}
                   >
-                    <option value={''}>Select role </option>
-                    <option value={'1'}>Admin</option>
-                    <option value={'2'}>Editor</option>
-                    <option value={'3'}>Author</option>
+                    <option value={1}>Admin</option>
+                    <option value={2}>Editor</option>
+                    <option value={3}>Author</option>
                   </select>
                 </section>
               </div>
@@ -196,7 +186,6 @@ export default function Register({ token }) {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className={'mb-[2.4rem]'}
-                classInput={'mt-[.8rem]'}
               />
               <Input
                 name={'password_confirmation'}
@@ -207,7 +196,6 @@ export default function Register({ token }) {
                 onChange={(e) => setPasswordConfirmation(e.target.value)}
                 required
                 className={'mb-[2.4rem]'}
-                classInput={'mt-[.8rem]'}
               />
             </div>
           </form>

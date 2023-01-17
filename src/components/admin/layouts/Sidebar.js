@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { userLogout } from '@/features///user/userActions';
 
-export default function Sidebar({ state }) {
+export default function Sidebar({ user }) {
   // Route Management
   const pathname = useRouter().pathname;
   const navigate = useRouter().push;
@@ -269,7 +269,7 @@ export default function Sidebar({ state }) {
               />
             </svg>
           </li>
-          {state.role.id ? (
+          {user.role.id ? (
             <li
               className={`${
                 pathname === '/users' || pathname.includes('users') ? ' text-black font-bold ' : 'text-black/70'
@@ -329,7 +329,7 @@ export default function Sidebar({ state }) {
                   <Link href="/admin/users">All Users</Link>
                 </li>
                 <li>
-                  <Link href={`/admin/users/${state.username}`}>My Profile</Link>
+                  <Link href={`/admin/users/${user.username}`}>My Profile</Link>
                 </li>
               </ul>
             </li>
@@ -365,7 +365,7 @@ export default function Sidebar({ state }) {
                     />
                   </svg>
                 </div>
-                <Link href={`/admin/users/${state.username}`}>Profile</Link>
+                <Link href={`/admin/users/${user.username}`}>Profile</Link>
               </div>
               <svg
                 width="16"

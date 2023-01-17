@@ -20,17 +20,19 @@ export default function Input({
         <label htmlFor="" className={classLabel}>
           {label}
         </label>
-        <div className="flex items-center relative">
+        <div
+          after={after}
+          className="flex items-center relative border-[.16rem] border-black/10 rounded-[.4rem] mt-[.8rem] after:content-[attr(after)] after:font-light after:text-black after:text-[1.6rem]"
+        >
           <input
             name={name}
             type={type}
             id={id}
-            after={after}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
             required={required}
-            className={`border-[.16rem] border-black/10 ${classInput}`}
+            className={classInput}
           />
           <button className={`invisible ${classButton}`}>
             <svg>

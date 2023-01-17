@@ -93,7 +93,7 @@ export default function Listing({ project, token }) {
             </Link>
           </div>
         </header>
-        <div className="w-1/2 mt-[2.4rem] mb-[2.4rem] rounded-[.4rem] w-full h-[24rem] border-[.16rem] border-black/10 overflow-hidden p-[.16rem]">
+        <div className="w-1/2 mt-[2.4rem] mb-[2.4rem] rounded-[.4rem] h-[24rem] border-[.16rem] border-black/10 overflow-hidden p-[.16rem]">
           <img className="w-full rounded-[.4rem]" src={`${API_URL}/storage/${project.image}`} alt="post-thumbnail" />
         </div>
 
@@ -108,7 +108,7 @@ export default function Listing({ project, token }) {
               onChange={(e) => setName(e.target.value)}
               required={'required'}
               className={'mb-[2.4rem]'}
-              classInput={'mt-[.8rem] capitalize'}
+              classInput={'capitalize'}
             />
             <Input
               label={'Website Link'}
@@ -119,7 +119,6 @@ export default function Listing({ project, token }) {
               onChange={(e) => setWebsite(e.target.value)}
               required={'required'}
               className={'mb-[2.4rem]'}
-              classInput={'mt-[.8rem]'}
             />
           </div>
           <div className="flex items-start gap-x-[3.2rem] mb-[2.4rem];">
@@ -132,7 +131,6 @@ export default function Listing({ project, token }) {
               onChange={(e) => setDesign(e.target.value)}
               required={'required'}
               className={'mb-[2.4rem]'}
-              classInput={'mt-[.8rem]'}
             />
             <Input
               label={'Technologies'}
@@ -143,22 +141,18 @@ export default function Listing({ project, token }) {
               onChange={(e) => setTechnologies(e.target.value)}
               required={'required'}
               className={'mb-[2.4rem]'}
-              classInput={'mt-[.8rem]'}
             />
           </div>
           <div className="flex items-start gap-x-[3.2rem]">
             <Input
               label={'Image'}
-              placeholder={'Thumbnail'}
+              placeholder={'Project Image'}
               name={'new_image'}
               type={'file'}
               onChange={(e) => imageChange(e.target.files)}
-              required={'required'}
-              after={content}
+              required
+              after={content || 'Upload an image'}
               className={'mb-[2.4rem] '}
-              classInput={
-                'mt-[.8rem] relative after:content-[attr(after)] after:bg-white after:h-full after:w-full after:absolute after:top-0  after:left-[1.6rem] after:z-10 after:flex after:items-center after:font-light after:text-[#b9bec7]'
-              }
             />
           </div>
           <div className="flex items-start gap-x-[3.2rem]">
@@ -171,7 +165,6 @@ export default function Listing({ project, token }) {
               onChange={(e) => setDescription(e.target.value)}
               required
               className={'mb-[2.4rem]'}
-              classTextArea={'mt-[.8rem]'}
             />
           </div>
         </form>

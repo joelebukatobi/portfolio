@@ -8,7 +8,7 @@ import Input from '@/admin//elements/Input';
 import { API_URL } from '@/config//index';
 // Redux Toolkit/admin
 
-export default function Navbar({ data }) {
+export default function Navbar({ user }) {
   // const { data } = useSelector((state) => state.user);
   return (
     <nav className="nav">
@@ -39,12 +39,12 @@ export default function Navbar({ data }) {
 
       <div className="nav_user">
         <img
-          src={data.image === null ? `/images/user-placeholder.png` : `${API_URL}/storage/${data.image}`}
+          src={user.image === null ? `/images/user-placeholder.png` : `${API_URL}/storage/${user.image}`}
           alt="User's Image"
         />
         <div className="flex flex-col">
           <h5 className="font-semibold">Administrator</h5>
-          <h6>{data.first_name + ' ' + data.last_name}</h6>
+          <h6>{user.first_name + ' ' + user.last_name}</h6>
         </div>
       </div>
     </nav>

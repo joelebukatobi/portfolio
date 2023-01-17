@@ -25,7 +25,7 @@ export default async (req, res) => {
         cookie.serialize('token', data.token, {
           httpOnly: true,
           secure: true,
-          maxAge: 60 * 60 * 24 * 7, // 1 week
+          maxAge: 60 * 60 * 24, // 1 Day
           sameSite: 'strict',
           path: '/',
         })
