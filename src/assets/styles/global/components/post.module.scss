@@ -1,7 +1,6 @@
 #global {
   .post {
     padding-top: 10vh;
-
     &__heading {
       margin-bottom: 3.2rem;
       & h4 {
@@ -20,7 +19,9 @@
       border-radius: 0.5rem;
       padding: 1.6rem;
       width: 29.91%;
-      margin-bottom: 5.12%;
+      &:not(:last-child) {
+        margin-bottom: 5.12%;
+      }
       cursor: pointer;
 
       & > * {

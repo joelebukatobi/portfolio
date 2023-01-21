@@ -340,6 +340,10 @@
 
   .header {
     @media (min-width: 320px) and (max-width: 768px) {
+      // margin-left: 3.2rem;
+      // margin-right: 3.2rem;
+      // border: 2px solid red;
+      // width: unset;
       &__image {
         width: 100%;
       }
