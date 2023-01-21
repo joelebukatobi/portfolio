@@ -44,7 +44,7 @@ export default function Navbar({
         <meta property="article:author" content={article_author} />
         <meta property="og:image" content={image} />
         <meta property="og:image:type" content={image_type} />
-        <meta property="og:image:alt" content={image_alt} />
+        <meta property="og:image:alt" content={image_alt ? `${image_alt}` : 'portfolio-open-graph-preview-image'} />
         <meta property="og:image:width" content={image_width} />
         <meta property="og:image:height" content={image_height} />
         <meta property="twitter:card" content="summary_large_image" />
@@ -95,6 +95,7 @@ export default function Navbar({
 
 Navbar.defaultProps = {
   site_name: 'Joel Ebuka Tobi | JetDev',
+  title: 'Joel Ebuka Tobi | JetDev',
   description: `Hi, there I'm a web developer who is passionate about solving problems with code and transforming ideas from pixels perfect designs to scalable products.`,
   type: 'profile',
   article_publisher: 'https://www,joelebukatobi.dev',
