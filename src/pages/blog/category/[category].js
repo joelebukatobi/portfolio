@@ -11,13 +11,16 @@ const qs = require('qs');
 export default function Category({ posts, category, categories, keywords }) {
   return (
     <>
-      <Head>
-        <meta name="description" content={category.description.substring(0, 100)} />
-        <meta property="og:description" content={category.description.substring(0, 100)} />
-        <meta property="og:url" content={`https://joelebukatobi.dev/blog/category/${category.name} `} />
-        <meta name="keywords" content={keywords} />
-      </Head>
-      <Layout blog={'navbar__blog'} title="_blog" pagetitle="Blog | JetDev">
+      <Layout
+        blog={'navbar__blog'}
+        description={category.description.substring(0, 100)}
+        header="_blog"
+        site_name={site_name}
+        title={category.name}
+        url={`https://joelebukatobi.dev/blog/category/${category.slug}`}
+        keywords={keywords}
+        article_section={category.name}
+      >
         <section className="blog container">
           <div className="blog__right">
             <Aside categories={categories} />
@@ -61,5 +64,6 @@ export async function getServerSideProps({ query: { category } }) {
 
 Category.defaultProps = {
   keywords:
-    'web development, web design, software development, branding, identity branding, mobile app development, mobile app design, ui/ux design, IT consultancy,',
+    'web development, web design, software development, branding, identity branding, mobile app development, mobile app design, ui/ux design, IT consultancy, web development, html, css, tailwindcss, tailwind javascript, responsive design, seo optimization, frontend, front-end, backend, back-end, full stack, front-end development, backend development, frontend web development, backend web development, web design, cross-browser compatibility, user experience (UX), web performance optimization, react, vue, CMS, strapi, payload cms, web standards, accessibility, git, webpack, web development trends, web development best practices, jQuery, bootstrap, php, wordpress, laravel, amazon web services, docker, github, github actions, kubernetes, terraform, typescript, python, fast api, elixir, phoenix, testing, cypress',
+  site_name: 'Blog | JetDev',
 };

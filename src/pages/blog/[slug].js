@@ -21,7 +21,7 @@ export default function Post({ post, categories, keywords, site_name, type }) {
         site_name={site_name}
         title={post.title}
         description={post.description.substring(0, 100)}
-        url={`https://joelebukatobi.dev/blog/${post.slug}`}
+        url={`https://www.joelebukatobi.dev/blog/${post.slug}`}
         keywords={keywords}
         type={type}
         image={`${API_URL}/storage/${post.image}`}
