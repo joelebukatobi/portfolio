@@ -36,7 +36,7 @@ export default function Post({ post, categories, keywords, site_name, type }) {
         <div className="blogpost__main">
           <div className="blogpost__aside">
             <Aside categories={categories} className={'blogpost__categories'} />
-            <Share className={'blogpost__share'} />
+            <Share className={'blogpost__share'} slug={post.slug} />
           </div>
           <div className="blogpost__content">
             <h3>{post.title}</h3>

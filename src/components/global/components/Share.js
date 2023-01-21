@@ -1,31 +1,29 @@
-import Link from 'next/link';
-
-export default function Share({ className }) {
+export default function Share({ className, slug }) {
   return (
     <div className={`blog__share ${className}`}>
       <h6>Share</h6>
       <hr />
       <ul>
         <li>
-          <Link href="">
+          <a href={`https://www.facebook.com/sharer.php?u=https://www.joelebukatobi.dev/blog/${slug}`} target="_blank">
             <svg>
               <use href="/images/sprite.svg/#icon-facebook" />
             </svg>
-          </Link>
+          </a>
         </li>
         <li>
-          <Link href="">
+          <a href={`https://twitter.com/intent/tweet?url=https://www.joelebukatobi.dev/blog/${slug}`}>
             <svg>
               <use href="/images/sprite.svg/#icon-twitter" />
             </svg>
-          </Link>
+          </a>
         </li>
         <li>
-          <Link href="">
+          <a href={`https://www.linkedin.com/shareArticle?url=https://www.joelebukatobi.dev/blog/${slug}`}>
             <svg>
               <use href="/images/sprite.svg/#icon-linkedin" />
             </svg>
-          </Link>
+          </a>
         </li>
       </ul>
     </div>
