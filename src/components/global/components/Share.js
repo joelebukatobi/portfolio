@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function Share({ className, slug }) {
   return (
     <div className={`blog__share ${className}`}>
@@ -5,25 +7,28 @@ export default function Share({ className, slug }) {
       <hr />
       <ul>
         <li>
-          <a href={`https://www.facebook.com/sharer.php?u=https://www.joelebukatobi.dev/blog/${slug}`} target="_blank">
+          <Link
+            href={`https://www.facebook.com/sharer.php?u=https://www.joelebukatobi.dev/blog/${slug}`}
+            target="_blank"
+          >
             <svg>
               <use href="/images/sprite.svg/#icon-facebook" />
             </svg>
-          </a>
+          </Link>
         </li>
         <li>
-          <a href={`https://twitter.com/intent/tweet?url=https://www.joelebukatobi.dev/blog/${slug}`}>
+          <Link href={`https://twitter.com/intent/tweet?url=https://www.joelebukatobi.dev/blog/${slug}`}>
             <svg>
               <use href="/images/sprite.svg/#icon-twitter" />
             </svg>
-          </a>
+          </Link>
         </li>
         <li>
-          <a href={`https://www.linkedin.com/shareArticle?url=https://www.joelebukatobi.dev/blog/${slug}`}>
+          <Link href={`https://www.linkedin.com/shareArticle?url=https://www.joelebukatobi.dev/blog/${slug}`}>
             <svg>
               <use href="/images/sprite.svg/#icon-linkedin" />
             </svg>
-          </a>
+          </Link>
         </li>
       </ul>
     </div>
