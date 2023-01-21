@@ -37,10 +37,7 @@ export default function Navbar({
         <meta property="og:site_name" content={site_name} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta
-          property="og:url"
-          content={url !== undefined ? `https://www.joelebukatobi.dev/${url}` : `https://www.joelebukatobi.dev`}
-        />
+        <meta property="og:url" content={url} />
         <meta property="og:type" content={type} />
         <meta property="article:publisher" content={article_publisher} />
         <meta property="article:section" content={article_section} />
@@ -100,6 +97,7 @@ Navbar.defaultProps = {
   site_name: 'Joel Ebuka Tobi | JetDev',
   title: 'Joel Ebuka Tobi | JetDev',
   description: `Hi, there I'm a web developer who is passionate about solving problems with code and transforming ideas from pixels perfect designs to scalable products.`,
+  url: 'https://www.joelebukatobi.dev',
   type: 'profile',
   article_publisher: 'https://www,joelebukatobi.dev',
   article_author: 'Joel Onwuanaku',

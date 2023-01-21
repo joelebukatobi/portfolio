@@ -6,7 +6,7 @@ import { API_URL } from '@/config/index';
 
 export default function index({ posts, categories }) {
   return (
-    <Layout blog={'navbar__blog'} header="_blog" site_name={'Blog | JetDev'} url="blog">
+    <Layout blog={'navbar__blog'} header="_blog" site_name={'Blog | JetDev'} url="https://www.joelebukatobi.dev/blog">
       <section className="blog container">
         <div className="blog__right">
           <Aside categories={categories} />{' '}

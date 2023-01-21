@@ -5,7 +5,12 @@ import { API_URL } from '@/config/index';
 //
 export default function projects({ projects }) {
   return (
-    <Layout project={'navbar__projects'} header="_projects" site_name={'Projects | JetDev'} url="projects">
+    <Layout
+      project={'navbar__projects'}
+      header="_projects"
+      site_name={'Projects | JetDev'}
+      url="https://www.joelebukatobi.dev/projects"
+    >
       <section id="projects" className={`works container`}>
         <div className="works__grid">
           {projects.map((project) => (
