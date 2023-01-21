@@ -33,7 +33,7 @@ export default function Layout({ children }) {
   return (
     <>
       <Head>
-        <title>Admin | Joel Ebuka Tobi</title>
+        <title>Admin | JetDev </title>
         <link rel="icon" type="image/x-icon" href="/images/favicon.svg" />
       </Head>
       <div id="admin">

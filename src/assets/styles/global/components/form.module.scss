@@ -13,10 +13,14 @@
         width: 100%;
         margin-bottom: 2.4rem;
         color: $color-white;
+
         & span {
           color: $color-orange;
           font-family: $font-secondary;
         }
+      }
+      & p::first-letter {
+        text-transform: capitalize;
       }
     }
 

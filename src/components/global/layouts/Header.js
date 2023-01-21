@@ -1,8 +1,8 @@
-export default function Header({ title, children }) {
+export default function Header({ header, children }) {
   return (
     <header className="header container">
       <div className="header__title">
-        <h4>{title}</h4>
+        <h4>{header}</h4>
       </div>
       <div className="header__image">
         <svg>

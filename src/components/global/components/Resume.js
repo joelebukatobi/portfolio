@@ -20,20 +20,21 @@ export default function Resume() {
       <div className="resume__content">
         <div className="resume__left">
           <p>
-            I’m a frontend software developer, passionate about solving problems with code and transforming ideas from
-            pixels to scalable products. I create usable applications with user experience as a top priority using
-            various web tools, languages and technology
+            I’m a web developer, passionate about solving problems with code and transforming ideas from pixels to
+            scalable products. I create usable applications with user experience as a top priority using various web
+            tools, languages and technology
           </p>
           <div className="resume__card">
             <h6 className="title">core technologies</h6>
             <p>
-              HTML, CSS, SCSS, Javascript [ES6+], React JS, Next JS, Strapi JS,TailwindCSS, Typescript, GraphQL, REST
-              APIs & Figma
+              HTML, CSS, SCSS, TailwindCSS, Bootstrap, Figma, JavaScript [ES6+], TypeScript, React JS, Next JS, Node JS,
+              Express, Strapi JS, MongoDB, MySQL, GraphQL, REST APIs, Version Control Git, GitHub, CI/CD, Ansible,
+              Docker and AWS
             </p>
           </div>
           <div className="resume__card">
             <h6 className="title">familiar with</h6>
-            <p>WordPress, Node JS, Express, BulmaCSS, SEO,</p>
+            <p>WordPress, BulmaCSS, SEO,</p>
           </div>
           <div className="resume__card">
             <h6 className="title">work experience</h6>

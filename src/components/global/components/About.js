@@ -24,13 +24,15 @@ export default function About() {
             </div>
             <div className="about__content">
               <h3>
-                Frontend Developer
+                Web Developer
                 <span> & </span>
                 UI/UX Designer
               </h3>
               <h5>
-                My job description entails creating and building amazing experiences for the next billion users. I’m
-                currently learning how to integrate Headless CMS using Strapi and exploring the world of DevOps as well.
+                My job description entails creating and building amazing experiences for the next billion users. My main
+                focus is <span>front-end development</span> and <span>user-interface design</span>. At the moment I’m
+                currently transitioning into a <span>fullstack role</span> while exploring the world of{' '}
+                <span>devops</span> as well as <span>technical writing</span>.
               </h5>
               <ul className="about__list">
                 <li>

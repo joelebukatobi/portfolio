@@ -12,20 +12,26 @@ import Copyright from '@/global//layouts/Copyright';
 // Config & Helpers
 import { API_URL } from '@/config/index';
 
-export default function Post({ post, categories, keywords }) {
+export default function Post({ post, categories, keywords, site_name, type }) {
   return (
     <div id="global">
-      <Head>
-        <meta name="description" content={post.description.substring(0, 100)} />
-        <meta property="og:description" content={post.description.substring(0, 100)} />
-        <meta property="og:url" content={`https://joelebukatobi.dev/blog/${post.slug} `} />
-        <meta name="keywords" content={keywords} />
-      </Head>
-      <Navbar blog={'navbar__blog'} title="_blog" pagetitle={'Blog | JetDev'} />
+      <Navbar
+        blog={'navbar__blog'}
+        header="_blog"
+        site_name={site_name}
+        title={post.title}
+        description={post.description.substring(0, 100)}
+        url={`https://joelebukatobi.dev/blog/${post.slug}`}
+        keywords={keywords}
+        type={type}
+        image={`${API_URL}/storage/${post.image}`}
+        image_type={`image/${post.image.slice(post.image.indexOf('.') + 1)}`}
+        image_alt={`${post.slug}-thumbnail`}
+        article_section={post.category.name}
+      />
       <section className="blogpost container">
         <div className="blogpost__image">
           <img src={`${API_URL}/storage/${post.image}`} alt="post-thumbnail" />
-          {/* <img src={post.attributes.image.data.attributes.formats.large.url} alt="blog image" /> */}
         </div>
         <div className="blogpost__main">
           <div className="blogpost__aside">
@@ -57,4 +63,6 @@ export async function getServerSideProps({ query: { slug } }) {
 Post.defaultProps = {
   keywords:
     'web development, web design, software development, branding, identity branding, mobile app development, mobile app design, ui/ux design, IT consultancy,',
+  site_name: 'Blog | JetDev',
+  type: 'article',
 };
