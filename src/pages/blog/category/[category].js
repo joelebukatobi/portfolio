@@ -8,7 +8,7 @@ import Layout from '@/global//layouts/Layout';
 import { API_URL } from '@/config/index';
 const qs = require('qs');
 
-export default function Category({ posts, category, categories, keywords }) {
+export default function Category({ posts, category, categories, keywords, site_name }) {
   return (
     <>
       <Layout
