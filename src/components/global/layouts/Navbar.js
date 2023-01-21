@@ -105,7 +105,7 @@ Navbar.defaultProps = {
   article_author: 'Joel Onwuanaku',
   keywords:
     'web development, web design, software development, branding, identity branding, mobile app development, mobile app design, ui/ux design, IT consultancy, web development, html, css, tailwindcss, tailwind javascript, responsive design, seo optimization, frontend, front-end, backend, back-end, full stack, front-end development, backend development, frontend web development, backend web development, web design, cross-browser compatibility, user experience (UX), web performance optimization, react, vue, CMS, strapi, payload cms, web standards, accessibility, git, webpack, web development trends, web development best practices, jQuery, bootstrap, php, wordpress, laravel, amazon web services, docker, github, github actions, kubernetes, terraform, typescript, python, fast api, elixir, phoenix, testing, cypress',
-  image: '/images/og-image.jpg',
+  image: 'https://www.joelebukatobi.dev/images/og-image.jpg',
   image_type: 'image/jpg',
   image_alt: 'Open Graph Image',
   image_width: '1200',
