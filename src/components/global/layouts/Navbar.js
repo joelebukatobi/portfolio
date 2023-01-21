@@ -37,7 +37,10 @@ export default function Navbar({
         <meta property="og:site_name" content={site_name} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        <meta property="og:url" content={url ? `https://joelebukatobi.dev/${url}` : `https://joelebukatobi.dev`} />
+        <meta
+          property="og:url"
+          content={url ? `https://www.joelebukatobi.dev/${url}` : `https://www.joelebukatobi.dev`}
+        />
         <meta property="og:type" content={type} />
         <meta property="article:publisher" content={article_publisher} />
         <meta property="article:section" content={article_section} />
