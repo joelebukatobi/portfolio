@@ -12,9 +12,7 @@ export default function Resume() {
           <svg>
             <use href="/images/sprite.svg#icon-download" />
           </svg>
-          <a href="https://docs.google.com/document/d/1-vNZJobzKZxociDVtTYS4akIpYY0tRkBiVZNg68a7yM/edit?usp=sharing">
-            Download
-          </a>
+          <a href="https://drive.google.com/file/d/14Z9RnGnLR0QfKQ30mnO-n9nII5H1sBq5/view?usp=sharing">Download</a>
         </li>
       </ul>
       <div className="resume__content">
