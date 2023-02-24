@@ -4,12 +4,7 @@ export default function Copyright() {
     <section className="copyright">
       <div className="container">
         <div className="copyright__design">
-          <p>
-            Designed and Develop by
-            <Link href="" className="">
-              <span> JetDev</span>
-            </Link>
-          </p>
+          <p>© 2023 Joel Onwuanaku. All Rights Reserved.</p>
           <ul className="copyright__list">
             <li>
               <a href="mailto:joelebuka@gmail.com">
