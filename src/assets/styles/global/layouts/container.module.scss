@@ -1,8 +1,10 @@
 #global {
   font-family: $font-primary;
   background-color: $color-dark-orange;
-  min-height: 90vh;
+  min-height: 100vh;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
   //
   .container {

@@ -5,7 +5,7 @@ export default function projects() {
     <Layout
       resume={'navbar__resume'}
       header="_resume"
-      site_name={'Resume | JetDev'}
+      site_name={'Resume | Joel Ebuka Tobi'}
       url="https://www.joelebukatobi.dev/resume"
     >
       <Resume />

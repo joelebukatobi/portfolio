@@ -1,7 +1,6 @@
 // Components
 import Navbar from '@/global//layouts/Navbar';
 import About from '@/global//components/About';
-import Contact from '@/global//components/Contact';
 import Posts from '@/global//components/Posts';
 import Copyright from '@/global//layouts/Copyright';
 
@@ -52,7 +51,7 @@ export default function Home({ posts, projects }) {
         </div>
         <Posts posts={posts} className="post__row" page="post" />
       </section>
-      <Contact />
+      {/* <Contact /> */}
       <Copyright />
     </div>
   );

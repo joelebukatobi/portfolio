@@ -63,6 +63,6 @@ export async function getServerSideProps({ query: { slug } }) {
 Post.defaultProps = {
   keywords:
     'web development, web design, software development, branding, identity branding, mobile app development, mobile app design, ui/ux design, IT consultancy,',
-  site_name: 'Blog | JetDev',
+  site_name: 'Blog | Joel Ebuka Tobi',
   type: 'article',
 };

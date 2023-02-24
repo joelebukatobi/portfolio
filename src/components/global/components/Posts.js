@@ -5,8 +5,10 @@ export default function Posts({ posts, className, page }) {
       {posts.slice(0, 3).map((post) => (
         <div className={`${page}__card`} onClick={() => (window.location.href = `/blog/${post.slug}`)} key={post.id}>
           <h4>{post.title}</h4>
-          <p>{post.description.substring(0, 200)}...</p>
-          <Link href={`/blog/${post.slug}`}>Read More</Link>
+          <p>
+            {post.description.substring(0, 195)}...
+            <Link href={`/blog/${post.slug}`}> Read More</Link>
+          </p>
         </div>
       ))}
     </div>

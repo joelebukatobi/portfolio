@@ -1,11 +1,10 @@
 #global {
   .form {
-    padding-top: 15vh;
     padding-bottom: 10vh;
     &__content {
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
+      // align-items: flex-end;
     }
     &__text {
       width: 51%;
@@ -25,6 +24,7 @@
     }
 
     &__input {
+      margin-top: 2.4rem;
       width: 40%;
       & > * {
         width: 100%;

@@ -83,6 +83,14 @@
   }
 
   .hide {
-    display: none !important;
+    display: none;
+  }
+
+  .block {
+    display: block;
+  }
+
+  .flex {
+    display: flex;
   }
 }

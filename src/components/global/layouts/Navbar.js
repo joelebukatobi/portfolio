@@ -1,3 +1,6 @@
+// React
+import { useState } from 'react';
+// Next JS
 import Head from 'next/head';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
@@ -26,6 +29,10 @@ export default function Navbar({
   image_width,
   image_height,
 }) {
+  const [open, setOpen] = useState(false);
+  const toggle = () => {
+    setOpen(!open);
+  };
   return (
     <>
       <Head>
@@ -61,7 +68,7 @@ export default function Navbar({
         outerScale={4}
         outerStyle={{ backgroundColor: '#f9b1711a', border: '.05rem solid #f9b1711a' }}
       />
-      <div className="navbar__container">
+      <div className="navbar__fixed">
         <div className="navbar container">
           <div className="navbar__mobile">
             <div className="navbar__logo">
@@ -69,24 +76,53 @@ export default function Navbar({
                 <span>&lt;</span>jetdev <span>&#47;&gt;</span>
               </a>
             </div>
+            <div onClick={toggle} className="navbar__menu">
+              <svg>
+                <use href={open ? `/images/sprite.svg#icon-navbar-close` : `/images/sprite.svg#icon-navbar-menu`} />
+              </svg>
+            </div>
           </div>
-
-          <nav className="navbar__nav ">
-            <ul className="navbar__list">
-              <li className={`navbar__item ${project}`}>
-                <Link href="/projects">projects</Link>
-              </li>
-              <li className={`navbar__item ${resume}`}>
-                <Link href="/resume">resume</Link>
-              </li>
-              <li className={`navbar__item ${blog}`}>
-                <Link href="/blog">blog</Link>
-              </li>
-              <li className={`navbar__item ${contact}`}>
-                <Link href="/#contact">contact</Link>
-              </li>
-            </ul>
-          </nav>
+          {open ? (
+            <nav className="navbar__active">
+              <div className="navbar__active__nav">
+                <ul className="navbar__active__list">
+                  <li className={`navbar__active__item ${project}`}>
+                    <span>01</span>
+                    <Link href="/projects">projects</Link>
+                  </li>
+                  <li className={`navbar__active__item ${resume}`}>
+                    <span>02</span>
+                    <Link href="/resume">resume</Link>
+                  </li>
+                  <li className={`navbar__active__item ${blog}`}>
+                    <span>03</span>
+                    <Link href="/blog">blog</Link>
+                  </li>
+                  <li className={`navbar__active__item ${contact}`}>
+                    <span>04</span>
+                    <Link href="/contact">contact</Link>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          ) : (
+            <nav className="navbar__nav ">
+              <ul className="navbar__list">
+                <li className={`navbar__item ${project}`}>
+                  <Link href="/projects">projects</Link>
+                </li>
+                <li className={`navbar__item ${resume}`}>
+                  <Link href="/resume">resume</Link>
+                </li>
+                <li className={`navbar__item ${blog}`}>
+                  <Link href="/blog">blog</Link>
+                </li>
+                <li className={`navbar__item ${contact}`}>
+                  <Link href="/contact">contact</Link>
+                </li>
+              </ul>
+            </nav>
+          )}
         </div>
       </div>
     </>
@@ -94,13 +130,13 @@ export default function Navbar({
 }
 
 Navbar.defaultProps = {
-  site_name: 'Joel Ebuka Tobi | JetDev',
+  site_name: 'Joel Ebuka Tobi',
   title: 'Joel Ebuka Tobi | JetDev',
   description: `Hi, there I'm a web developer who is passionate about solving problems with code and transforming ideas from pixels perfect designs to scalable products.`,
   url: 'https://www.joelebukatobi.dev',
   type: 'profile',
   article_publisher: 'https://www,joelebukatobi.dev',
-  article_author: 'Joel Onwuanaku',
+  article_author: 'Joel Ebuka Tobi',
   keywords:
     'web development, web design, software development, branding, identity branding, mobile app development, mobile app design, ui/ux design, IT consultancy, web development, html, css, tailwindcss, tailwind javascript, responsive design, seo optimization, frontend, front-end, backend, back-end, full stack, front-end development, backend development, frontend web development, backend web development, web design, cross-browser compatibility, user experience (UX), web performance optimization, react, vue, CMS, strapi, payload cms, web standards, accessibility, git, webpack, web development trends, web development best practices, jQuery, bootstrap, php, wordpress, laravel, amazon web services, docker, github, github actions, kubernetes, terraform, typescript, python, fast api, elixir, phoenix, testing, cypress',
   image: 'https://www.joelebukatobi.dev/images/og-image.jpg',

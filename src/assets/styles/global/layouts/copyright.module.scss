@@ -1,11 +1,13 @@
 #global {
   .copyright {
-    padding-bottom: 4rem;
+    padding-bottom: 2.4rem;
+    margin-top: auto;
     &__design {
       & p {
         text-transform: capitalize;
         & span {
           color: $color-soft-orange;
+          font-weight: 700;
         }
       }
     }
@@ -34,6 +36,7 @@
 
         & p {
           text-transform: capitalize;
+          padding-top: 0.4rem;
           &:hover {
             color: $color-off-white;
           }

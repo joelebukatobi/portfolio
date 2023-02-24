@@ -28,13 +28,10 @@
   .navbar {
     @media (min-width: 320px) and (max-width: 768px) {
       width: 100%;
-      & > * {
-        &:not(:last-child) {
-          margin-right: 2.4rem;
-        }
-      }
+      flex-direction: column;
+      justify-content: center;
       &__nav {
-        width: unset;
+        display: none;
         & > * {
           &:not(:last-child) {
             margin-right: 2.4rem;
@@ -46,6 +43,30 @@
           &:not(:last-child) {
             margin-right: 2.4rem;
           }
+        }
+      }
+
+      &__mobile {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 100;
+      }
+
+      &__menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 4rem;
+        width: 4rem;
+        border-radius: 100%;
+        background-color: rgba($color-grey, 0.1);
+        & svg {
+          height: 2.4rem;
+          width: 2.4rem;
+          stroke: $color-off-white;
         }
       }
     }
@@ -185,9 +206,7 @@
   .form {
     @media (min-width: 320px) and (max-width: 768px) {
       margin-top: 0;
-      padding-top: 12vh;
-      padding-bottom: 4rem;
-      height: unset;
+      padding-top: 0;
       &__content {
         flex-direction: column;
         & > * {
@@ -205,6 +224,7 @@
       }
 
       &__input {
+        margin-top: 0;
         & > * {
           &:last-child {
             width: 100%;
@@ -351,7 +371,6 @@
   }
 
   .copyright {
-    margin-top: 10vh;
     @media (min-width: 320px) and (max-width: 768px) {
       display: flex;
       flex-direction: column;
@@ -363,7 +382,7 @@
       }
       &__list {
         justify-content: center;
-        margin-top: 2.4rem;
+        margin-top: 1.6rem;
       }
     }
   }

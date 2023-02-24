@@ -8,7 +8,7 @@ export default function projects({ projects }) {
     <Layout
       project={'navbar__projects'}
       header="_projects"
-      site_name={'Projects | JetDev'}
+      site_name={'Projects | Joel Ebuka Tobi'}
       url="https://www.joelebukatobi.dev/projects"
     >
       <section id="projects" className={`works container`}>

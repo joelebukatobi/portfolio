@@ -5,20 +5,17 @@
     align-items: center;
     width: 100%;
     height: 10vh;
+    position: relative;
 
-    &__container {
+    &__fixed {
       background-color: $color-dark-orange;
       position: fixed;
       width: 100%;
       z-index: 10;
       top: 0;
     }
-    &__mobile {
-      display: flex;
-      align-items: center;
-    }
     &__menu {
-      display: inline-block;
+      display: none;
     }
     &__logo {
       font-size: 2.1rem;
@@ -35,12 +32,10 @@
         }
       }
     }
-
     &__nav {
       display: flex;
       justify-content: space-between;
     }
-
     &__list {
       display: flex;
       align-items: center;
@@ -50,7 +45,6 @@
         }
       }
     }
-
     &__item {
       list-style: none;
       font-size: 2.1rem;
@@ -63,13 +57,47 @@
         color: $color-white;
       }
     }
-
     &__projects,
     &__resume,
     &__contact,
     &__blog {
       & a {
         color: $color-orange;
+      }
+    }
+
+    &__active {
+      position: absolute;
+      height: 100vh;
+      width: 100vw;
+      top: 0;
+      background-color: rgba($color-black-orange, 0.95);
+      &__nav {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      &__list {
+        & > * {
+          &:not(:last-child) {
+            margin-bottom: 2.4rem;
+          }
+        }
+      }
+
+      &__item {
+        font-size: 8rem;
+        font-family: $font-secondary;
+        font-weight: 900;
+        color: $color-white;
+
+        & span {
+          font-size: 2.1rem;
+          margin-right: 1.6rem;
+          color: $color-soft-orange;
+        }
       }
     }
   }
