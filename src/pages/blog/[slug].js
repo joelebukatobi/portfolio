@@ -3,6 +3,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 // Next JS
 import Head from 'next/head';
+import Link from 'next/link';
 // Components
 import Aside from '@/global//components/Aside';
 import Share from '@/global//components/Share.js';
@@ -35,7 +36,16 @@ export default function Post({ post, categories, keywords, site_name, type }) {
         </div>
         <div className="blogpost__main">
           <div className="blogpost__aside">
-            <Aside categories={categories} className={'blogpost__categories'} />
+            {/* <Aside categories={categories} className={'blogpost__categories'} /> */}
+            <div className="blog__categories">
+              <h6>Category</h6>
+              <hr />
+              <ul>
+                <li>
+                  <Link href={`/blog/category/${post.category.slug}`}>{post.category.name}</Link>
+                </li>
+              </ul>
+            </div>
             <Share className={'blogpost__share'} slug={post.slug} />
           </div>
           <div className="blogpost__content">

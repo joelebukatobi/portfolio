@@ -87,7 +87,7 @@ export default function Post({ post, tags, categories, users, token }) {
     if (res.ok) {
       toast.success('Saved: Post edited successfully');
       setTimeout(() => {
-        setContent(null);
+        setContent(post.image);
         navigate.push('/admin/posts');
       }, 5000);
     } else {

@@ -1,6 +1,8 @@
+// Next JS
+import Link from 'next/link';
+// Components
 import Layout from '@/global//layouts/Layout';
 import Aside from '@/global//components/Aside';
-import Posts from '@/global//components/Posts';
 // Config & Helpers
 import { API_URL } from '@/config/index';
 
@@ -14,18 +16,19 @@ export default function index({ posts, categories }) {
     >
       <section className="blog container">
         <div className="blog__right">
-          <Aside categories={categories} />{' '}
+          <Aside categories={categories} />
         </div>
-        {/* <div className="blog__left">
+        <div className="blog__left">
           {posts.map((post) => (
-            <div className="blog__card" key={post.id}>
-              <h4>{post.attributes.title}</h4>
-              <p>{post.attributes.description.substring(0, 250)}...</p>
-              <Link href={`/blog/${post.attributes.slug}`}>Read More</Link>
+            <div className="blog__card" onClick={() => (window.location.href = `/blog/${post.slug}`)} key={post.id}>
+              <h4>{post.title}</h4>
+              <p>
+                {post.description.substring(0, 195)}...
+                <Link href={`/blog/${post.slug}`}> Read More</Link>
+              </p>
             </div>
           ))}
-        </div> */}
-        <Posts posts={posts} className="blog__left" page="blog" />
+        </div>
       </section>
     </Layout>
   );

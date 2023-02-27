@@ -1,4 +1,6 @@
+// Next JS
 import Link from 'next/link';
+//
 export default function Aside({ className, categories }) {
   return (
     <>

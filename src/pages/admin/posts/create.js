@@ -137,7 +137,7 @@ export default function Post({ tags, categories, users, token }) {
               type={'file'}
               onChange={(e) => imageChange(e.target.files)}
               required={'required'}
-              after={content.substring(0, 30) || 'Upload An Image'}
+              after={'Upload An Image'}
               className={'mb-[2.4rem]'}
             />
           </div>
