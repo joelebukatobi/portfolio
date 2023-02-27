@@ -2,7 +2,7 @@ import Navbar from '@/global//layouts/Navbar';
 import Header from '@/global//layouts/Header';
 import Copyright from '@/global//layouts/Copyright';
 
-export default function Layout({ children, contact, header, project, resume, blog, works, site_name }) {
+export default function Layout({ children, contact, header, project, resume, blog, works, title }) {
   return (
     <div id="global">
       <Navbar
@@ -12,7 +12,7 @@ export default function Layout({ children, contact, header, project, resume, blo
         blog={blog}
         works={works}
         header={header}
-        site_name={site_name}
+        title={title}
       />
       <Header header={header} />
       {children}

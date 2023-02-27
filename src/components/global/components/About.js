@@ -31,7 +31,7 @@ export default function About() {
               <h5>
                 My job description entails creating and building amazing experiences for the next billion users. My main
                 focus is <span>front-end development</span> and <span>user-interface design</span>. At the moment I’m
-                currently transitioning into a <span>fullstack role</span> while exploring the world of{' '}
+                currently transitioning into a <span>fullstack role</span> while exploring the world of
                 <span>devops</span> as well as <span>technical writing</span>.
               </h5>
               <ul className="about__list">

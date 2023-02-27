@@ -4,7 +4,7 @@ export default function Copyright() {
     <section className="copyright">
       <div className="container">
         <div className="copyright__design">
-          <p>© 2023 Joel Onwuanaku. All Rights Reserved.</p>
+          <p>© 2023 Joel Ebuka Tobi. All Rights Reserved.</p>
           <ul className="copyright__list">
             <li>
               <a href="mailto:joelebuka@gmail.com">

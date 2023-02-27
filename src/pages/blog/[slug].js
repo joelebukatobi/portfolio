@@ -19,7 +19,7 @@ export default function Post({ post, categories, keywords, site_name, type }) {
         blog={'navbar__blog'}
         header="_blog"
         site_name={site_name}
-        title={post.title}
+        title={`${post.title}`}
         description={post.description.substring(0, 100)}
         url={`https://www.joelebukatobi.dev/blog/${post.slug}`}
         keywords={keywords}

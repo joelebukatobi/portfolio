@@ -9,7 +9,7 @@ export default function index({ posts, categories }) {
     <Layout
       blog={'navbar__blog'}
       header="_blog"
-      site_name={'Blog | Joel Ebuka Tobi'}
+      title={'Blog | Joel Ebuka Tobi'}
       url="https://www.joelebukatobi.dev/blog"
     >
       <section className="blog container">

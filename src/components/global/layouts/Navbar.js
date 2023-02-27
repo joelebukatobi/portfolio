@@ -36,8 +36,8 @@ export default function Navbar({
   return (
     <>
       <Head>
-        <title>{site_name}</title>
-        <meta name="title" content={site_name} />
+        <title>{title}</title>
+        <meta name="title" content={title} />
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
         <meta name="robots" content="index,follow" />
@@ -130,16 +130,17 @@ export default function Navbar({
 }
 
 Navbar.defaultProps = {
-  site_name: 'Joel Ebuka Tobi',
-  title: 'Joel Ebuka Tobi | JetDev',
-  description: `Hi, there I'm a web developer who is passionate about solving problems with code and transforming ideas from pixels perfect designs to scalable products.`,
+  title: 'Joel Ebuka Tobi | Web Developer',
+  site_name: 'Joel Ebuka Tobi | Web Developer',
+  description: `Hi, there I'm a web developer who is passionate about solving problems with code and transforming ideas from pixels perfect designs to scalable products. My job description entails creating and building amazing experiences for the next billion users. My main focus is front-end development and user-interface design. At the moment I’m
+  currently transitioning into a fullstack role while exploring the world of DevOps as well as technical writing.`,
   url: 'https://www.joelebukatobi.dev',
   type: 'profile',
-  article_publisher: 'https://www,joelebukatobi.dev',
+  article_publisher: 'https://www.joelebukatobi.dev',
   article_author: 'Joel Ebuka Tobi',
   keywords:
     'web development, web design, software development, branding, identity branding, mobile app development, mobile app design, ui/ux design, IT consultancy, web development, html, css, tailwindcss, tailwind javascript, responsive design, seo optimization, frontend, front-end, backend, back-end, full stack, front-end development, backend development, frontend web development, backend web development, web design, cross-browser compatibility, user experience (UX), web performance optimization, react, vue, CMS, strapi, payload cms, web standards, accessibility, git, webpack, web development trends, web development best practices, jQuery, bootstrap, php, wordpress, laravel, amazon web services, docker, github, github actions, kubernetes, terraform, typescript, python, fast api, elixir, phoenix, testing, cypress',
-  image: 'https://www.joelebukatobi.dev/images/og-image.jpg',
+  image: 'https://www.joelebukatobi.dev/images/og-image.png',
   image_type: 'image/jpg',
   image_alt: 'Open Graph Image',
   image_width: '1200',

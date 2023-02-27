@@ -40,7 +40,7 @@ export default function contact() {
       <Layout
         contact={'navbar__contact'}
         header="_contact"
-        site_name={'Contact | Joel Ebuka Tobi'}
+        title={'Contact | Joel Ebuka Tobi'}
         url="https://www.joelebukatobi.dev/resume"
       >
         <section id="contact" className="form container">
