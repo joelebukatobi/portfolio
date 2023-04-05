@@ -12,7 +12,17 @@ export default function Resume() {
           <svg>
             <use href="/images/sprite.svg#icon-download" />
           </svg>
-          <a href="https://drive.google.com/file/d/14Z9RnGnLR0QfKQ30mnO-n9nII5H1sBq5/view?usp=sharing">Download</a>
+          <a href="https://docs.google.com/document/d/1mSW8ae8Dpoojbqee7XjOWQMRpL41PzJtEfzK8B8M3WM/edit?usp=sharing">
+            Curriculum Vitae
+          </a>
+        </li>
+        <li>
+          <svg>
+            <use href="/images/sprite.svg#icon-download" />
+          </svg>
+          <a href="https://docs.google.com/document/d/1pLffM_nQwl2bsBqcBk455NHh9sAe5yMrVCefXl55lvc/edit?usp=sharing">
+            Cover Letter
+          </a>
         </li>
       </ul>
       <div className="resume__content">
@@ -25,112 +35,180 @@ export default function Resume() {
           <div className="resume__card">
             <h6 className="title">core technologies</h6>
             <p>
-              HTML, CSS, SCSS, TailwindCSS, Bootstrap, Figma, JavaScript [ES6+], TypeScript, React JS, Next JS, Node JS,
-              Express, Strapi JS, MongoDB, MySQL, GraphQL, REST APIs, Version Control Git, GitHub, CI/CD, Ansible,
-              Docker and AWS
+              HTML | CSS | SCSS| TailwindCSS | Chakra UI | Bulma CSS | JavaScript | Typescript | Node.js | React.js |
+              Next.js | Strapi.js | PHP | Laravel | MongoDB | Python | MySQL
             </p>
           </div>
           <div className="resume__card">
             <h6 className="title">familiar with</h6>
-            <p>WordPress, BulmaCSS, SEO,</p>
+            <p>PostgreSQL | Gatsby.js | GraphQL | WordPress | AdobeXD</p>
+          </div>
+          <div className="resume__card">
+            <h6 className="title">tools</h6>
+            <p>Figma | Version Control | Git| GitHub | GitHub Actions | Linux Terminal | AWS | CI/CD | Docker</p>
           </div>
           <div className="resume__card">
             <h6 className="title">work experience</h6>
-            <p className="description">Datatac Nigeria Limited — Web Developer</p>
-            <p className="date">March 2021 ~ Till Date</p>
+            <p className="description">MKEL Networks Limited— Web Developer / Junior DevOps Engineer</p>
+            <p className="date">Abuja, Nigeria | March 2023 ~ Till Date</p>
             <ul className="list">
               <li className="item">
-                <span>~</span> <p>Writing and implementing efficient code</p>
-              </li>
-              <li className="item">
-                <span>~</span> <p>Determining operational practicality</p>
-              </li>
-              <li className="item">
-                <span>~</span> <p>Maintaining and upgrading existing systems</p>
-              </li>
-              <li className="item">
-                <span>~</span> <p>Training users</p>
-              </li>
-              <li className="item">
-                <span>~</span> <p>Researching, designing, implementing, and managing web applications</p>
-              </li>
-              <li className="item">
-                <span>~</span>{' '}
+                <span>~</span>
                 <p>
-                  Identifying areas for modification in existing programs and subsequently developing these
-                  modifications
+                  Collaborate with an agile team of developers and network engineers to deploy class 4 and class 5
+                  soft-switch for routing calls and voice/call termination
+                </p>
+              </li>
+              <li className="item">
+                <span>~</span>
+                <p>
+                  Connecting B2B & B2C partner accounts for global call termination. Exchanging SIP and media IPs to
+                  ensure seamless connectivity and testing phone calls to verify trunk activation.
+                </p>
+              </li>
+              <li className="item">
+                <span>~</span>
+                <p>
+                  Monitoring B2B & B2C partner accounts to meet the benchmarks of Active Call Duration (ACD) and
+                  Answer-Seizure Ratio (ASR).
+                </p>
+              </li>
+              <li className="item">
+                <span>~</span>
+                <p>
+                  Managing the admin dashboard for call termination on an A2Billing Infrastructure and Digitalk Cloud
+                  Platform, ensuring optimal performance and functionality and working with cloud service providers to
+                  maintain 99.9% uptime and troubleshooting any issues that arise.
+                </p>
+              </li>
+              <li className="item">
+                <span>~</span>
+                <p>
+                  Responsible for developing both frontend and backend components of web applications using mainly
+                  JavaScript and JavaScript Frameworks.
                 </p>
               </li>
             </ul>
           </div>
           <div className="resume__card">
-            <p className="description">Wootlab DevC Programme - Web Developer [Remote Intern]</p>
-            <p className="date">September 2021 - December 2021</p>
+            <p className="description">Datatac Nigeria Limited — Web Developer</p>
+            <p className="date">Abuja, Nigeria | March 2021 ~ February 2023</p>
             <ul className="list">
               <li className="item">
-                <span>~</span>{' '}
+                <span>~</span>
                 <p>
-                  {' '}
-                  Contributed to developing user interfaces for quite a number of products within three months while
-                  learning new skills.
+                  Coordinated a team of frontend, UI/UX, and graphics designers to deliver web projects using WordPress,
+                  Elementor, HTML, and CSS.
                 </p>
               </li>
               <li className="item">
-                <span>~</span> <p>Worked with Node js and React to build web applications</p>
+                <span>~</span>
+                <p>
+                  Analyzed, defined, and scoped new projects, collaborating with clients to ensure successful outcomes.
+                </p>
+              </li>
+              <li className="item">
+                <span>~</span>
+                <p>Provided 2nd-tier support for client web applications, ensuring optimal user experience.</p>
+              </li>
+              <li className="item">
+                <span>~</span>
+                <p>
+                  Worked closely with UI/UX designers to create web app designs and prepared/presented proposals,
+                  facilitated communication and collaboration among team members to achieve project goals within budget
+                  and on time.
+                </p>
+              </li>
+              <li className="item">
+                <span>~</span>
+                <p>
+                  Collaborated with cross-functional teams to meet project timelines, budgets, and goals, by assisting
+                  in the development, testing, debugging, integration, and deployment, following industry best practices
+                  and internal procedures, and consistently exceeding client expectations.
+                </p>
               </li>
             </ul>
           </div>
         </div>
         <div className="resume__right">
           <div className="resume__card">
-            <p className="description">HNG Internship [Cohort 7] — UI/UX Design [Remote Intern]</p>
-            <p className="date">October 2020 - February 2021</p>
+            <p className="description">Front-end Developer - Web Developer [Remote Intern]</p>
+            <p className="date">xPathEdge Arlignton, Texas | Contract</p>
             <ul className="list">
               <li className="item">
-                <span>~</span>{' '}
+                <span>~</span>
                 <p>
-                  Contributed to designing user interfaces for quite a number of products within three months while
-                  learning new skills
+                  Developed and maintained web pages using Next.js and Laravel Framework, ensuring accurate design
+                  implementation and mobile responsiveness.
                 </p>
               </li>
               <li className="item">
-                <span>~</span>{' '}
-                <p>Came up with Design Systems for quite a number of products including the MicroAPI Logo</p>
+                <span>~</span>
+                <p>
+                  Optimized web pages for scalability and speed, utilizing Git for version control and building reusable
+                  components.
+                </p>
               </li>
               <li className="item">
-                <span>~</span> <p>Picked up the basics of UI/UX Using Figma.</p>
+                <span>~</span>
+                <p>
+                  Conducted usability testing to enhance user experience and incorporated SEO best practices to improve
+                  search engine visibility.
+                </p>
+              </li>
+              <li className="item">
+                <span>~</span>
+                <p>
+                  Collaborated with cross-functional teams to deliver high-quality web pages that meet project goals and
+                  stakeholder expectations.
+                </p>
               </li>
             </ul>
           </div>
           <div className="resume__card">
-            <p className="description">
-              Naval Officers Wives Association [NOWA] Educational Center ~ Web Admin/Data Processing Instructor
-            </p>
-            <p className="date">November 2019 ~ February 2021</p>
+            <p className="description">UK Nigeria Tech Hub & Wootlab DevC Programme - Web Developer Intern</p>
+            <p className="date">Remote | September 2021 - December 2021</p>
             <ul className="list">
               <li className="item">
-                <span>~</span>{' '}
+                <span>~</span>
                 <p>
-                  Maintaining the school's website and students portal. This performing checks, updating and preparing
-                  the system for each academic calendar
+                  Revamped user interfaces for multiple product ideas, while actively acquiring new skills and expanding
+                  expertise in web development.
                 </p>
               </li>
               <li className="item">
-                <span>~</span>{' '}
-                <p>Making sure the computer laboratories are functional, maintained and up and running</p>
+                <span>~</span>
+                <p>
+                  Built applications using Node.js, React, Vue, and Express, and gained foundational knowledge in
+                  TypeScript and JavaScript frameworks within three months.
+                </p>
               </li>
             </ul>
           </div>
           <div className="resume__card">
-            <p className="description">Computer and Telecom Services — Frontend Dev/Exam Admin</p>
-            <p className="date">April 2019 - October 2019</p>
+            <p className="description">HNG Internship [Cohort 7] — UI/UX Design Intern</p>
+            <p className="date">Remote | October 2020 - February 2021</p>
             <ul className="list">
               <li className="item">
-                <span>~</span>{' '}
-                <p>Worked as a Front-end Developer using tools such as HTML, CSS, SaSS, JavaScript and Bootstrap.</p>
+                <span>~</span>
+                <p>
+                  Designed user interfaces for multiple products within three months while actively seeking out
+                  opportunities to learn and apply new skills.
+                </p>
               </li>
               <li className="item">
-                <span>~</span> <p>Administered TOEFL exams for registered students</p>
+                <span>~</span>
+                <p>
+                  Created Design Systems for several product ideas, to ensure consistency and streamline the design
+                  process.
+                </p>
+              </li>
+              <li className="item">
+                <span>~</span>
+                <p>
+                  Learned the basics of UI/UX design using Figma and applied this knowledge to design intuitive user
+                  interfaces.
+                </p>
               </li>
             </ul>
           </div>
