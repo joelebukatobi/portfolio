@@ -13,7 +13,7 @@ export default function Resume() {
             <use href="/images/sprite.svg#icon-download" />
           </svg>
           <a href="https://docs.google.com/document/d/1mSW8ae8Dpoojbqee7XjOWQMRpL41PzJtEfzK8B8M3WM/edit?usp=sharing">
-            Curriculum Vitae
+            Resume
           </a>
         </li>
         <li>
