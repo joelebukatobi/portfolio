@@ -185,7 +185,7 @@ export async function getServerSideProps({ req, query: { project } }) {
     }),
   ]);
   const data = await Promise.all(res.map((res) => res.json()));
-  console.log(data[0]);
+  // console.log(data[0]);
   return {
     props: {
       token,
