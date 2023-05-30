@@ -73,7 +73,7 @@ export default function Navbar({
           <div className="navbar__mobile">
             <div className="navbar__logo">
               <a href="/">
-                <span>&lt;</span>jetdev <span>&#47;&gt;</span>
+                <span>&lt;</span>joelebukatobi <span>&#47;&gt;</span>
               </a>
             </div>
             <div onClick={toggle} className="navbar__menu">

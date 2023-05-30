@@ -53,6 +53,9 @@
       & h1 {
         color: $color-white;
       }
+      p {
+        color: $color-orange;
+      }
     }
 
     &__me {
@@ -66,9 +69,8 @@
       width: 100%;
       & h3 {
         color: $color-orange;
-        font-family: $font-primary;
-        font-weight: 300;
-        font-style: italic;
+        font-family: $font-secondary;
+        font-weight: 900;
         & span {
           color: $color-white;
           font-weight: 700;
@@ -81,7 +83,7 @@
         margin-top: 1.6rem;
         color: $color-white;
         & span {
-          color: $color-grey;
+          color: $color-soft-orange;
           font-style: italic;
         }
       }

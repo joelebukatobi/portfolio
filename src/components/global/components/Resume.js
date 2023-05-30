@@ -35,8 +35,8 @@ export default function Resume() {
           <div className="resume__card">
             <h6 className="title">core technologies</h6>
             <p>
-              HTML | CSS | SCSS| TailwindCSS | Chakra UI | Bulma CSS | JavaScript | Typescript | Node.js | React.js |
-              Next.js | Strapi.js | PHP | Laravel | MongoDB | Python | MySQL
+              HTML | CSS | SCSS | TailwindCSS | Chakra UI | Material UI | JavaScript | Typescript | Alpine JS | React.js
+              | Next.js | Vue.js | Node.js | Strapi.js | PHP | Laravel | Python | MongoDB | MySQL
             </p>
           </div>
           <div className="resume__card">
@@ -45,42 +45,16 @@ export default function Resume() {
           </div>
           <div className="resume__card">
             <h6 className="title">tools</h6>
-            <p>Figma | Version Control | Git| GitHub | GitHub Actions | Linux Terminal | AWS | CI/CD | Docker</p>
+            <p>
+              Figma | Vite | Cypress | Version Control | Git | GitHub | GitHub Actions | Linux Terminal | AWS | CI/CD |
+              Docker
+            </p>
           </div>
           <div className="resume__card">
             <h6 className="title">work experience</h6>
-            <p className="description">MKEL Networks Limited— Web Developer / Junior DevOps Engineer</p>
+            <p className="description">MKEL Networks Limited - Web Developer</p>
             <p className="date">Abuja, Nigeria | March 2023 ~ Till Date</p>
             <ul className="list">
-              <li className="item">
-                <span>~</span>
-                <p>
-                  Collaborate with an agile team of developers and network engineers to deploy class 4 and class 5
-                  soft-switch for routing calls and voice/call termination
-                </p>
-              </li>
-              <li className="item">
-                <span>~</span>
-                <p>
-                  Connecting B2B & B2C partner accounts for global call termination. Exchanging SIP and media IPs to
-                  ensure seamless connectivity and testing phone calls to verify trunk activation.
-                </p>
-              </li>
-              <li className="item">
-                <span>~</span>
-                <p>
-                  Monitoring B2B & B2C partner accounts to meet the benchmarks of Active Call Duration (ACD) and
-                  Answer-Seizure Ratio (ASR).
-                </p>
-              </li>
-              <li className="item">
-                <span>~</span>
-                <p>
-                  Managing the admin dashboard for call termination on an A2Billing Infrastructure and Digitalk Cloud
-                  Platform, ensuring optimal performance and functionality and working with cloud service providers to
-                  maintain 99.9% uptime and troubleshooting any issues that arise.
-                </p>
-              </li>
               <li className="item">
                 <span>~</span>
                 <p>
@@ -88,44 +62,64 @@ export default function Resume() {
                   JavaScript and JavaScript Frameworks.
                 </p>
               </li>
+              <li className="item">
+                <span>~</span>
+                <p>
+                  Wrote a bash script that automatically backs up Call Detail Records (CDR) to an FTP server every day,
+                  saving each record by date and time. The script was written to be efficient and reliable, and it has
+                  been running successfully for over a year.
+                </p>
+              </li>
+              <li className="item">
+                <span>~</span>
+                <p>
+                  Collaborate with an agile team of developers and network engineers to deploy class 4 and class 5
+                  soft-switch for routing calls and voice/call termination.
+                </p>
+              </li>
+              <li className="item">
+                <span>~</span>
+                <p>
+                  Responsible for managing the admin dashboard for call termination on an A2Billing Infrastructure and
+                  Digitalk Cloud Platform. I ensured optimal performance and functionality and worked with cloud service
+                  providers to maintain 99.9% uptime and troubleshoot accordingly.
+                </p>
+              </li>
             </ul>
           </div>
           <div className="resume__card">
-            <p className="description">Datatac Nigeria Limited — Web Developer</p>
+            <p className="description">Datatac Nigeria Limited - Web Developer</p>
             <p className="date">Abuja, Nigeria | March 2021 ~ February 2023</p>
             <ul className="list">
               <li className="item">
                 <span>~</span>
                 <p>
                   Coordinated a team of frontend, UI/UX, and graphics designers to deliver web projects using WordPress,
-                  Elementor, HTML, and CSS.
+                  Elementor, HTML, CSS, JavaScript and PHP.
                 </p>
               </li>
               <li className="item">
                 <span>~</span>
                 <p>
-                  Analyzed, defined, and scoped new projects, collaborating with clients to ensure successful outcomes.
+                  Consistently completed projects on time and within budget and provided a positive customer experience
+                  by working with the team to develop, test, debug, integrate, and deploy solutions.
                 </p>
               </li>
               <li className="item">
                 <span>~</span>
-                <p>Provided 2nd-tier support for client web applications, ensuring optimal user experience.</p>
+                <p>Worked with clients to gather requirements, review business needs, and define project scope.</p>
               </li>
               <li className="item">
                 <span>~</span>
                 <p>
-                  Worked closely with UI/UX designers to create web app designs and prepared/presented proposals,
+                  Prepared and presented proposals, worked closely with UI/UX designers to create web app designs, and
                   facilitated communication and collaboration among team members to achieve project goals within budget
                   and on time.
                 </p>
               </li>
               <li className="item">
                 <span>~</span>
-                <p>
-                  Collaborated with cross-functional teams to meet project timelines, budgets, and goals, by assisting
-                  in the development, testing, debugging, integration, and deployment, following industry best practices
-                  and internal procedures, and consistently exceeding client expectations.
-                </p>
+                <p>Provided 2nd-tier support for client web applications, ensuring the optimal user experience</p>
               </li>
             </ul>
           </div>
@@ -172,35 +166,35 @@ export default function Resume() {
               <li className="item">
                 <span>~</span>
                 <p>
-                  Revamped user interfaces for multiple product ideas, while actively acquiring new skills and expanding
+                  Revamped user interfaces for multiple product ideas while actively acquiring new skills and expanding
                   expertise in web development.
                 </p>
               </li>
               <li className="item">
                 <span>~</span>
                 <p>
-                  Built applications using Node.js, React, Vue, and Express, and gained foundational knowledge in
+                  Built applications using Node.js, React, Vue, and Express and gained foundational knowledge in
                   TypeScript and JavaScript frameworks within three months.
                 </p>
               </li>
             </ul>
           </div>
           <div className="resume__card">
-            <p className="description">HNG Internship [Cohort 7] — UI/UX Design Intern</p>
+            <p className="description">HNG Internship [Cohort 7] - UI/UX Design Intern</p>
             <p className="date">Remote | October 2020 - February 2021</p>
             <ul className="list">
               <li className="item">
                 <span>~</span>
                 <p>
-                  Designed user interfaces for multiple products within three months while actively seeking out
-                  opportunities to learn and apply new skills.
+                  Designed user interfaces for multiple products within three months and looked for new ways to learn
+                  and improve my skills.
                 </p>
               </li>
               <li className="item">
                 <span>~</span>
                 <p>
-                  Created Design Systems for several product ideas, to ensure consistency and streamline the design
-                  process.
+                  Created design systems for several product ideas to ensure that the designs were consistent and that
+                  the design process was streamlined.
                 </p>
               </li>
               <li className="item">

@@ -23,16 +23,14 @@ export default function About() {
               </svg>
             </div>
             <div className="about__content">
-              <h3>
-                Web Developer
-                <span> & </span>
-                UI/UX Designer
-              </h3>
+              <h3>Web Developer</h3>
               <h5>
-                My job description entails creating and building amazing experiences for the next billion users. My main
-                focus is <span>front-end development</span> and <span>user-interface design</span>. At the moment I’m
-                currently transitioning into a <span>fullstack role</span> while exploring the world of
-                <span>devops</span> as well as <span>technical writing</span>.
+                My primary focus is crafting exceptional user experiences. With expertise in <span>frontend</span> and
+                <span> backend </span>
+                development, I build robust websites and applications. In addition, I have strong skills in{' '}
+                <span>ui/ux design</span> to ensure user-friendly and visually appealing interfaces. At the moment I'm
+                particularly interested in leveraging
+                <span> cloud technologies</span> for efficient and scalable solutions.
               </h5>
               <ul className="about__list">
                 <li>
