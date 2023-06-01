@@ -117,7 +117,18 @@
         width: 100%;
         & h1 {
           & br {
-            display: none;
+            // display: none;
+          }
+        }
+      }
+      //
+      &__content {
+        & h3 {
+          display: none;
+        }
+        & h5 {
+          & div {
+            display: unset;
           }
         }
       }

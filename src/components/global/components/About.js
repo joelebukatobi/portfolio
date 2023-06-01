@@ -27,6 +27,9 @@ export default function About() {
             <div className="about__content">
               <h3>A Developer</h3>
               <h5>
+                <div>
+                  and I'm a <span>Developer </span>
+                </div>
                 with a passion for crafting user-friendly and visually appealing applications. I'm skilled in
                 <span> frontend</span> and <span> backend </span>, and I'm currently interested in leveraging
                 <span> cloud technologies</span> to create efficient and scalable solutions.
