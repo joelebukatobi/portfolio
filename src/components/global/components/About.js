@@ -10,7 +10,9 @@ export default function About() {
         <div className="about__text">
           <div className="about__name">
             <h1>
-              Joel <br /> Ebuka Tobi
+              Hi 👋🏾, I'm
+              <br />
+              Joel Ebuka Tobi
             </h1>
             <div className="about__decor">
               <hr />
@@ -23,14 +25,11 @@ export default function About() {
               </svg>
             </div>
             <div className="about__content">
-              <h3>Web Developer</h3>
+              <h3>A Developer</h3>
               <h5>
-                My primary focus is crafting exceptional user experiences. With expertise in <span>frontend</span> and
-                <span> backend </span>
-                development, I build robust websites and applications. In addition, I have strong skills in{' '}
-                <span>ui/ux design</span> to ensure user-friendly and visually appealing interfaces. At the moment I'm
-                particularly interested in leveraging
-                <span> cloud technologies</span> for efficient and scalable solutions.
+                with a passion for crafting user-friendly and visually appealing applications. I'm skilled in
+                <span> frontend</span> and <span> backend </span>, and I'm currently interested in leveraging
+                <span> cloud technologies</span> to create efficient and scalable solutions.
               </h5>
               <ul className="about__list">
                 <li>

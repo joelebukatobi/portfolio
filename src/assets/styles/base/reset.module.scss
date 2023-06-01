@@ -16,7 +16,19 @@ $color-black-orange: #070707;
   src: url('/fonts/Hurme Geometric Sans.otf');
 }
 
+@font-face {
+  font-family: 'Hurme Geometric Sans Bold';
+  src: url('/fonts/Hurme Geometric Sans Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Hurme Geometric Sans SemiBold';
+  src: url('/fonts/Hurme Geometric Sans SemiBold.ttf');
+}
+
 $font-primary: 'Hurme Geometric Sans', sans-serif;
+$font-primary-bold: 'Hurme Geometric Sans Bold', sans-serif;
+$font-primary-semibold: 'Hurme Geometric Sans SemiBold', sans-serif;
 $font-secondary: 'Fira Code', monospace;
 
 body::-webkit-scrollbar {

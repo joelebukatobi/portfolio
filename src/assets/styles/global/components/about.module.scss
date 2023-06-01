@@ -69,8 +69,8 @@
       width: 100%;
       & h3 {
         color: $color-orange;
-        font-family: $font-secondary;
-        font-weight: 900;
+        font-family: $font-primary-semibold;
+        font-weight: 700;
         & span {
           color: $color-white;
           font-weight: 700;
@@ -80,7 +80,7 @@
       & h5 {
         font-family: $font-primary;
         font-weight: 300;
-        margin-top: 1.6rem;
+        // margin-top: 0.8rem;
         color: $color-white;
         & span {
           color: $color-soft-orange;
