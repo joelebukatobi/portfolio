@@ -31,8 +31,7 @@ export default function About() {
                   and I'm a <span>Developer </span>
                 </div>
                 with a passion for crafting user-friendly and visually appealing applications. I'm skilled in
-                <span> frontend</span> and <span> backend </span> development, and I'm currently interested in
-                leveraging
+                <span> frontend</span> and <span> backend </span> development. I'm currently interested in leveraging
                 <span> cloud technologies</span> to create efficient and scalable solutions.
               </h5>
               <ul className="about__list">
