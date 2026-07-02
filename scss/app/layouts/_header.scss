@@ -1,0 +1,60 @@
+@use '../base/variables' as *;
+
+.header-shell {
+  position: sticky;
+  top: 10vh;
+  z-index: 5;
+  margin-bottom: 4rem;
+}
+
+.header {
+  position: relative;
+  height: 16rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  background-color: $color-light-orange;
+  display: flex;
+  align-items: center;
+  padding-left: 2.4rem;
+  overflow: hidden;
+
+  &__title {
+    position: relative;
+    z-index: 1;
+
+    & h4 {
+      color: #353432;
+    }
+  }
+
+  &__image {
+    position: absolute;
+    right: -6%;
+    top: 50%;
+    z-index: 0;
+    width: 52%;
+    transform: translateY(-45%) rotate(-30deg);
+    pointer-events: none;
+
+    & svg {
+      display: block;
+      width: 100%;
+      height: 48rem;
+      fill: $color-orange;
+
+      path {
+        fill: inherit;
+        fill-opacity: 0.18;
+      }
+    }
+  }
+
+  // Desktop: navbar already signals active page
+  @media (min-width: 1025px) {
+    padding-left: 0;
+
+    &__title {
+      display: none;
+    }
+  }
+}

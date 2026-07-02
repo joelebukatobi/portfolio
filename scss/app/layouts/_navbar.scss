@@ -1,0 +1,190 @@
+@use '../base/variables' as *;
+
+@keyframes navbar-blink-underscore {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 10vh;
+  position: relative;
+  font-family: $font-secondary;
+
+  &__fixed {
+    background-color: $color-dark-orange;
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+    top: 0;
+  }
+  &__menu {
+    display: none;
+  }
+  &__logo {
+    font-size: 2.1rem;
+    & a {
+      font-size: 2.1rem;
+      font-weight: 900;
+      cursor: pointer;
+      color: $color-white;
+      font-family: inherit;
+      & span {
+        color: $color-orange;
+      }
+      &:hover {
+        color: $color-orange;
+      }
+    }
+  }
+  &__nav {
+    display: flex;
+    justify-content: space-between;
+  }
+  &__list {
+    display: flex;
+    align-items: center;
+    & > * {
+      &:not(:first-child) {
+        margin-left: 4.8rem;
+      }
+    }
+
+    @media (min-width: 1025px) and (max-width: 1280px) {
+      & > * {
+        &:not(:first-child) {
+          margin-left: 2.4rem;
+        }
+      }
+    }
+  }
+  &__item {
+    list-style: none;
+    font-size: 2.1rem;
+
+    & > * {
+      &:hover {
+        color: $color-orange;
+        // transition: all 0.15s;
+        transition: text-shadow 0.3s;
+        text-shadow: 0 0 0.1rem $color-orange, 0 0 0.1rem $color-orange;
+      }
+    }
+    & a {
+      color: $color-white;
+    }
+  }
+  &__portfolio,
+  &__resume,
+  &__about {
+    & a {
+      color: $color-orange;
+      font-family: inherit;
+    }
+
+    // Active-page terminal cursor vibe
+    & a::before {
+      content: '_';
+      display: inline-block;
+      margin-right: 0.2rem;
+      animation: navbar-blink-underscore 1s steps(1, end) infinite;
+    }
+  }
+
+  &__theme {
+    list-style: none;
+  }
+
+  &__mobile-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+
+    .navbar__theme {
+      display: none;
+    }
+  }
+
+  &__theme-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    padding: 0;
+    border: none;
+    border-radius: 100%;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s, stroke 0.2s;
+
+    & svg {
+      width: 2.2rem;
+      height: 2.2rem;
+      stroke: $color-off-white;
+      fill: none;
+    }
+
+    &:hover {
+      background-color: rgba($color-grey, 0.12);
+
+      svg {
+        stroke: $color-orange;
+      }
+    }
+  }
+
+  &__active {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    background-color: rgba($color-black-orange, 0.95);
+    &__nav {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &__list {
+      & > * {
+        &:not(:last-child) {
+          margin-bottom: 2.4rem;
+        }
+      }
+    }
+
+    &__item {
+      font-size: 8rem;
+      font-family: $font-secondary;
+      font-weight: 900;
+      color: $color-white;
+
+      & span {
+        font-size: 2.1rem;
+        margin-right: 1.6rem;
+        color: $color-light-orange;
+      }
+
+      // Active-page terminal cursor vibe
+      &.navbar__portfolio a::before,
+      &.navbar__resume a::before,
+      &.navbar__about a::before {
+        content: '_';
+        display: inline-block;
+        margin-right: 0.6rem;
+        animation: navbar-blink-underscore 1s steps(1, end) infinite;
+      }
+    }
+  }
+}
