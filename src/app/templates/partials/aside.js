@@ -1,0 +1,172 @@
+import { escapeHtml, buildBlogQuery, BLOG_SHELL_HTMX } from '../utils/helpers.js';
+
+function filterHref({ filters, clear = [] }) {
+  const next = { ...filters, page: 1 };
+  for (const key of clear) delete next[key];
+  return buildBlogQuery(next);
+}
+
+function asideHtmx(enabled = true) {
+  if (!enabled) return '';
+  return BLOG_SHELL_HTMX;
+}
+
+function postYear(post) {
+  const iso = post?.published_at || post?.created_at;
+  return iso ? String(new Date(iso).getFullYear()) : '';
+}
+
+function postActiveLink(href, label) {
+  return `<li><a href="${href}" class="blog__aside-link blog__aside-link--all is-active">${escapeHtml(label)}</a></li>`;
+}
+
+export function blogSearchForm({ filters = {}, htmx = true, modifier = '' } = {}) {
+  const searchValue = escapeHtml(filters.search || '');
+  const htmxFormAttrs = htmx
+    ? `hx-get="/" hx-trigger="submit" ${BLOG_SHELL_HTMX}`
+    : '';
+  const modifierClass = modifier ? ` blog__search--${modifier}` : '';
+
+  return `
+<form
+  class="blog__search${modifierClass}"
+  action="/"
+  method="get"
+  ${htmxFormAttrs}
+>
+  <input type="hidden" name="category" value="${escapeHtml(filters.category || '')}" />
+  <input type="hidden" name="tag" value="${escapeHtml(filters.tag || '')}" />
+  <input type="hidden" name="year" value="${escapeHtml(filters.year || '')}" />
+  <div class="blog__search-field">
+    <input
+      x-ref="searchInput"
+      type="search"
+      name="search"
+      value="${searchValue}"
+      placeholder="Search"
+      class="blog__search-input"
+      @input="searchQuery = $event.target.value"
+      @focus="$el.placeholder = ''"
+      @blur="if (!$el.value) $el.placeholder = 'Search'"
+    />
+    <button
+      type="button"
+      class="blog__search-clear"
+      aria-label="Clear search"
+      x-show="searchQuery"
+      x-cloak
+      @click="searchQuery = ''; $refs.searchInput.value = ''; $refs.searchInput.focus(); $el.closest('form').requestSubmit()"
+    >
+      <svg aria-hidden="true"><use href="/images/sprite.svg#icon-close" /></svg>
+    </button>
+  </div>
+</form>`;
+}
+
+function asideLinks({
+  items = [],
+  filters = {},
+  param,
+  labelKey = 'name',
+  valueKey = 'slug',
+  htmx = true,
+}) {
+  const htmxAttrs = asideHtmx(htmx);
+  const allHref = filterHref({ filters, clear: [param] });
+
+  const options = items.map((item) => {
+    const value = item[valueKey];
+    const label = item[labelKey] || item.title || value;
+    const href = buildBlogQuery({ ...filters, [param]: value, page: 1 });
+    const active = filters[param] === String(value) ? ' is-active' : '';
+    return `<li><a href="${href}" class="blog__aside-link${active}" ${htmxAttrs} hx-get="${href}">${escapeHtml(label)}</a></li>`;
+  }).join('');
+
+  return `
+    <li><a href="${allHref}" class="blog__aside-link blog__aside-link--all${!filters[param] ? ' is-active' : ''}" ${htmxAttrs} hx-get="${allHref}">all</a></li>
+    ${options}`;
+}
+
+export function asideForPost({ post } = {}) {
+  const category = post?.category;
+  const postTags = post?.tags || [];
+  const year = postYear(post);
+
+  const categoryLinks = category
+    ? postActiveLink(
+        buildBlogQuery({ category: category.slug, page: 1 }),
+        category.name,
+      )
+    : '';
+
+  const tagLinks = postTags
+    .map((tag) => postActiveLink(buildBlogQuery({ tag: tag.slug, page: 1 }), tag.name))
+    .join('');
+
+  const yearLinks = year
+    ? postActiveLink(buildBlogQuery({ year, page: 1 }), year)
+    : '';
+
+  return `
+<div class="blog__categories">
+  <h6>categories</h6>
+  <hr />
+  <ul>
+    ${categoryLinks}
+  </ul>
+</div>
+
+<div class="blog__tags">
+  <h6>tags</h6>
+  <hr />
+  <ul>
+    ${tagLinks}
+  </ul>
+</div>
+
+<div class="blog__date">
+  <h6>date</h6>
+  <hr />
+  <ul>
+    ${yearLinks}
+  </ul>
+</div>`;
+}
+
+export function aside({
+  categories = [],
+  tags = [],
+  years = [],
+  filters = {},
+} = {}) {
+  return `
+${blogSearchForm({ filters, modifier: 'aside' })}
+<div class="blog__categories">
+  <h6>categories</h6>
+  <hr />
+  <ul>
+    ${asideLinks({ items: categories, filters, param: 'category' })}
+  </ul>
+</div>
+
+<div class="blog__tags">
+  <h6>tags</h6>
+  <hr />
+  <ul>
+    ${asideLinks({ items: tags, filters, param: 'tag' })}
+  </ul>
+</div>
+
+<div class="blog__date">
+  <h6>date</h6>
+  <hr />
+  <ul>
+    <li><a href="${filterHref({ filters, clear: ['year'] })}" class="blog__aside-link blog__aside-link--all${!filters.year ? ' is-active' : ''}" ${asideHtmx()} hx-get="${filterHref({ filters, clear: ['year'] })}">all</a></li>
+    ${years.map((yearItem) => {
+      const href = buildBlogQuery({ ...filters, year: yearItem, page: 1 });
+      const active = String(filters.year) === String(yearItem) ? ' is-active' : '';
+      return `<li><a href="${href}" class="blog__aside-link${active}" ${asideHtmx()} hx-get="${href}">${yearItem}</a></li>`;
+    }).join('')}
+  </ul>
+</div>`;
+}
