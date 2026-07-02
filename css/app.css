@@ -1,0 +1,12 @@
+/*
+ * Public App CSS Entry Point
+ * Combines Tailwind CSS v4 with compiled SCSS components
+ * Mirrors css/index.css (admin) — Tailwind first, then compiled SCSS.
+ * No theme.css: portfolio uses its own SCSS tokens in scss/app/
+ */
+
+/* Tailwind CSS v4 base (Preflight), components, and utilities */
+@import "tailwindcss";
+
+/* Compiled SCSS components (BEM classes, no @apply) */
+@import "../.build/app.css";
