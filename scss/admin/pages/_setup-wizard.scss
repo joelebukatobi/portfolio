@@ -1,0 +1,42 @@
+// scss/admin/pages/_setup-wizard.scss
+// Setup wizard page styles - only unique styles, reuse existing components
+
+.setup-wizard {
+  &__token-info {
+    @apply bg-blue-50 border border-blue-200 rounded-lg p-[1.6rem] mb-[2.4rem];
+    @apply flex items-center justify-center gap-[0.8rem];
+    @apply text-body text-blue-700;
+
+    .dark & {
+      @apply bg-blue-900/20 border-blue-800 text-blue-300;
+    }
+
+    i {
+      @apply w-[1.6rem] h-[1.6rem];
+    }
+
+    strong {
+      @apply font-semibold;
+    }
+  }
+
+  &__countdown {
+    &--warning {
+      @apply text-amber-600;
+
+      .dark & {
+        @apply text-amber-400;
+      }
+    }
+
+    &--critical {
+      @apply text-red-600;
+
+      .dark & {
+        @apply text-red-400;
+      }
+    }
+  }
+}
+
+
