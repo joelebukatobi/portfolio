@@ -1,0 +1,37 @@
+// ============================================================================
+// Portfolio Public App SCSS Entry Point
+// Ported verbatim from frontend/src/assets/styles/global/
+// ============================================================================
+
+@use 'base/reset' as *;
+
+// Layouts
+@use 'layouts/container' as *;
+@use 'layouts/navbar' as *;
+@use 'layouts/header' as *;
+@use 'layouts/copyright' as *;
+
+// Elements and Typography
+@use 'elements/elements' as *;
+@use 'elements/typography' as *;
+
+// Components
+@use 'components/about' as *;
+@use 'components/form' as *;
+@use 'components/success' as *;
+@use 'components/post' as *;
+@use 'components/blog-list' as *;
+@use 'components/cursor' as *;
+
+// Pages
+@use 'pages/resume' as *;
+@use 'pages/works' as *;
+@use 'pages/blog' as *;
+@use 'pages/article' as *;
+@use 'pages/not-found' as *;
+
+// Mobile
+@use 'layouts/mobile' as *;
+
+// Light mode overrides
+@use 'base/theme-light' as *;

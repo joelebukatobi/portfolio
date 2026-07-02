@@ -1,0 +1,448 @@
+@use 'variables' as *;
+
+// Light mode hierarchy:
+// 1. White backgrounds
+// 2. Black accent ($color-dark-orange) for text
+// 3. Orange ($color-orange) primary accent — social icons, links, active nav
+// 4. Black accent ($color-dark-orange) at 5% — project & blog card backgrounds
+
+$light-orange-5: rgba($color-dark-orange, 0.05);
+
+html.theme-light {
+  color-scheme: light;
+  color: $color-dark-orange;
+
+  body::-webkit-scrollbar-track {
+    background: #f5f5f5;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background: rgba($color-dark-orange, 0.2);
+
+    &:hover {
+      background: rgba($color-dark-orange, 0.35);
+    }
+  }
+
+  body {
+    --linkedin-bg: #{$color-orange};
+    --linkedin-in: #{$color-white};
+
+    background-color: $color-off-white;
+    color: $color-dark-orange;
+
+  p {
+    color: $color-dark-orange;
+  }
+
+  .navbar {
+    &__fixed {
+      background-color: $color-off-white;
+    }
+
+    &__logo a {
+      color: $color-dark-orange;
+
+      & span {
+        color: $color-orange;
+      }
+
+      &:hover {
+        color: $color-orange;
+      }
+    }
+
+    &__item a {
+      color: $color-dark-orange;
+    }
+
+    &__portfolio,
+    &__resume,
+    &__about {
+      & a {
+        color: $color-orange;
+      }
+    }
+
+    &__active__item.navbar__portfolio,
+    &__active__item.navbar__resume,
+    &__active__item.navbar__about {
+      & a {
+        color: $color-orange;
+      }
+
+      & span {
+        color: $color-orange;
+      }
+    }
+
+    &__menu svg {
+      stroke: $color-dark-orange;
+    }
+
+    &__theme-btn svg {
+      stroke: $color-dark-orange;
+    }
+
+    &__theme-btn:hover {
+      background-color: rgba($color-dark-orange, 0.06);
+
+      svg {
+        stroke: $color-dark-orange;
+      }
+    }
+
+    &__active {
+      background-color: rgba($color-off-white, 0.98);
+
+      .navbar__active__item {
+        color: $color-dark-orange;
+      }
+    }
+  }
+
+  .header {
+    background-color: $color-dark-orange;
+
+    &__title h4 {
+      color: $color-light-orange;
+    }
+
+    &__image svg {
+      fill: $color-light-orange;
+
+      path {
+        fill-opacity: 0.12;
+      }
+    }
+  }
+
+  .about {
+    &__hello {
+      color: $color-dark-orange;
+    }
+
+    &__bio p {
+      color: $color-dark-orange;
+    }
+  }
+
+  .blog-list {
+    &__card {
+      background-color: $light-orange-5;
+    }
+
+    &__card-title {
+      color: $color-dark-orange;
+    }
+
+    &__card-excerpt {
+      color: $color-dark-orange;
+    }
+
+    &__card-meta,
+    &__card-sep {
+      color: $color-orange;
+    }
+
+    &__card-meta a {
+      color: $color-orange;
+    }
+
+    &__card-read-more {
+      color: $color-light-orange;
+
+      &:hover {
+        color: $color-orange;
+      }
+    }
+
+    &__page {
+      color: $color-dark-orange;
+
+      &.is-active {
+        background-color: $color-orange;
+        color: $color-white;
+      }
+    }
+
+    &__empty {
+      color: $color-dark-orange;
+    }
+  }
+
+  .works__card {
+    background-color: $light-orange-5;
+    border: none;
+
+    h5 {
+      color: $color-dark-orange;
+    }
+
+    p {
+      color: $color-dark-orange;
+
+      &:nth-of-type(2) {
+        color: $color-orange;
+      }
+    }
+  }
+
+  .post__card,
+  .blog__card {
+    background-color: $light-orange-5;
+    border: none;
+
+    h4 {
+      color: $color-dark-orange;
+    }
+
+    p {
+      color: $color-dark-orange;
+    }
+
+    a {
+      color: $color-orange;
+
+      &:hover {
+        color: $color-dark-orange;
+      }
+    }
+  }
+
+  .blog {
+    &__search-clear {
+      color: $color-dark-orange;
+
+      svg {
+        stroke: $color-dark-orange;
+        color: $color-dark-orange;
+      }
+
+      &:hover svg {
+        stroke: $color-orange;
+        color: $color-orange;
+      }
+    }
+
+    &__search-field {
+      background-color: transparent;
+      border-color: $color-dark-orange;
+    }
+
+    &__search-input {
+      color: $color-dark-orange;
+      background-color: transparent;
+      border: none;
+
+      &:focus {
+        background-color: transparent;
+        color: $color-dark-orange;
+        border: none;
+      }
+
+      &::placeholder,
+      &::-webkit-input-placeholder,
+      &::-moz-placeholder {
+        color: rgba($color-dark-orange, 0.5);
+      }
+
+      &:focus::placeholder,
+      &:focus::-webkit-input-placeholder,
+      &:focus::-moz-placeholder {
+        opacity: 0;
+        color: transparent;
+      }
+    }
+
+    &__categories h6,
+    &__tags h6,
+    &__date h6,
+    &__share h6 {
+      color: $color-dark-orange;
+    }
+
+    &__categories hr,
+    &__tags hr,
+    &__date hr {
+      background-color: $color-orange;
+    }
+
+    @media (min-width: 320px) and (max-width: 1024px) {
+      &__categories,
+      &__tags,
+      &__date {
+        background-color: $light-orange-5;
+      }
+    }
+
+    &__categories ul li a.blog__aside-link,
+    &__tags ul li a.blog__aside-link,
+    &__date ul li a.blog__aside-link {
+      color: $color-dark-orange;
+
+      &.is-active {
+        color: $color-orange;
+      }
+
+      &:hover:not(.is-active) {
+        color: $color-orange;
+      }
+    }
+
+    &__categories ul li svg,
+    &__share ul li svg {
+      fill: $color-orange;
+    }
+
+    &__share ul li a[href*='linkedin.com'] svg {
+      fill: none;
+    }
+  }
+
+  .copyright {
+    &__design p {
+      color: $color-dark-orange;
+    }
+
+    &__list li {
+      svg {
+        fill: $color-orange;
+      }
+
+      a[href*='linkedin.com'] svg {
+        fill: none;
+      }
+
+      a[href^='mailto:'] svg {
+        fill: none;
+        color: $color-orange;
+      }
+
+      p {
+        color: $color-dark-orange;
+
+        &:hover {
+          color: $color-orange;
+        }
+      }
+    }
+  }
+
+  .blogpost {
+    &__content {
+      & > h3 {
+        color: $color-dark-orange;
+      }
+
+      & pre,
+      & p:has(> code:only-child) {
+        background-color: $color-black;
+        color: $color-off-white;
+      }
+    }
+
+    &__code-copy {
+      color: $color-light-orange;
+
+      &:hover {
+        color: $color-off-white;
+      }
+    }
+  }
+
+  .resume {
+    background-color: $color-off-white;
+
+    & > p {
+      color: $color-dark-orange;
+    }
+
+    &__external {
+      background-color: $color-dark-orange;
+      padding: 1.6rem;
+      border-radius: 0.5rem;
+
+      li {
+        svg {
+          fill: $color-orange;
+          stroke: $color-orange;
+        }
+
+        a {
+          color: $color-off-white;
+        }
+
+        &:hover {
+          a {
+            color: $color-orange;
+          }
+
+          svg {
+            fill: $color-light-orange;
+            stroke: $color-light-orange;
+          }
+        }
+      }
+    }
+
+    &__card {
+      h6 {
+        color: $color-orange;
+      }
+
+      .date {
+        color: $color-dark-orange;
+      }
+
+      .description {
+        color: $color-dark-orange;
+      }
+
+      ul li {
+        p {
+          color: $color-dark-orange;
+        }
+
+        span {
+          color: $color-orange;
+        }
+      }
+    }
+  }
+
+  .form {
+    &__text {
+      h1 {
+        color: $color-dark-orange;
+
+        span {
+          color: $color-orange;
+        }
+      }
+
+      p {
+        color: $color-dark-orange;
+      }
+    }
+  }
+
+  input,
+  textarea {
+    background-color: rgba($color-dark-orange, 0.05);
+    color: $color-dark-orange;
+    border: 0.1rem solid $color-dark-orange;
+
+    &:focus {
+      background-color: $color-off-white;
+      color: $color-dark-orange;
+      border-color: rgba($color-orange, 0.4);
+    }
+  }
+
+  pre {
+    background-color: rgba($color-dark-orange, 0.05);
+    color: $color-dark-orange;
+  }
+  }
+}

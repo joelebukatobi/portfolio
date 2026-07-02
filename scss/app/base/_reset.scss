@@ -1,0 +1,64 @@
+@use 'variables' as *;
+
+@font-face {
+  font-family: 'Hurme Geometric Sans';
+  src: url('/fonts/Hurme Geometric Sans.otf');
+}
+
+@font-face {
+  font-family: 'Hurme Geometric Sans Bold';
+  src: url('/fonts/Hurme Geometric Sans Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Hurme Geometric Sans SemiBold';
+  src: url('/fonts/Hurme Geometric Sans SemiBold.ttf');
+}
+
+body::-webkit-scrollbar {
+  width: 0.5rem;
+  &:hover {
+    width: 1rem;
+  }
+  &-track {
+    background: $color-dark-orange;
+  }
+  &-thumb {
+    background: rgba($color-off-white, 0.05);
+    &:hover {
+      background: rgba($color-off-white, 0.2);
+    }
+  }
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+  font-size: 62.5%; //10px/16px = 62.5% 1rem
+  color: $color-grey;
+
+  @media (min-width: 320px) and (max-width: 390px) {
+    font-size: 48%;
+  }
+  @media (min-width: 390px) and (max-width: 480px) {
+    font-size: 50%;
+  }
+  @media (min-width: 769px) and (max-width: 1023px) {
+    font-size: 50%;
+  }
+  @media (min-width: 1024px) and (max-width: 1366px) {
+    font-size: 56%;
+  }
+}
+
+.no-highlight {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.no-highlight:focus {
+  outline: none !important;
+}
