@@ -1,0 +1,105 @@
+@use '../base/variables' as *;
+
+[x-cloak] {
+  display: none !important;
+}
+
+.blog-list {
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    width: 100%;
+  }
+
+  &__empty {
+    text-transform: none;
+    color: $color-grey;
+  }
+
+  &__card {
+    background-color: #353432;
+    border-radius: 0.5rem;
+    box-shadow: $shadow-sm;
+    padding: 1.6rem;
+    cursor: pointer;
+    width: 100%;
+
+    & > *:not(:last-child) {
+      margin-bottom: 0.8rem;
+    }
+  }
+
+  &__card-title {
+    font-family: $font-primary;
+    color: $color-white;
+    text-transform: capitalize;
+  }
+
+  &__card-excerpt {
+    text-transform: none;
+    color: $color-grey;
+  }
+
+  &__card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+    font-family: $font-primary;
+    font-size: 1.8rem;
+    font-weight: 500;
+    text-transform: none;
+    color: $color-light-orange;
+
+    a {
+      color: $color-light-orange;
+      font-weight: inherit;
+
+      &:hover {
+        color: $color-orange;
+      }
+    }
+
+    .blog-list__card-read-more {
+      color: $color-orange;
+      font-weight: inherit;
+
+      &:hover {
+        color: $color-orange;
+      }
+    }
+  }
+
+  &__card-sep {
+    color: $color-light-orange;
+  }
+
+  &__pagination {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 4.8rem;
+  }
+
+  &__page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.4rem;
+    height: 2.4rem;
+    font-size: 1.6rem;
+    color: $color-orange;
+    text-transform: none;
+
+    &.is-active {
+      background-color: $color-orange;
+      color: $color-white;
+      border-radius: 0.2rem;
+    }
+
+    &:hover:not(.is-active) {
+      color: $color-light-orange;
+    }
+  }
+}

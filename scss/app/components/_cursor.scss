@@ -1,0 +1,52 @@
+// Custom cursor (replaces react-animated-cursor)
+body {
+  cursor: none;
+}
+
+#cursor-inner {
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: rgb(212, 85, 36);
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease-out;
+}
+
+#cursor-outer {
+  width: 2.4rem;
+  height: 2.4rem;
+  background-color: rgba(249, 177, 113, 0.1);
+  border: 0.05rem solid rgba(249, 177, 113, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s ease-out, width 0.15s ease-out, height 0.15s ease-out;
+}
+
+#cursor-inner.is-hover {
+  transform: translate(-50%, -50%) scale(0.7);
+}
+
+#cursor-outer.is-hover {
+  transform: translate(-50%, -50%) scale(4);
+}
+
+@media (min-width: 320px) and (max-width: 768px) {
+  body {
+    cursor: auto;
+  }
+
+  #cursor-inner,
+  #cursor-outer {
+    display: none;
+  }
+}
