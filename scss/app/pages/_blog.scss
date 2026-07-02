@@ -1,0 +1,282 @@
+@use '../base/variables' as *;
+
+$filter-control-border: 0.2rem solid rgba($color-light-orange, 0.6);
+
+.blog {
+  &__shell {
+    display: flex;
+    gap: 4rem;
+    width: 100%;
+  }
+
+  &__left {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    flex-shrink: 0;
+    align-self: flex-start;
+
+    & > * {
+      &:not(:last-child) {
+        margin-bottom: 4.8rem;
+      }
+    }
+  }
+
+  // Desktop: keep filters visible while scrolling content.
+  // Navbar is fixed (10vh) and header is sticky (16rem) with 4rem gap after it.
+  @media (min-width: 1025px) {
+    &__right {
+      position: sticky;
+      top: calc(10vh + 16rem + 4rem);
+    }
+  }
+
+  &__search {
+    width: 100%;
+
+    &--main {
+      display: none;
+      margin-bottom: 3.2rem;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    &__search--aside {
+      display: none;
+    }
+
+    &__search--main {
+      display: block;
+    }
+  }
+
+  &__search-field {
+    display: flex;
+    align-items: center;
+    height: 6.4rem;
+    gap: 1.2rem;
+    padding: 0 1.6rem;
+    border: $filter-control-border;
+    border-radius: 0.5rem;
+  }
+
+  &__search-clear svg {
+    width: 3.2rem;
+    height: 3.2rem;
+    flex-shrink: 0;
+    stroke: $color-light-orange;
+    fill: none;
+  }
+
+  &__search-clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    cursor: pointer;
+    color: $color-light-orange;
+
+    svg {
+      color: $color-light-orange;
+    }
+
+    &:hover svg {
+      stroke: $color-orange;
+      color: $color-orange;
+    }
+  }
+
+  &__search-input {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    background-color: transparent;
+    font-family: $font-primary;
+    font-size: 2.1rem;
+    font-weight: 500;
+    color: $color-white;
+    outline: none;
+
+    &::-webkit-search-cancel-button,
+    &::-webkit-search-decoration {
+      -webkit-appearance: none;
+      appearance: none;
+      display: none;
+    }
+
+    &::-ms-clear {
+      display: none;
+    }
+
+    &:focus {
+      background-color: transparent;
+      color: $color-white;
+      border: none;
+    }
+
+    &::placeholder,
+    &::-webkit-input-placeholder,
+    &::-moz-placeholder {
+      color: rgba($color-light-orange, 0.8);
+    }
+
+    &:focus::placeholder,
+    &:focus::-webkit-input-placeholder,
+    &:focus::-moz-placeholder {
+      opacity: 0;
+      color: transparent;
+    }
+  }
+
+  &__heading {
+    margin-bottom: 3.2rem;
+    width: 100%;
+    & > * {
+      &:not(:last-child) {
+        margin-bottom: 0.8rem;
+      }
+    }
+    & p {
+      color: $color-grey;
+      text-transform: unset;
+    }
+    & a {
+      color: $color-light-orange;
+      text-transform: capitalize !important;
+      font-weight: 700;
+      &:hover {
+        color: $color-orange;
+      }
+    }
+  }
+
+  &__categories,
+  &__tags,
+  &__date,
+  &__share {
+    display: flex;
+    flex-direction: column;
+    & > * {
+      &:not(:last-child) {
+        margin-bottom: 1.6rem;
+      }
+    }
+    & h6 {
+      font-family: $font-primary;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: $color-white;
+      text-transform: capitalize;
+    }
+    & hr {
+      width: 4rem;
+      border: none;
+      height: 0.2rem;
+      background-color: $color-light-orange;
+    }
+    & ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      & li {
+        list-style: none;
+        text-transform: capitalize;
+
+        & a.blog__aside-link {
+          font-size: 1.8rem;
+          font-weight: 500;
+          color: $color-white;
+          text-transform: capitalize;
+          white-space: nowrap;
+
+          &.is-active {
+            color: $color-orange;
+          }
+
+          &:hover:not(.is-active) {
+            color: $color-light-orange;
+          }
+        }
+
+        & svg {
+          fill: $color-white;
+          height: 2.4rem;
+          width: 2.4rem;
+        }
+      }
+    }
+  }
+
+  &__categories,
+  &__tags,
+  &__date {
+    & h6 {
+      font-family: $font-secondary;
+      text-transform: lowercase;
+    }
+
+    & ul li a.blog__aside-link {
+      font-family: $font-primary;
+      text-transform: capitalize;
+    }
+
+    @media (min-width: 1025px) {
+      & ul li a.blog__aside-link {
+        font-size: 1.6rem;
+      }
+    }
+  }
+
+  &__card {
+    background-color: #353432;
+    border-radius: 0.5rem;
+    padding: 1.6rem;
+    width: 46.87%;
+    // height: 20.5rem;
+    margin-bottom: 6.26%;
+
+    & > * {
+      &:not(:last-child) {
+        margin-bottom: 0.8rem;
+      }
+    }
+
+    & h4 {
+      font-family: $font-primary;
+      color: $color-white;
+      text-transform: lowercase;
+    }
+
+    & p {
+      text-transform: none;
+      // color: $color-grey;
+    }
+    & a {
+      text-transform: lowercase;
+      color: rgba($color-orange, 0.8);
+      font-size: 1.6rem;
+      &:hover {
+        color: $color-orange;
+      }
+    }
+  }
+}

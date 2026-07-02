@@ -1,0 +1,111 @@
+@use '../base/variables' as *;
+
+.works {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4rem;
+
+    @media (min-width: 769px) and (max-width: 1279px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &__heading {
+    margin-bottom: 3.2rem;
+  }
+
+  & h4 {
+    color: $color-orange;
+  }
+
+  &__card {
+    background-color: #2f2e2d;
+    border-radius: 0.5rem;
+    box-shadow: $shadow-sm;
+    padding: 1.6rem;
+    width: 100%;
+    cursor: pointer;
+    & > * {
+      &:not(:last-child) {
+        margin-bottom: 0.8rem;
+      }
+    }
+    & h5 {
+      font-weight: 500;
+      color: $color-white;
+      font-family: $font-primary;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    & p {
+      text-transform: unset;
+      &:nth-of-type(2) {
+        text-transform: capitalize;
+        color: $color-light-orange;
+      }
+    }
+
+    &__group {
+      display: flex;
+      gap: 0 1.6rem;
+    }
+    &__project {
+      display: flex;
+      align-items: center;
+      gap: 0 0.8rem;
+      cursor: pointer;
+      & svg {
+        height: 1.6rem;
+        width: 1.6rem;
+        margin: 0;
+        stroke: $color-orange;
+        fill: none;
+      }
+      & p {
+        font-size: 1.4rem;
+        margin: 0;
+        color: rgba($color-off-white, 0.5);
+        padding-top: 0.4rem;
+      }
+      &:hover {
+        & p {
+          color: $color-off-white;
+        }
+
+        & svg {
+          stroke: $color-orange;
+        }
+      }
+    }
+
+    &__code {
+      display: flex;
+      align-items: center;
+      gap: 0 0.8rem;
+      cursor: pointer;
+      & svg {
+        height: 1.6rem;
+        width: 1.6rem;
+        margin: 0;
+        fill: rgba($color-orange, 0.5);
+        stroke: none;
+      }
+      & p {
+        font-size: 1.4rem;
+        margin: 0;
+        color: rgba($color-off-white, 0.5);
+      }
+      &:hover {
+        & p {
+          color: $color-off-white;
+        }
+
+        & svg {
+          fill: $color-orange;
+        }
+      }
+    }
+  }
+}
