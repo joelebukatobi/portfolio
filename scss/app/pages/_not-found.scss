@@ -1,0 +1,330 @@
+@use '../base/variables' as *;
+
+@keyframes not-found-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.not-found {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2.4rem;
+  background-color: $color-dark-orange;
+  box-sizing: border-box;
+
+  &__content {
+    width: 100%;
+    max-width: 72rem;
+    padding: 1.6rem;
+    border: 0.1rem solid rgba($color-light-orange, 0.35);
+    border-radius: 0.4rem;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  &__titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.6rem;
+    margin: -1.6rem -1.6rem 1.6rem;
+    padding: 0.8rem 1.2rem 0.8rem 1.6rem;
+    border-bottom: 0.1rem solid rgba($color-light-orange, 0.2);
+    border-radius: 0.4rem 0.4rem 0 0;
+    background-color: rgba($color-black, 0.18);
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+  }
+
+  &__control {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background-color: $color-black;
+    color: $color-white;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $color-orange;
+    }
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+      display: block;
+    }
+  }
+
+  &__shell,
+  &__host,
+  &__cwd,
+  &__time {
+    font-family: $font-secondary;
+    font-weight: 500;
+    line-height: 1;
+    color: rgba($color-off-white, 0.55);
+    text-transform: none;
+    white-space: nowrap;
+  }
+
+  &__shell {
+    font-size: 1.4rem;
+  }
+
+  &__time {
+    font-size: 1.4rem;
+  }
+
+  &__status-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background-color: #28c840;
+    box-shadow: 0 0 0.6rem rgba(40, 200, 64, 0.45);
+  }
+
+  &__icon {
+    width: 1.4rem;
+    height: 1.4rem;
+    display: block;
+    flex-shrink: 0;
+
+    &--folder {
+      color: rgba($color-light-orange, 0.72);
+    }
+  }
+
+  &__terminal {
+    width: 100%;
+  }
+
+  &__prompt-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.6rem;
+    width: 100%;
+
+    &--home {
+      margin-top: 4rem;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  &__session {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-width: 0;
+  }
+
+  &__line {
+    margin: 0;
+    font-family: $font-secondary;
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 1.6;
+    color: rgba($color-off-white, 0.72);
+    text-transform: none;
+
+    & + & {
+      margin-top: 0.8rem;
+    }
+
+    &--command {
+      min-width: 0;
+    }
+
+    &--error {
+      color: $color-light-orange;
+    }
+  }
+
+  &__host,
+  &__cwd {
+    font-size: 1.4rem;
+    color: rgba($color-off-white, 0.72);
+  }
+
+  &__prompt {
+    color: $color-orange;
+    font-weight: 600;
+  }
+
+  &__neofetch {
+    display: flex;
+    align-items: stretch;
+    gap: 2.4rem;
+    margin-top: 3.2rem;
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    &__neofetch {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1.6rem;
+    }
+  }
+
+  &__code-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 12rem;
+    padding: 1.6rem;
+    border: 0.1rem solid rgba($color-light-orange, 0.2);
+    border-radius: 0.4rem;
+    background-color: rgba($color-black, 0.18);
+    box-sizing: border-box;
+  }
+
+  &__code {
+    margin: 0;
+    font-family: $font-secondary;
+    font-size: clamp(5rem, 12vw, 12rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: $color-orange;
+    text-transform: none;
+    user-select: none;
+  }
+
+  &__specs {
+    display: grid;
+    align-content: center;
+    gap: 0.4rem;
+    margin: 0;
+    min-width: 0;
+    flex: 1;
+  }
+
+  &__spec {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin: 0;
+    font-family: $font-secondary;
+    font-size: 1.4rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-transform: none;
+  }
+
+  &__spec-label {
+    flex-shrink: 0;
+    margin: 0;
+    color: $color-orange;
+    font-weight: 600;
+
+    &::after {
+      content: ':';
+    }
+  }
+
+  &__spec-value {
+    margin: 0;
+    min-width: 0;
+    color: rgba($color-off-white, 0.72);
+    word-break: break-word;
+  }
+
+  &__home {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: $color-orange;
+    text-decoration: none;
+    text-transform: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $color-light-orange;
+    }
+  }
+
+  &__cursor {
+    color: inherit;
+    animation: not-found-blink 1s steps(1, end) infinite;
+  }
+}
+
+html.theme-light {
+  .not-found {
+    background-color: $color-off-white;
+
+    &__content {
+      border-color: rgba($color-dark-orange, 0.2);
+    }
+
+    &__titlebar {
+      border-bottom-color: rgba($color-dark-orange, 0.12);
+      background-color: rgba($color-dark-orange, 0.04);
+    }
+
+    &__shell,
+    &__host,
+    &__cwd,
+    &__time {
+      color: rgba($color-dark-orange, 0.45);
+    }
+
+    &__host,
+    &__cwd {
+      color: rgba($color-dark-orange, 0.65);
+    }
+
+    &__icon--folder {
+      color: rgba($color-orange, 0.72);
+    }
+
+    &__line {
+      color: rgba($color-dark-orange, 0.65);
+
+      &--error {
+        color: $color-orange;
+      }
+    }
+
+    &__spec-value {
+      color: rgba($color-dark-orange, 0.65);
+    }
+
+    &__code-panel {
+      border-color: rgba($color-dark-orange, 0.12);
+      background-color: rgba($color-dark-orange, 0.04);
+    }
+
+    &__home {
+      color: $color-orange;
+
+      &:hover {
+        color: $color-dark-orange;
+      }
+    }
+  }
+}
