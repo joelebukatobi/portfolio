@@ -659,3 +659,39 @@
     }
   }
 }
+
+// Optional password fields — masked dots when empty/blurred (unchanged password)
+.password-ghost-field {
+  @apply relative;
+
+  &__input {
+    @apply relative bg-transparent;
+  }
+
+  &__input--ghost:not(:focus) {
+    @apply text-transparent caret-transparent bg-transparent;
+  }
+
+  &__mask {
+    @apply absolute inset-y-0 left-0 right-0 z-[2] flex items-center px-[1.2rem];
+    @apply text-body-sm text-grey-900 pointer-events-none select-none;
+
+    &[hidden] {
+      @apply hidden;
+    }
+
+    .dark & {
+      @apply text-white;
+    }
+  }
+
+  &--display-only {
+    .password-ghost-field__input {
+      @apply cursor-default;
+    }
+
+    .password-ghost-field__mask {
+      @apply flex;
+    }
+  }
+}
