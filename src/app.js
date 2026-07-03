@@ -181,6 +181,7 @@ export default async function app(fastify, opts) {
    await fastify.register(import('./admin/routes/api/images.routes.js'), { prefix: '/api/v1/images' });
    await fastify.register(import('./admin/routes/api/videos.routes.js'), { prefix: '/api/v1/videos' });
    await fastify.register(import('./admin/routes/api/subscribers.routes.js'), { prefix: '/api/v1' });
+  await fastify.register(import('./admin/routes/api/settings.routes.js'), { prefix: '/api/v1' });
 
   // Register public app routes (fastify-html layout scoped per plugin)
   await fastify.register(import('./app/plugin.js'));
