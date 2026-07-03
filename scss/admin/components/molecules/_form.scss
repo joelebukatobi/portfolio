@@ -67,6 +67,15 @@
       @apply mb-0;
     }
 
+    &:has([data-hs-select]) {
+      @apply relative;
+
+      &:has(.hs-select.open),
+      &:has(.hs-select.active) {
+        @apply z-50;
+      }
+    }
+
     // Force label-first ordering regardless of DOM manipulation (Preline/HTMX)
     &--ordered {
       @apply flex flex-col;
@@ -398,7 +407,7 @@
   }
 
   &__select-dropdown {
-    @apply mt-[0.8rem] z-50 w-full max-h-56 bg-white border border-grey-100 shadow-lg overflow-y-auto p-[0.4rem] rounded-md dark:bg-grey-900 dark:border-grey-700;
+    @apply absolute inset-x-0 top-full mt-[0.8rem] z-[200] w-full max-h-56 bg-white border border-grey-100 shadow-lg overflow-y-auto p-[0.4rem] rounded-md dark:bg-grey-900 dark:border-grey-700;
   }
 
   &__select-search {
