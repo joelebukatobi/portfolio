@@ -1,4 +1,4 @@
-name: Deploy Sandbox
+name: Deploy Dev
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: deploy-sandbox
+  group: deploy-dev
   cancel-in-progress: true
 
 jobs:
@@ -91,7 +91,8 @@ jobs:
 
           echo "deploy_dir=$DEPLOY_DIR" >> "$GITHUB_OUTPUT"
           echo "ftp_dir=$FTP_DIR" >> "$GITHUB_OUTPUT"
-          echo "Using FTP directory: $FTP_DIR"
+          echo "SSH deploy directory: $DEPLOY_DIR"
+          echo "FTP upload directory: $FTP_DIR"
 
       - name: Detect SSH configuration
         id: ssh_check
@@ -112,7 +113,8 @@ jobs:
           protocol: ftps
           local-dir: ./
           server-dir: ${{ steps.paths.outputs.ftp_dir }}
-          state-name: .ftp-deploy-sync-state-v2.json
+          state-name: .ftp-deploy-sync-state-dev.json
+          log-level: minimal
           exclude: |
             **/public/uploads/**
             **/.git*/**
@@ -139,16 +141,30 @@ jobs:
             set -e
             set -o pipefail
 
-            # Source .bashrc to get Node 24 in PATH
             if [ -f ~/.bashrc ]; then
               source ~/.bashrc
             fi
 
             DEPLOY_DIR="${{ steps.paths.outputs.deploy_dir }}"
-            cd "$DEPLOY_DIR"
+            FTP_DIR="${{ steps.paths.outputs.ftp_dir }}"
+
+            if ! cd "$DEPLOY_DIR"; then
+              echo "::error::Cannot cd to DEPLOY_PATH: $DEPLOY_DIR"
+              exit 1
+            fi
 
             echo "Deploy diagnostics:"
-            echo "- working directory: $(pwd)"
+            echo "- SSH deploy directory: $(pwd)"
+            echo "- FTP upload directory: $FTP_DIR"
+            echo "- directory listing:"
+            ls -la
+
+            if [ ! -f package.json ] || [ ! -f package-lock.json ]; then
+              echo "::error::package.json or package-lock.json is missing in the deploy directory."
+              echo "DEPLOY_PATH must match the folder FTPS uploads to (Node app root on cPanel)."
+              exit 1
+            fi
+
             if [ -n "$DATABASE_URL" ]; then
               echo "- DATABASE_URL: present"
             else
@@ -178,34 +194,15 @@ jobs:
               exit 1
             fi
 
-            # Check database connectivity
             node --input-type=module -e "import mysql from 'mysql2/promise'; const conn = await mysql.createConnection(process.env.DATABASE_URL); await conn.query('SELECT 1'); await conn.end(); console.log('Database connectivity check: OK');"
 
-            # Run migrations using drizzle-kit migrate
             npm run db:migrate
             echo "Database migrations: OK"
-
-            # NOTE: Database seeding is disabled. Use setup wizard instead.
 
             echo "✅ Deployment complete. Run 'node scripts/cli.js setup-token' to generate setup URL."
 
             mkdir -p tmp
             date > tmp/restart.txt
-
-      - name: Verify deployed files on server
-        if: steps.ssh_check.outputs.enabled == 'true'
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ env.CPANEL_SSH_HOST }}
-          username: ${{ env.CPANEL_SSH_USER }}
-          key: ${{ env.CPANEL_SSH_KEY }}
-          port: ${{ env.CPANEL_SSH_PORT }}
-          script: |
-            set -e
-            DEPLOY_DIR="${{ steps.paths.outputs.deploy_dir }}"
-            cd "$DEPLOY_DIR"
-            pwd
-            ls -la
 
       - name: Health check - verify app responds
         if: steps.ssh_check.outputs.enabled == 'true'
@@ -214,10 +211,9 @@ jobs:
           echo "Waiting for app to start..."
           sleep 10
 
-          HEALTH_URL="${{ secrets.SANDBOX_URL || 'https://sandbox.joelebukatobi.dev' }}/health"
+          HEALTH_URL="${{ secrets.DEV_URL || 'https://dev.joelebukatobi.dev' }}/health"
           echo "Checking health at: $HEALTH_URL"
 
-          # Retry up to 3 times with 5 second intervals
           for i in 1 2 3; do
             if curl -sf "$HEALTH_URL" > /dev/null; then
               echo "✅ Health check passed - app is responding"
