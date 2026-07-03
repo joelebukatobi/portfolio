@@ -121,6 +121,14 @@
       text-transform: capitalize;
     }
 
+    & > .blogpost__meta + h3 {
+      margin-top: 1.2rem;
+    }
+
+    & > h3:has(+ .blogpost__title-divider) {
+      margin-bottom: 0;
+    }
+
     & pre {
       @include blogpost-code-block;
 
@@ -156,5 +164,299 @@
     }
 
     width: 77.56%;
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.4rem;
+    font-family: $font-primary;
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-transform: none;
+    color: $color-light-orange;
+  }
+
+  &__meta-author {
+    color: $color-orange;
+    font-family: $font-primary-semibold;
+    font-weight: 600;
+  }
+
+  &__meta-date,
+  &__meta-read {
+    color: $color-grey;
+  }
+
+  &__meta-sep {
+    color: rgba($color-grey, 0.65);
+    user-select: none;
+  }
+
+  &__title-divider {
+    width: 100%;
+    height: 0.08rem;
+    margin: 0 0 2.4rem;
+    border: none;
+    background-color: rgba($color-grey, 0.35);
+  }
+
+  &__comments {
+    margin-top: 4.8rem;
+    padding-top: 3.2rem;
+    border-top: 0.1rem solid rgba($color-grey, 0.35);
+  }
+
+  &__comments-title {
+    margin-bottom: 2.4rem;
+    color: $color-light-orange;
+    font-family: $font-primary;
+    text-transform: capitalize;
+  }
+
+  &__comments-empty {
+    margin-bottom: 2.4rem;
+    color: $color-grey;
+    font-size: 1.6rem;
+    line-height: 1.6;
+    text-transform: none;
+  }
+
+  &__comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    margin-bottom: 4rem;
+  }
+
+  &__comment {
+    text-transform: none;
+
+    &--reply {
+      margin-left: 2.4rem;
+      padding-left: 1.6rem;
+      border-left: 0.2rem solid rgba($color-orange, 0.35);
+    }
+  }
+
+  &__comment-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.8rem 1.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  &__comment-author {
+    color: $color-orange;
+    font-family: $font-primary-semibold;
+    font-size: 1.6rem;
+  }
+
+  &__comment-date {
+    color: $color-grey;
+    font-size: 1.4rem;
+  }
+
+  &__comment-body {
+    margin: 0;
+    color: $color-off-white;
+    font-size: 1.6rem;
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+
+  &__comment-actions {
+    margin-top: 0.8rem;
+  }
+
+  &__comment-reply-btn {
+    padding: 0;
+    width: auto;
+    height: auto;
+    min-height: 0;
+    border: none;
+    background: transparent;
+    color: $color-orange;
+    font-family: $font-primary-semibold;
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-transform: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $color-light-orange;
+    }
+  }
+
+  &__comment-reply-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-top: 1.2rem;
+    padding: 1.6rem;
+    border-radius: 0.4rem;
+    background-color: rgba($color-black-orange, 0.35);
+    text-transform: none;
+
+    input,
+    textarea {
+      width: 100%;
+      height: auto;
+      min-height: 4rem;
+      font-size: 1.6rem;
+    }
+
+    textarea {
+      min-height: 8rem;
+      resize: vertical;
+    }
+
+    button.blogpost__comment-submit {
+      align-self: flex-start;
+      width: auto;
+      min-width: 12rem;
+      height: 4rem;
+      padding: 0 2rem;
+      font-size: 1.3rem;
+    }
+  }
+
+  &__comment-reply-cancel {
+    padding: 0;
+    width: auto;
+    height: auto;
+    min-height: 0;
+    border: none;
+    background: transparent;
+    color: $color-grey;
+    font-size: 1.3rem;
+    text-transform: none;
+    cursor: pointer;
+
+    &:hover {
+      color: $color-off-white;
+    }
+  }
+
+  &__comment-reply-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+  }
+
+  &__comment-reply-to {
+    margin: 0;
+    color: $color-grey;
+    font-size: 1.4rem;
+    text-transform: none;
+
+    strong {
+      color: $color-orange;
+      font-family: $font-primary-semibold;
+      font-weight: 600;
+    }
+  }
+
+  &__comment-replies {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    margin-top: 1.6rem;
+  }
+
+  &__comment-form-title {
+    margin: 0;
+    color: $color-light-orange;
+    font-family: $font-primary;
+    font-size: 2rem;
+    text-transform: capitalize;
+  }
+
+  &__comment-form-row {
+    display: flex;
+    gap: 1.6rem;
+
+    &--2 {
+      flex-wrap: wrap;
+
+      .blogpost__comment-field {
+        flex: 1 1 20rem;
+      }
+    }
+  }
+
+  &__comment-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+  }
+
+  &__comment-label {
+    color: $color-grey;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  &__comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    text-transform: none;
+
+    input,
+    textarea {
+      width: 100%;
+      height: auto;
+      min-height: 4.8rem;
+      font-size: 1.6rem;
+      border: 0.1rem solid rgba($color-grey, 0.35);
+    }
+
+    textarea {
+      min-height: 12rem;
+      resize: vertical;
+    }
+
+    button.blogpost__comment-submit {
+      align-self: flex-start;
+      width: auto;
+      min-width: 16rem;
+      height: 4.8rem;
+      padding: 0 2.4rem;
+      font-size: 1.4rem;
+    }
+  }
+
+  &__comment-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__comment-feedback {
+    margin: 0;
+    font-size: 1.4rem;
+    color: $color-light-orange;
+
+    &--error {
+      color: #f87171;
+    }
+  }
+
+  &__comment-note {
+    margin: 0;
+    color: $color-grey;
+    font-size: 1.4rem;
+    line-height: 1.5;
   }
 }

@@ -3,6 +3,14 @@ import { navbar } from '../../partials/navbar.js';
 import { footer } from '../../partials/footer.js';
 import { share } from '../../partials/share.js';
 import { asideForPost } from '../../partials/aside.js';
+import { postComments } from '../../partials/post-comments.js';
+import { formatSiteDate } from '../../../../lib/site-dates.js';
+import {
+  getPostAuthorName,
+  getPostPublishedAt,
+  estimateReadingMinutes,
+  formatReadingTime,
+} from '../../../../lib/post-meta.js';
 
 export function blogPostMeta({ post, apiUrl = '' } = {}) {
   const image = imageUrl(apiUrl, post?.image) || post?.image;
@@ -21,9 +29,21 @@ export function blogPostMeta({ post, apiUrl = '' } = {}) {
   };
 }
 
-export function blogPostContent({ post, apiUrl = '' } = {}) {
+export function blogPostContent({
+  post,
+  apiUrl = '',
+  comments = [],
+  commentsEnabled = true,
+  moderateComments = false,
+  siteSettings = {},
+} = {}) {
   const img = escapeHtml(imageUrl(apiUrl, post.image));
   const title = escapeHtml(post?.title || '');
+  const author = escapeHtml(getPostAuthorName(post));
+  const publishedAt = getPostPublishedAt(post);
+  const publishedLabel = escapeHtml(formatSiteDate(publishedAt, siteSettings));
+  const readTime = escapeHtml(formatReadingTime(estimateReadingMinutes(post?.post || post?.description || '')));
+  const publishedIso = escapeHtml(publishedAt || '');
 
   return `
 ${navbar({ activePage: null })}
@@ -37,8 +57,22 @@ ${navbar({ activePage: null })}
       ${share({ slug: post.slug, className: 'blogpost__share' })}
     </div>
     <div class="blogpost__content">
+      <div class="blogpost__meta">
+        <span class="blogpost__meta-author">${author}</span>
+        ${publishedAt ? `<span class="blogpost__meta-sep" aria-hidden="true">·</span><time class="blogpost__meta-date" datetime="${publishedIso}">${publishedLabel}</time>` : ''}
+        <span class="blogpost__meta-sep" aria-hidden="true">·</span>
+        <span class="blogpost__meta-read">${readTime}</span>
+      </div>
       <h3>${title}</h3>
+      <hr class="blogpost__title-divider" />
       ${post.post || ''}
+      ${postComments({
+        slug: post.slug,
+        comments,
+        commentsEnabled,
+        moderateComments,
+        siteSettings,
+      })}
     </div>
   </div>
 </section>

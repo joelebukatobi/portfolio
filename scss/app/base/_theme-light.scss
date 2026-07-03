@@ -342,11 +342,85 @@ html.theme-light {
       }
     }
 
+    &__meta-author {
+      color: $color-dark-orange;
+    }
+
+    &__meta-date,
+    &__meta-read {
+      color: rgba($color-dark-orange, 0.65);
+    }
+
+    &__meta-sep {
+      color: rgba($color-dark-orange, 0.35);
+    }
+
+    &__title-divider {
+      background-color: rgba($color-dark-orange, 0.15);
+    }
+
     &__code-copy {
       color: $color-light-orange;
 
       &:hover {
         color: $color-off-white;
+      }
+    }
+
+    &__comment-body {
+      color: $color-dark-orange;
+    }
+
+    &__comments-title,
+    &__comment-form-title {
+      color: $color-dark-orange;
+    }
+
+    &__comment-label {
+      color: $color-dark-orange;
+    }
+
+    &__comment-author {
+      color: $color-dark-orange;
+    }
+
+    &__comment-form,
+    &__comment-reply-form {
+      input,
+      textarea {
+        background-color: rgba($color-dark-orange, 0.05);
+        color: $color-dark-orange;
+        border: 0.1rem solid rgba($color-dark-orange, 0.2);
+
+        &::placeholder {
+          color: rgba($color-dark-orange, 0.45);
+        }
+
+        &:focus {
+          background-color: $color-white;
+          color: $color-dark-orange;
+          border-color: rgba($color-orange, 0.45);
+        }
+      }
+    }
+
+    &__comment-reply-form {
+      background-color: $light-orange-5;
+    }
+
+    &__comment-reply-to {
+      color: rgba($color-dark-orange, 0.7);
+
+      strong {
+        color: $color-dark-orange;
+      }
+    }
+
+    &__comment-reply-cancel {
+      color: rgba($color-dark-orange, 0.65);
+
+      &:hover {
+        color: $color-dark-orange;
       }
     }
   }

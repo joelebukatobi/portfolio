@@ -37,6 +37,16 @@ export async function fetchPostBySlug(server, slug) {
   return { ok: true, post: result.data };
 }
 
+export async function fetchPostComments(server, slug, { page = 1, limit = 50 } = {}) {
+  const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+  const result = await injectJson(server, `/api/v1/posts/${encodeURIComponent(slug)}/comments?${params}`);
+  if (!result.ok) return { comments: [], meta: {} };
+  return {
+    comments: result.data?.data || [],
+    meta: result.data?.meta || {},
+  };
+}
+
 export async function fetchCategories(server) {
   const result = await injectJson(server, `/api/v1/categories`);
   if (!result.ok) return [];

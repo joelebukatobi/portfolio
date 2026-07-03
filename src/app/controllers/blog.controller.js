@@ -19,12 +19,14 @@ import { renderAppPage } from '../render.js';
 import {
   fetchPosts,
   fetchPostBySlug,
+  fetchPostComments,
   fetchCategories,
   fetchCategoryPosts,
   fetchTags,
   fetchPostYears,
   getApiUrl,
 } from '../utils/api.js';
+import { isSettingEnabled } from '../../services/settings.service.js';
 
 class BlogController {
   async index(request, reply) {
@@ -73,11 +75,25 @@ class BlogController {
       );
     }
 
+    const siteMap = request.siteSettingsMap ?? {};
+    const commentsEnabled = isSettingEnabled(siteMap.enableComments);
+    const moderateComments = isSettingEnabled(siteMap.moderateComments);
+    const { comments } = commentsEnabled
+      ? await fetchPostComments(request.server, slug)
+      : { comments: [] };
+
     return renderAppPage(
       request,
       reply,
       blogPostMeta({ post, apiUrl: getApiUrl() }),
-      blogPostContent({ post, apiUrl: getApiUrl() }),
+      blogPostContent({
+        post,
+        apiUrl: getApiUrl(),
+        comments,
+        commentsEnabled,
+        moderateComments,
+        siteSettings: siteMap,
+      }),
     );
   }
 
