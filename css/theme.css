@@ -53,10 +53,29 @@
   --color-grey-800: #373737;
   --color-grey-900: #212121;
 
-  /* Sidebar theme colors */
-  --color-bg-sidebar: #1e3a8a;
-  --color-bg-sidebar-hover: #1d4ed8;
-  --color-bg-sidebar-active: #172554;
+  /* Sidebar theme colors (light mode — portfolio black) */
+  --color-bg-sidebar: #070707;
+  --color-bg-sidebar-hover: #252422;
+  --color-bg-sidebar-active: #373737;
+
+  /* Portfolio brand */
+  --color-portfolio-black: #070707;
+  --color-portfolio-orange: #d45524;
+  --color-portfolio-light-orange: #fbc89c;
+  --color-portfolio-off-white: #faf8f4;
+
+  /* Light mode: remap Tailwind blue scale to portfolio orange */
+  --color-blue-50: #fdf4ef;
+  --color-blue-100: #fbe8dc;
+  --color-blue-200: #f5cdb3;
+  --color-blue-300: #eeb08a;
+  --color-blue-400: #e48855;
+  --color-blue-500: #db6730;
+  --color-blue-600: #d45524;
+  --color-blue-700: #b8481e;
+  --color-blue-800: #9a3b19;
+  --color-blue-900: #7c2f14;
+  --color-blue-950: #4a2312;
   
   /* Border radius (8-point scale) */
   --radius-1: 0.8rem;
@@ -249,8 +268,6 @@
  * ============================================================================ */
 
 .dark {
-  --color-bg-sidebar: #181818;
-  --color-bg-sidebar-hover: #373737;
-  --color-bg-sidebar-active: rgba(255, 255, 255, 0.1);
+  /* Content area stays dark; sidebar + accent colors inherit from @theme */
   color-scheme: dark;
 }

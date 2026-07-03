@@ -224,10 +224,6 @@
     @apply hover:bg-blue-700 cursor-pointer;
     @apply transition-colors duration-200;
 
-    .dark & {
-      @apply bg-white text-grey-900 hover:bg-grey-100;
-    }
-
     i,
     svg {
       @apply w-4 h-4;
