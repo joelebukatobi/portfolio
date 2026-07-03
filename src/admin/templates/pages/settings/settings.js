@@ -3,11 +3,13 @@
 
 import { escapeHtml, toastQueryScript } from '../../utils/helpers.js';
 import { totpSetupModal } from '../../partials/totp-setup.js';
+import { ghostPasswordField } from '../../partials/ghost-password-field.js';
 import {
   BUILTIN_SOCIAL_PLATFORMS,
   normalizeSocialLinks,
   normalizeSocialHiddenPlatforms,
 } from '../../../../lib/social-links.js';
+import { SMTP_SECURE_OPTIONS } from '../../../../lib/mail-settings.js';
 
 const TIMEZONE_OPTIONS = [
   { value: 'UTC', label: 'UTC' },
@@ -162,6 +164,7 @@ export function settingsContent({ user, settings, toast }) {
     .map((platform) => renderBuiltinSocialRow(platform, getSetting('SOCIAL', platform.key, '')))
     .join('');
   const hiddenSocialPlatformsJson = escapeHtml(JSON.stringify(hiddenSocialPlatforms));
+  const smtpPasswordConfigured = Boolean(String(getSetting('EMAIL', 'smtpPassword', '')).trim());
 
   const content = `
     <div class="settings">
@@ -549,9 +552,129 @@ export function settingsContent({ user, settings, toast }) {
                 </div>
               </div>
               <div class="card__body card__body--accordion" data-accordion-body="email">
-                 <div class="form__info-box">
-                   <p>Email configuration coming soon. Contact your administrator to configure SMTP settings.</p>
-                 </div>
+                <div class="form__row form__row--2col">
+                  <div class="form__group">
+                    <label class="label">SMTP Host</label>
+                    <input
+                      type="text"
+                      class="input"
+                      name="smtpHost"
+                      value="${escapeHtml(getSetting('EMAIL', 'smtpHost', ''))}"
+                      placeholder="mail.yourdomain.com"
+                    />
+                  </div>
+                  <div class="form__group">
+                    <label class="label">SMTP Port</label>
+                    <input
+                      type="number"
+                      class="input"
+                      name="smtpPort"
+                      value="${escapeHtml(String(getSetting('EMAIL', 'smtpPort', '587')))}"
+                      min="1"
+                      max="65535"
+                    />
+                  </div>
+                </div>
+
+                <div class="form__row form__row--3col">
+                  <div class="form__group">
+                    <label class="label">Encryption</label>
+                    ${renderFormSelect(
+                      'smtpSecure',
+                      SMTP_SECURE_OPTIONS,
+                      getSetting('EMAIL', 'smtpSecure', 'tls'),
+                      'tls',
+                      'Select encryption...',
+                    )}
+                  </div>
+                  <div class="form__group">
+                    <label class="label">SMTP Username</label>
+                    <input
+                      type="text"
+                      class="input"
+                      name="smtpUser"
+                      value="${escapeHtml(getSetting('EMAIL', 'smtpUser', ''))}"
+                      placeholder="noreply@yourdomain.com"
+                    />
+                  </div>
+                  ${smtpPasswordConfigured
+                    ? ghostPasswordField({
+                      id: 'smtpPassword',
+                      name: 'smtpPassword',
+                      label: 'SMTP Password',
+                      autocomplete: 'new-password',
+                      hint: 'Leave blank to keep the current password.',
+                    })
+                    : `
+                  <div class="form__group">
+                    <label class="label" for="smtpPassword">SMTP Password</label>
+                    <input
+                      type="password"
+                      class="input"
+                      id="smtpPassword"
+                      name="smtpPassword"
+                      autocomplete="new-password"
+                    />
+                  </div>
+                  `}
+                </div>
+
+                <div class="form__row form__row--3col">
+                  <div class="form__group">
+                    <label class="label">From Name</label>
+                    <input
+                      type="text"
+                      class="input"
+                      name="emailFromName"
+                      value="${escapeHtml(getSetting('EMAIL', 'emailFromName', getSetting('GENERAL', 'siteName', '')))}"
+                      placeholder="Site name"
+                    />
+                  </div>
+                  <div class="form__group">
+                    <label class="label">From Email</label>
+                    <input
+                      type="email"
+                      class="input"
+                      name="emailFromAddress"
+                      value="${escapeHtml(getSetting('EMAIL', 'emailFromAddress', ''))}"
+                      placeholder="noreply@yourdomain.com"
+                    />
+                  </div>
+                  <div class="form__group">
+                    <label class="label">Reply-To</label>
+                    <input
+                      type="email"
+                      class="input"
+                      name="emailReplyTo"
+                      value="${escapeHtml(getSetting('EMAIL', 'emailReplyTo', ''))}"
+                      placeholder="Optional"
+                    />
+                  </div>
+                </div>
+
+                <div class="form__group">
+                  <label class="label">Send test email to</label>
+                  <div class="form__inline-actions">
+                    <input
+                      type="email"
+                      class="input"
+                      id="testEmailTo"
+                      name="testEmailTo"
+                      value="${escapeHtml(user?.email || '')}"
+                    />
+                    <button
+                      type="button"
+                      class="btn btn--outline btn--lg"
+                      hx-post="/admin/settings/email/test"
+                      hx-target="#form-response"
+                      hx-swap="innerHTML"
+                      hx-include="#testEmailTo, #settings-csrf"
+                    >
+                      Send Test Mail
+                    </button>
+                  </div>
+                  <p class="form-feedback form-feedback--hint">Save SMTP settings first, then send a test email to verify shared-hosting credentials.</p>
+                </div>
 
                 <input type="hidden" name="_csrf" value="${user?.csrfToken || ''}" />
               </div>

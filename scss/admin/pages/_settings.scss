@@ -8,6 +8,18 @@
   > .content {
     @apply overflow-y-auto pb-[2.4rem];
   }
+
+  .form__inline-actions {
+    @apply flex flex-wrap items-stretch gap-[0.8rem];
+
+    .input {
+      @apply flex-1 min-w-[18rem];
+    }
+
+    .btn {
+      @apply shrink-0;
+    }
+  }
 }
 
 .site-icon-field {
@@ -29,7 +41,7 @@
 
   &__preview {
     @apply relative flex items-center justify-center;
-    @apply w-[6.4rem] h-[6.4rem] rounded-md bg-grey-100 border border-grey-200 overflow-hidden;
+    @apply w-[4.8rem] h-[4.8rem] rounded-md bg-grey-100 border border-grey-200 overflow-hidden;
 
     .dark & {
       @apply bg-grey-800 border-grey-700;
@@ -55,7 +67,7 @@
   }
 
   &__info {
-    @apply flex flex-col justify-between min-w-0 h-[6.4rem] py-[0.8rem];
+    @apply flex flex-col justify-between min-w-0 h-[4.8rem];
 
     .form-feedback {
       @apply m-0 leading-snug;

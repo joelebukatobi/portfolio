@@ -227,6 +227,16 @@ class SettingsService {
       { key: 'requireStrongPasswords', value: 'true', group: 'SECURITY', type: 'BOOLEAN' },
       { key: 'twoFactorAuth', value: 'false', group: 'SECURITY', type: 'BOOLEAN' },
 
+      // Email / SMTP
+      { key: 'smtpHost', value: '', group: 'EMAIL', type: 'STRING' },
+      { key: 'smtpPort', value: '587', group: 'EMAIL', type: 'NUMBER' },
+      { key: 'smtpSecure', value: 'tls', group: 'EMAIL', type: 'STRING' },
+      { key: 'smtpUser', value: '', group: 'EMAIL', type: 'STRING' },
+      { key: 'smtpPassword', value: '', group: 'EMAIL', type: 'STRING' },
+      { key: 'emailFromName', value: '', group: 'EMAIL', type: 'STRING' },
+      { key: 'emailFromAddress', value: '', group: 'EMAIL', type: 'STRING' },
+      { key: 'emailReplyTo', value: '', group: 'EMAIL', type: 'STRING' },
+
       // Social
       { key: 'socialTwitter', value: '', group: 'SOCIAL', type: 'STRING' },
       { key: 'socialFacebook', value: '', group: 'SOCIAL', type: 'STRING' },
