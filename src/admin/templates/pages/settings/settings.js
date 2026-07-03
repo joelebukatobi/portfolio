@@ -2,6 +2,127 @@
 // Settings Page - Individual section forms with accordion
 
 import { escapeHtml, toastQueryScript } from '../../utils/helpers.js';
+import { totpSetupModal } from '../../partials/totp-setup.js';
+import {
+  BUILTIN_SOCIAL_PLATFORMS,
+  normalizeSocialLinks,
+  normalizeSocialHiddenPlatforms,
+} from '../../../../lib/social-links.js';
+
+const TIMEZONE_OPTIONS = [
+  { value: 'UTC', label: 'UTC' },
+  { value: 'America/New_York', label: 'Eastern Time (ET)' },
+  { value: 'America/Chicago', label: 'Central Time (CT)' },
+  { value: 'America/Denver', label: 'Mountain Time (MT)' },
+  { value: 'America/Los_Angeles', label: 'Pacific Time (PT)' },
+  { value: 'America/Toronto', label: 'Toronto (ET)' },
+  { value: 'Europe/London', label: 'London (GMT)' },
+  { value: 'Europe/Paris', label: 'Paris (CET)' },
+  { value: 'Asia/Tokyo', label: 'Tokyo (JST)' },
+  { value: 'Asia/Singapore', label: 'Singapore (SGT)' },
+  { value: 'Australia/Sydney', label: 'Sydney (AEST)' },
+];
+
+const DATE_FORMAT_OPTIONS = [
+  { value: 'MM/DD/YYYY', label: 'MM/DD/YYYY' },
+  { value: 'DD/MM/YYYY', label: 'DD/MM/YYYY' },
+  { value: 'YYYY-MM-DD', label: 'YYYY-MM-DD' },
+  { value: 'MMM DD, YYYY', label: 'MMM DD, YYYY' },
+];
+
+function renderSelectOptions(options, selectedValue, defaultValue = '') {
+  const currentValue = selectedValue ?? defaultValue;
+
+  return options.map((option) => `
+    <option value="${option.value}" ${currentValue === option.value ? 'selected' : ''}>
+      ${escapeHtml(option.label)}
+    </option>
+  `).join('');
+}
+
+function renderFormSelect(name, options, selectedValue, defaultValue, placeholder) {
+  return `
+    <select
+      name="${name}"
+      class="hidden"
+      data-hs-select='{
+        "placeholder": "${placeholder}",
+        "toggleClasses": "form__select-toggle",
+        "dropdownClasses": "form__select-dropdown",
+        "optionClasses": "form__select-option"
+      }'
+    >
+      ${renderSelectOptions(options, selectedValue, defaultValue)}
+    </select>
+  `;
+}
+
+function renderSocialLinkRemoveButton(onclick) {
+  return `
+    <div class="form__group social-links-field__remove">
+      <label class="label" aria-hidden="true">&nbsp;</label>
+      <button
+        type="button"
+        class="btn btn--outline btn--danger btn--icon"
+        onclick="${onclick}"
+        title="Remove"
+        aria-label="Remove social link"
+      >
+        <i data-lucide="trash-2" stroke-width="1"></i>
+      </button>
+    </div>
+  `;
+}
+
+function renderBuiltinSocialRow(platform, url = '') {
+  return `
+    <div class="social-links-field__row" data-social-link-row data-builtin="${platform.key}">
+      <div class="form__group">
+        <label class="label">Platform</label>
+        <p class="social-links-field__platform">${escapeHtml(platform.label)}</p>
+      </div>
+      <div class="form__group">
+        <label class="label">URL</label>
+        <input
+          type="url"
+          class="input"
+          name="${platform.key}"
+          value="${escapeHtml(url)}"
+          placeholder="${escapeHtml(platform.placeholder)}"
+        />
+      </div>
+      ${renderSocialLinkRemoveButton(`removeBuiltinSocialLink(this, '${platform.key}')`)}
+    </div>
+  `;
+}
+
+function renderSocialLinkRow(label = '', url = '') {
+  return `
+    <div class="social-links-field__row" data-social-link-row>
+      <div class="form__group">
+        <label class="label">Label</label>
+        <input
+          type="text"
+          class="input"
+          name="socialLinkLabel"
+          value="${escapeHtml(label)}"
+          placeholder="e.g. Instagram"
+        />
+      </div>
+      <div class="form__group">
+        <label class="label">URL</label>
+        <input
+          type="url"
+          class="input"
+          name="socialLinkUrl"
+          value="${escapeHtml(url)}"
+          placeholder="https://instagram.com/yourhandle"
+        />
+      </div>
+      ${renderSocialLinkRemoveButton('removeSocialLinkRow(this)')}
+    </div>
+  `;
+}
 
 /**
  * Settings page inner content (layout applied via fastify-html addLayout).
@@ -9,6 +130,10 @@ import { escapeHtml, toastQueryScript } from '../../utils/helpers.js';
 export function settingsContent({ user, settings, toast }) {
   const toastScript = toastQueryScript(toast, {
     saved: 'Settings saved successfully!',
+    iconUploaded: 'Site icon updated.',
+    iconSelected: 'Site icon updated from library.',
+    iconRemoved: 'Site icon removed.',
+    totpEnrolled: 'Two-factor authentication enabled on your account.',
   });
 
   // Helper to get setting value
@@ -17,6 +142,26 @@ export function settingsContent({ user, settings, toast }) {
     const setting = groupSettings.find(s => s.key === key);
     return setting?.parsedValue ?? defaultValue;
   };
+
+  const siteIcon = getSetting('GENERAL', 'siteIcon', '');
+  const siteTwoFactorOn = getSetting('SECURITY', 'twoFactorAuth', false);
+  const userEnrolled = user?.totpEnabled === true;
+  const userPending = user?.totpPending === true;
+  const safeUserId = escapeHtml(user?.id || '');
+  const siteIconPreview = siteIcon
+    ? `<img src="${escapeHtml(siteIcon)}" alt="Site icon" class="site-icon-field__preview-img" />`
+    : `<i data-lucide="square-library" class="site-icon-field__preview-icon"></i>`;
+
+  const socialLinks = normalizeSocialLinks(getSetting('SOCIAL', 'socialLinks', []));
+  const socialLinksHtml = socialLinks.map((link) => renderSocialLinkRow(link.label, link.url)).join('');
+  const hiddenSocialPlatforms = normalizeSocialHiddenPlatforms(getSetting('SOCIAL', 'socialHiddenPlatforms', []));
+  const visibleBuiltinPlatforms = BUILTIN_SOCIAL_PLATFORMS.filter(
+    (platform) => !hiddenSocialPlatforms.includes(platform.key),
+  );
+  const builtinSocialHtml = visibleBuiltinPlatforms
+    .map((platform) => renderBuiltinSocialRow(platform, getSetting('SOCIAL', platform.key, '')))
+    .join('');
+  const hiddenSocialPlatformsJson = escapeHtml(JSON.stringify(hiddenSocialPlatforms));
 
   const content = `
     <div class="settings">
@@ -31,11 +176,23 @@ export function settingsContent({ user, settings, toast }) {
         </div>
 
         <div id="form-response"></div>
+        <input type="hidden" id="settings-csrf" name="_csrf" value="${user?.csrfToken || ''}" />
+        <form
+          id="siteIconUploadForm"
+          class="site-icon-field__upload-form"
+          hx-post="/admin/settings/icon"
+          hx-encoding="multipart/form-data"
+          hx-target="#form-response"
+          hx-swap="innerHTML"
+        >
+          <input type="hidden" name="_csrf" value="${user?.csrfToken || ''}" />
+        </form>
 
         <div class="form__stack">
           <!-- ==================== GENERAL SETTINGS (Open by default) ==================== -->
           <div class="card card--accordion" data-accordion="general">
             <form
+              id="generalSettingsForm"
               hx-put="/admin/settings"
               hx-target="#form-response"
               hx-swap="innerHTML"
@@ -61,6 +218,47 @@ export function settingsContent({ user, settings, toast }) {
                 </div>
               </div>
               <div class="card__body card__body--accordion" data-accordion-body="general">
+                <!-- Site Icon -->
+                <div class="site-icon-field">
+                  <div class="site-icon-field__row">
+                    <label class="site-icon-field__trigger" for="siteIconFileInput" title="Change site icon">
+                      <div class="site-icon-field__preview" id="siteIconPreview">
+                        ${siteIconPreview}
+                        <span class="site-icon-field__overlay">
+                          <i data-lucide="upload"></i>
+                          <span>${siteIcon ? 'Change' : 'Upload'}</span>
+                        </span>
+                      </div>
+                    </label>
+                    <div class="site-icon-field__info">
+                      <span class="site-icon-field__title">Site Icon</span>
+                      <p class="form-feedback form-feedback--hint">Used in the sidebar and as the default favicon. Falls back to the library icon when empty.</p>
+                      ${siteIcon ? `
+                        <button
+                          type="button"
+                          class="btn btn--outline btn--danger btn--sm site-icon-field__remove"
+                          hx-delete="/admin/settings/icon"
+                          hx-target="#form-response"
+                          hx-swap="innerHTML"
+                          hx-include="#settings-csrf"
+                        >
+                          Remove
+                        </button>
+                      ` : ''}
+                    </div>
+                  </div>
+                </div>
+
+                <input
+                  form="siteIconUploadForm"
+                  id="siteIconFileInput"
+                  type="file"
+                  name="icon"
+                  accept="image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon"
+                  class="site-icon-field__file-input"
+                  onchange="document.getElementById('siteIconUploadForm').requestSubmit()"
+                />
+
                 <!-- Site Name & Tagline -->
                 <div class="form__row form__row--2col">
                   <div class="form__group">
@@ -84,78 +282,37 @@ export function settingsContent({ user, settings, toast }) {
                   </div>
                 </div>
 
-                <!-- Site URL -->
-                <div class="form__group">
-                  <label class="label label--required">Site URL</label>
-                  <input
-                    type="url"
-                    class="input"
-                    name="siteUrl"
-                    value="${escapeHtml(getSetting('GENERAL', 'siteUrl', 'https://example.com'))}"
-                    required
-                  />
-                </div>
-
-                <!-- Timezone, Date Format, Language -->
+                <!-- Site URL, Timezone & Date Format -->
                 <div class="form__row form__row--3col">
                   <div class="form__group">
+                    <label class="label label--required">Site URL</label>
+                    <input
+                      type="url"
+                      class="input"
+                      name="siteUrl"
+                      value="${escapeHtml(getSetting('GENERAL', 'siteUrl', 'https://example.com'))}"
+                      required
+                    />
+                  </div>
+                  <div class="form__group">
                     <label class="label">Timezone</label>
-                    <select
-                      name="timezone"
-                      class="hidden"
-                      data-hs-select='{
-                        "placeholder": "Select timezone...",
-                        "toggleClasses": "form__select-toggle",
-                        "dropdownClasses": "form__select-dropdown",
-                        "optionClasses": "form__select-option"
-                      }'
-                    >
-                      <option value="UTC" ${getSetting('GENERAL', 'timezone', 'UTC') === 'UTC' ? 'selected' : ''}>UTC</option>
-                      <option value="America/New_York" ${getSetting('GENERAL', 'timezone') === 'America/New_York' ? 'selected' : ''}>Eastern Time (ET)</option>
-                      <option value="America/Chicago" ${getSetting('GENERAL', 'timezone') === 'America/Chicago' ? 'selected' : ''}>Central Time (CT)</option>
-                      <option value="America/Denver" ${getSetting('GENERAL', 'timezone') === 'America/Denver' ? 'selected' : ''}>Mountain Time (MT)</option>
-                      <option value="America/Los_Angeles" ${getSetting('GENERAL', 'timezone') === 'America/Los_Angeles' ? 'selected' : ''}>Pacific Time (PT)</option>
-                      <option value="Europe/London" ${getSetting('GENERAL', 'timezone') === 'Europe/London' ? 'selected' : ''}>London (GMT)</option>
-                      <option value="Europe/Paris" ${getSetting('GENERAL', 'timezone') === 'Europe/Paris' ? 'selected' : ''}>Paris (CET)</option>
-                      <option value="Asia/Tokyo" ${getSetting('GENERAL', 'timezone') === 'Asia/Tokyo' ? 'selected' : ''}>Tokyo (JST)</option>
-                    </select>
+                    ${renderFormSelect(
+                      'timezone',
+                      TIMEZONE_OPTIONS,
+                      getSetting('GENERAL', 'timezone', 'UTC'),
+                      'UTC',
+                      'Select timezone...',
+                    )}
                   </div>
                   <div class="form__group">
                     <label class="label">Date Format</label>
-                    <select
-                      name="dateFormat"
-                      class="hidden"
-                      data-hs-select='{
-                        "placeholder": "Select date format...",
-                        "toggleClasses": "form__select-toggle",
-                        "dropdownClasses": "form__select-dropdown",
-                        "optionClasses": "form__select-option"
-                      }'
-                    >
-                      <option value="MM/DD/YYYY" ${getSetting('GENERAL', 'dateFormat', 'MM/DD/YYYY') === 'MM/DD/YYYY' ? 'selected' : ''}>MM/DD/YYYY</option>
-                      <option value="DD/MM/YYYY" ${getSetting('GENERAL', 'dateFormat') === 'DD/MM/YYYY' ? 'selected' : ''}>DD/MM/YYYY</option>
-                      <option value="YYYY-MM-DD" ${getSetting('GENERAL', 'dateFormat') === 'YYYY-MM-DD' ? 'selected' : ''}>YYYY-MM-DD</option>
-                      <option value="MMM DD, YYYY" ${getSetting('GENERAL', 'dateFormat') === 'MMM DD, YYYY' ? 'selected' : ''}>MMM DD, YYYY</option>
-                    </select>
-                  </div>
-                  <div class="form__group">
-                    <label class="label">Language</label>
-                    <select
-                      name="language"
-                      class="hidden"
-                      data-hs-select='{
-                        "placeholder": "Select language...",
-                        "toggleClasses": "form__select-toggle",
-                        "dropdownClasses": "form__select-dropdown",
-                        "optionClasses": "form__select-option"
-                      }'
-                    >
-                      <option value="en-US" ${getSetting('GENERAL', 'language', 'en-US') === 'en-US' ? 'selected' : ''}>English (US)</option>
-                      <option value="en-GB" ${getSetting('GENERAL', 'language') === 'en-GB' ? 'selected' : ''}>English (UK)</option>
-                      <option value="es" ${getSetting('GENERAL', 'language') === 'es' ? 'selected' : ''}>Spanish</option>
-                      <option value="fr" ${getSetting('GENERAL', 'language') === 'fr' ? 'selected' : ''}>French</option>
-                      <option value="de" ${getSetting('GENERAL', 'language') === 'de' ? 'selected' : ''}>German</option>
-                    </select>
+                    ${renderFormSelect(
+                      'dateFormat',
+                      DATE_FORMAT_OPTIONS,
+                      getSetting('GENERAL', 'dateFormat', 'MM/DD/YYYY'),
+                      'MM/DD/YYYY',
+                      'Select date format...',
+                    )}
                   </div>
                 </div>
 
@@ -207,6 +364,7 @@ export function settingsContent({ user, settings, toast }) {
                 </div>
 
                 <div class="form__group">
+                  <input type="hidden" name="enableComments" value="false" />
                   <label class="form__checkbox-wrapper">
                     <input
                       type="checkbox"
@@ -220,6 +378,7 @@ export function settingsContent({ user, settings, toast }) {
                 </div>
 
                 <div class="form__group">
+                  <input type="hidden" name="moderateComments" value="false" />
                   <label class="form__checkbox-wrapper">
                     <input
                       type="checkbox"
@@ -281,6 +440,7 @@ export function settingsContent({ user, settings, toast }) {
                 </div>
 
                 <div class="form__group">
+                  <input type="hidden" name="requireStrongPasswords" value="false" />
                   <label class="form__checkbox-wrapper">
                     <input
                       type="checkbox"
@@ -294,17 +454,66 @@ export function settingsContent({ user, settings, toast }) {
                 </div>
 
                 <div class="form__group">
+                  <input type="hidden" name="twoFactorAuth" value="false" />
                   <label class="form__checkbox-wrapper">
                     <input
                       type="checkbox"
+                      id="twoFactorAuthCheckbox"
                       name="twoFactorAuth"
                       value="true"
-                      ${getSetting('SECURITY', 'twoFactorAuth', false) ? 'checked' : ''}
+                      ${siteTwoFactorOn ? 'checked' : ''}
                       class="form__checkbox"
                     />
-                    <span>Enable two-factor authentication (2FA)</span>
+                    <span>Require two-factor authentication for admin login</span>
                   </label>
-                  <p class="form-feedback form-feedback--hint">Users will need an authenticator app to log in</p>
+                  <p class="form-feedback form-feedback--hint">
+                    When saved, all admin accounts must use an authenticator at sign-in. Other users can enable or disable 2FA on their profile.
+                  </p>
+                </div>
+
+                <div
+                  class="form__group totp-account-section"
+                  id="totpAccountSection"
+                  data-enrolled="${userEnrolled ? 'true' : 'false'}"
+                  data-pending="${userPending ? 'true' : 'false'}"
+                >
+                  <span class="site-icon-field__title">Your account</span>
+                  ${userEnrolled ? `
+                    <p class="form-feedback form-feedback--success">
+                      Your authenticator is configured on this account.
+                    </p>
+                  ` : userPending ? `
+                    <p class="form-feedback form-feedback--warning">
+                      Setup was started but not completed. Continue with your existing code or start over with a new QR code.
+                    </p>
+                    <div class="totp-account-section__actions">
+                      <button type="button" class="btn btn--outline" onclick="openTotpSetupModal()">
+                        Continue setup
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn--ghost btn--sm"
+                        onclick="openTotpSetupModal(true)"
+                      >
+                        Start over
+                      </button>
+                    </div>
+                  ` : `
+                    <p class="form-feedback form-feedback--hint">
+                      Set up an authenticator on your admin account before requiring 2FA site-wide.
+                    </p>
+                    <button type="button" class="btn btn--outline" onclick="openTotpSetupModal()">
+                      Set up authenticator
+                    </button>
+                  `}
+                  <button
+                    type="button"
+                    id="totpEnrollResetTrigger"
+                    class="hidden"
+                    hx-post="/admin/users/${safeUserId}/totp/enroll?context=settings&amp;reset=true"
+                    hx-target="#totpSetupBody"
+                    hx-swap="innerHTML"
+                  ></button>
                 </div>
 
                 <input type="hidden" name="_csrf" value="${user?.csrfToken || ''}" />
@@ -377,51 +586,63 @@ export function settingsContent({ user, settings, toast }) {
                 </div>
               </div>
               <div class="card__body card__body--accordion" data-accordion-body="social">
-                <div class="form__row form__row--2col">
-                  <div class="form__group">
-                    <label class="label">Twitter/X URL</label>
-                    <input
-                      type="url"
-                      class="input"
-                      name="socialTwitter"
-                      value="${escapeHtml(getSetting('SOCIAL', 'socialTwitter', ''))}"
-                      placeholder="https://twitter.com/yourhandle"
-                    />
+                <div class="social-links-field">
+                  <div id="socialBuiltinList" class="social-links-field__list">
+                    ${builtinSocialHtml}
                   </div>
-                  <div class="form__group">
-                    <label class="label">Facebook URL</label>
-                    <input
-                      type="url"
-                      class="input"
-                      name="socialFacebook"
-                      value="${escapeHtml(getSetting('SOCIAL', 'socialFacebook', ''))}"
-                      placeholder="https://facebook.com/yourpage"
-                    />
+                  <div id="socialRestoreField" class="social-links-field__restore${hiddenSocialPlatforms.length ? '' : ' hidden'}">
+                    <select id="restoreSocialPlatform" class="select">
+                      <option value="">Restore platform…</option>
+                      ${hiddenSocialPlatforms.map((key) => {
+                        const platform = BUILTIN_SOCIAL_PLATFORMS.find((item) => item.key === key);
+                        return platform
+                          ? `<option value="${platform.key}">${escapeHtml(platform.label)}</option>`
+                          : '';
+                      }).join('')}
+                    </select>
+                    <button
+                      type="button"
+                      class="btn btn--outline"
+                      onclick="restoreBuiltinSocialLink(this)"
+                    >
+                      Restore platform
+                    </button>
                   </div>
                 </div>
 
-                <div class="form__row form__row--2col">
-                  <div class="form__group">
-                    <label class="label">LinkedIn URL</label>
-                    <input
-                      type="url"
-                      class="input"
-                      name="socialLinkedIn"
-                      value="${escapeHtml(getSetting('SOCIAL', 'socialLinkedIn', ''))}"
-                      placeholder="https://linkedin.com/in/yourprofile"
-                    />
+                <div class="social-links-field social-links-field--additional">
+                  <div class="social-links-field__header">
+                    <h3 class="social-links-field__title">Additional links</h3>
+                    <p class="form-feedback form-feedback--hint">Add custom platforms like Instagram or TikTok.</p>
                   </div>
-                  <div class="form__group">
-                    <label class="label">GitHub URL</label>
-                    <input
-                      type="url"
-                      class="input"
-                      name="socialGitHub"
-                      value="${escapeHtml(getSetting('SOCIAL', 'socialGitHub', ''))}"
-                      placeholder="https://github.com/yourusername"
-                    />
+                  <div id="socialLinksList" class="social-links-field__list">
+                    ${socialLinksHtml}
                   </div>
+                  <button
+                    type="button"
+                    class="btn btn--outline"
+                    onclick="addSocialLinkRow(this)"
+                  >
+                    Add Social Media
+                  </button>
                 </div>
+
+                <template id="socialLinkRowTemplate">
+                  ${renderSocialLinkRow()}
+                </template>
+
+                ${BUILTIN_SOCIAL_PLATFORMS.map((platform) => `
+                  <template id="socialBuiltinTemplate-${platform.key}">
+                    ${renderBuiltinSocialRow(platform)}
+                  </template>
+                `).join('')}
+
+                <input
+                  type="hidden"
+                  id="socialHiddenPlatforms"
+                  name="socialHiddenPlatforms"
+                  value="${hiddenSocialPlatformsJson}"
+                />
 
                 <input type="hidden" name="_csrf" value="${user?.csrfToken || ''}" />
               </div>
@@ -430,6 +651,8 @@ export function settingsContent({ user, settings, toast }) {
         </div>
       </div>
     </div>
+
+    ${totpSetupModal({ userId: user?.id || '' })}
 
     <script>
       // Accordion toggle function
@@ -446,6 +669,116 @@ export function settingsContent({ user, settings, toast }) {
 
         // Toggle current section
         card.classList.toggle('card--collapsed');
+      }
+
+      function getSocialHiddenPlatforms() {
+        const hidden = document.getElementById('socialHiddenPlatforms');
+        if (!hidden) return [];
+
+        try {
+          const parsed = JSON.parse(hidden.value || '[]');
+          return Array.isArray(parsed) ? parsed : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function setSocialHiddenPlatforms(keys) {
+        const hidden = document.getElementById('socialHiddenPlatforms');
+        if (hidden) hidden.value = JSON.stringify(keys);
+        updateSocialRestoreField(keys);
+      }
+
+      function updateSocialRestoreField(keys) {
+        const restoreField = document.getElementById('socialRestoreField');
+        const select = document.getElementById('restoreSocialPlatform');
+        if (!restoreField || !select) return;
+
+        const labels = {
+          socialTwitter: 'Twitter/X',
+          socialFacebook: 'Facebook',
+          socialLinkedIn: 'LinkedIn',
+          socialGitHub: 'GitHub',
+        };
+
+        select.innerHTML = '<option value="">Restore platform…</option>';
+        keys.forEach(function(key) {
+          if (!labels[key]) return;
+          const option = document.createElement('option');
+          option.value = key;
+          option.textContent = labels[key];
+          select.appendChild(option);
+        });
+
+        restoreField.classList.toggle('hidden', keys.length === 0);
+      }
+
+      function clearBuiltinSocialInput(form, key) {
+        if (!form) return;
+
+        const existing = form.querySelector('input[data-cleared="' + key + '"]');
+        if (existing) return;
+
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = '';
+        input.dataset.cleared = key;
+        form.appendChild(input);
+      }
+
+      function removeBuiltinSocialLink(button, key) {
+        const row = button.closest('[data-social-link-row]');
+        const form = button.closest('form');
+        if (row) row.remove();
+
+        clearBuiltinSocialInput(form, key);
+
+        const hiddenKeys = getSocialHiddenPlatforms();
+        if (!hiddenKeys.includes(key)) hiddenKeys.push(key);
+        setSocialHiddenPlatforms(hiddenKeys);
+
+        if (button) button.blur();
+      }
+
+      function restoreBuiltinSocialLink(button) {
+        const select = document.getElementById('restoreSocialPlatform');
+        const list = document.getElementById('socialBuiltinList');
+        const key = select ? select.value : '';
+        if (!key || !list) return;
+
+        const template = document.getElementById('socialBuiltinTemplate-' + key);
+        if (!template) return;
+
+        list.appendChild(template.content.firstElementChild.cloneNode(true));
+
+        const hiddenKeys = getSocialHiddenPlatforms().filter(function(item) {
+          return item !== key;
+        });
+        setSocialHiddenPlatforms(hiddenKeys);
+
+        const form = button.closest('form');
+        const clearedInput = form ? form.querySelector('input[data-cleared="' + key + '"]') : null;
+        if (clearedInput) clearedInput.remove();
+
+        if (select) select.value = '';
+        if (window.lucide) window.lucide.createIcons();
+        if (button) button.blur();
+      }
+
+      function addSocialLinkRow(button) {
+        const list = document.getElementById('socialLinksList');
+        const template = document.getElementById('socialLinkRowTemplate');
+        if (!list || !template) return;
+
+        list.appendChild(template.content.firstElementChild.cloneNode(true));
+        if (window.lucide) window.lucide.createIcons();
+        if (button) button.blur();
+      }
+
+      function removeSocialLinkRow(button) {
+        const row = button.closest('[data-social-link-row]');
+        if (row) row.remove();
       }
     </script>
 
