@@ -53,7 +53,7 @@ export function buildPortfolioShell({ content, meta = {} }) {
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:image" content="${image}" />
     <meta property="twitter:site" content="@joelebukatobi" />
-    <link rel="icon" type="image/x-icon" href="/images/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600;700&display=swap" />
@@ -125,7 +125,7 @@ export function buildComingSoonShell({ content }) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Coming Soon</title>
     <meta name="description" content="This site is being configured" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <link rel="stylesheet" href="/dist/css/admin.css" />
   </head>
   <body>

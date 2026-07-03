@@ -131,7 +131,7 @@ export function albumsTableFragment({ albums, pagination }) {
   }
 
   const rows = albums.map((album) => {
-    const coverSrc = album.coverImage?.thumbnailPath || album.coverImage?.path || '/favicon.svg';
+    const coverSrc = album.coverImage?.thumbnailPath || album.coverImage?.path || '/images/favicon.svg';
     return `
       <tr class="table__tr">
         <td class="table__td">
