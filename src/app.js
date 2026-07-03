@@ -156,6 +156,8 @@ export default async function app(fastify, opts) {
     return reply.type('image/svg+xml').send(data);
   });
 
+  // Site settings (cached; used by API, layouts, auth)
+  await fastify.register(import('./plugins/site-settings.js'));
 
   // Health check endpoint
   fastify.get('/health', async () => {
