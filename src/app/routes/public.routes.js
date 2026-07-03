@@ -5,6 +5,9 @@ import { blogController } from '../controllers/blog.controller.js';
 import { contactController } from '../controllers/contact.controller.js';
 import { validateParams, validateQuery } from '../../admin/middleware/validate.js';
 import { blogListQuerySchema, slugParamSchema } from '../../admin/schemas/common.schema.js';
+import { buildComingSoonShell } from '../templates/layouts/portfolio.js';
+import { comingSoonContent } from '../../admin/templates/pages/coming-soon.js';
+import { renderComingSoonPage } from '../render.js';
 
 export default async function publicRoutes(fastify) {
   fastify.get('/', {
@@ -32,4 +35,11 @@ export default async function publicRoutes(fastify) {
 
   fastify.get('/contact', contactController.show.bind(contactController));
   fastify.post('/contact', contactController.submit.bind(contactController));
+
+  fastify.get('/coming-soon', async (_request, reply) => {
+    return renderComingSoonPage(
+      reply,
+      buildComingSoonShell({ content: comingSoonContent() }),
+    );
+  });
 }

@@ -128,6 +128,10 @@ export function buildComingSoonShell({ content }) {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/dist/css/admin.css" />
   </head>
-  <body>${content}</body>
+  <body>
+    ${content}
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>lucide.createIcons();</script>
+  </body>
 </html>`;
 }
