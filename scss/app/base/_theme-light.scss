@@ -25,9 +25,6 @@ html.theme-light {
   }
 
   body {
-    --social-icon-bg: #{$color-orange};
-    --social-icon-in: #{$color-white};
-
     background-color: $color-off-white;
     color: $color-dark-orange;
 
@@ -84,11 +81,21 @@ html.theme-light {
       stroke: $color-dark-orange;
     }
 
+    &__theme-btn svg.navbar__theme-icon--moon {
+      color: $color-black;
+      stroke: $color-black;
+    }
+
     &__theme-btn:hover {
       background-color: rgba($color-dark-orange, 0.06);
 
       svg {
         stroke: $color-dark-orange;
+      }
+
+      svg.navbar__theme-icon--moon {
+        color: $color-black;
+        stroke: $color-black;
       }
     }
 
@@ -269,10 +276,20 @@ html.theme-light {
     }
 
     @media (min-width: 320px) and (max-width: 1024px) {
-      &__categories,
-      &__tags,
-      &__date {
+      &__filters {
         background-color: $light-orange-5;
+      }
+
+      &__filters-tab {
+        color: $color-dark-orange;
+
+        &.is-active {
+          color: $color-orange;
+        }
+      }
+
+      &__filters-divider {
+        background-color: $color-off-white;
       }
     }
 
@@ -290,9 +307,8 @@ html.theme-light {
       }
     }
 
-    &__categories ul li svg,
-    &__share ul li svg {
-      fill: none;
+    &__categories ul li svg {
+      fill: $color-orange;
     }
   }
 

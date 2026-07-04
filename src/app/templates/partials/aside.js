@@ -1,4 +1,5 @@
 import { escapeHtml, buildBlogQuery, BLOG_SHELL_HTMX } from '../utils/helpers.js';
+import { shareIconLinks } from './share.js';
 
 function filterHref({ filters, clear = [] }) {
   const next = { ...filters, page: 1 };
@@ -57,7 +58,7 @@ export function blogSearchForm({ filters = {}, htmx = true, modifier = '' } = {}
       x-cloak
       @click="searchQuery = ''; $refs.searchInput.value = ''; $refs.searchInput.focus(); $el.closest('form').requestSubmit()"
     >
-      <svg aria-hidden="true"><use href="/images/sprite.svg#icon-close" /></svg>
+      <svg aria-hidden="true"><use href="/images/icons/close.svg" /></svg>
     </button>
   </div>
 </form>`;
@@ -87,6 +88,79 @@ function asideLinks({
     ${options}`;
 }
 
+function defaultFilterTab(filters = {}) {
+  if (filters.year) return 'date';
+  if (filters.tag) return 'tags';
+  return 'categories';
+}
+
+function filterPanel({ className, tabId, title, listContent }) {
+  return `
+<div class="${className} blog__filters-panel" x-show="filterTab === '${tabId}'" role="tabpanel">
+  <h6>${title}</h6>
+  <hr />
+  <ul>
+    ${listContent}
+  </ul>
+</div>`;
+}
+
+function blogShareUrl({ slug, filters = {} } = {}) {
+  const base = 'https://www.joelebukatobi.dev';
+  if (slug) return `${base}/blog/${slug}`;
+  return `${base}${buildBlogQuery(filters)}`;
+}
+
+function filterTabsWrapper({ filters = {}, categoryList, tagList, dateList, shareUrl }) {
+  const activeTab = defaultFilterTab(filters);
+  const tabs = [
+    { id: 'categories', label: 'categories' },
+    { id: 'tags', label: 'tags' },
+    { id: 'date', label: 'date' },
+    { id: 'share', label: 'share' },
+  ];
+
+  const filterTabs = tabs.map(({ id, label }) => `
+    <span
+      role="tab"
+      class="blog__filters-tab"
+      :class="{ 'is-active': filterTab === '${id}' }"
+      :aria-selected="filterTab === '${id}'"
+      @click="filterTab = '${id}'"
+    >${label}</span>`).join('');
+
+  const sharePanel = filterPanel({
+    className: 'blog__share',
+    tabId: 'share',
+    title: 'share',
+    listContent: shareIconLinks({ url: shareUrl }),
+  });
+
+  return `
+<div class="blog__filters" x-data="{ filterTab: '${activeTab}' }">
+  <div class="blog__filters-tabs" role="tablist" aria-label="Blog filters">
+    ${filterTabs}
+  </div>
+  <hr class="blog__filters-divider" />
+  <div class="blog__filters-panels">
+    ${filterPanel({ className: 'blog__categories', tabId: 'categories', title: 'categories', listContent: categoryList })}
+    ${filterPanel({ className: 'blog__tags', tabId: 'tags', title: 'tags', listContent: tagList })}
+    ${filterPanel({ className: 'blog__date', tabId: 'date', title: 'date', listContent: dateList })}
+    ${sharePanel}
+  </div>
+</div>`;
+}
+
+function dateLinks({ years = [], filters = {} }) {
+  return `
+    <li><a href="${filterHref({ filters, clear: ['year'] })}" class="blog__aside-link blog__aside-link--all${!filters.year ? ' is-active' : ''}" ${asideHtmx()} hx-get="${filterHref({ filters, clear: ['year'] })}">all</a></li>
+    ${years.map((yearItem) => {
+      const href = buildBlogQuery({ ...filters, year: yearItem, page: 1 });
+      const active = String(filters.year) === String(yearItem) ? ' is-active' : '';
+      return `<li><a href="${href}" class="blog__aside-link${active}" ${asideHtmx()} hx-get="${href}">${yearItem}</a></li>`;
+    }).join('')}`;
+}
+
 export function asideForPost({ post } = {}) {
   const category = post?.category;
   const postTags = post?.tags || [];
@@ -107,30 +181,12 @@ export function asideForPost({ post } = {}) {
     ? postActiveLink(buildBlogQuery({ year, page: 1 }), year)
     : '';
 
-  return `
-<div class="blog__categories">
-  <h6>categories</h6>
-  <hr />
-  <ul>
-    ${categoryLinks}
-  </ul>
-</div>
-
-<div class="blog__tags">
-  <h6>tags</h6>
-  <hr />
-  <ul>
-    ${tagLinks}
-  </ul>
-</div>
-
-<div class="blog__date">
-  <h6>date</h6>
-  <hr />
-  <ul>
-    ${yearLinks}
-  </ul>
-</div>`;
+  return filterTabsWrapper({
+    categoryList: categoryLinks,
+    tagList: tagLinks,
+    dateList: yearLinks,
+    shareUrl: blogShareUrl({ slug: post?.slug }),
+  });
 }
 
 export function aside({
@@ -141,32 +197,11 @@ export function aside({
 } = {}) {
   return `
 ${blogSearchForm({ filters, modifier: 'aside' })}
-<div class="blog__categories">
-  <h6>categories</h6>
-  <hr />
-  <ul>
-    ${asideLinks({ items: categories, filters, param: 'category' })}
-  </ul>
-</div>
-
-<div class="blog__tags">
-  <h6>tags</h6>
-  <hr />
-  <ul>
-    ${asideLinks({ items: tags, filters, param: 'tag' })}
-  </ul>
-</div>
-
-<div class="blog__date">
-  <h6>date</h6>
-  <hr />
-  <ul>
-    <li><a href="${filterHref({ filters, clear: ['year'] })}" class="blog__aside-link blog__aside-link--all${!filters.year ? ' is-active' : ''}" ${asideHtmx()} hx-get="${filterHref({ filters, clear: ['year'] })}">all</a></li>
-    ${years.map((yearItem) => {
-      const href = buildBlogQuery({ ...filters, year: yearItem, page: 1 });
-      const active = String(filters.year) === String(yearItem) ? ' is-active' : '';
-      return `<li><a href="${href}" class="blog__aside-link${active}" ${asideHtmx()} hx-get="${href}">${yearItem}</a></li>`;
-    }).join('')}
-  </ul>
-</div>`;
+${filterTabsWrapper({
+  filters,
+  categoryList: asideLinks({ items: categories, filters, param: 'category' }),
+  tagList: asideLinks({ items: tags, filters, param: 'tag' }),
+  dateList: dateLinks({ years, filters }),
+  shareUrl: blogShareUrl({ filters }),
+})}`;
 }

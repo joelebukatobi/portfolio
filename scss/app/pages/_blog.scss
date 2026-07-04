@@ -217,8 +217,7 @@ $filter-control-border: 0.2rem solid rgba($color-light-orange, 0.6);
           }
         }
 
-        & svg {
-          fill: none;
+        & .brand-icon {
           height: 2.4rem;
           width: 2.4rem;
         }
@@ -243,6 +242,28 @@ $filter-control-border: 0.2rem solid rgba($color-light-orange, 0.6);
       & ul li a.blog__aside-link {
         font-size: 1.6rem;
       }
+    }
+  }
+
+  @media (min-width: 1025px) {
+    &__filters {
+      display: contents;
+    }
+
+    &__filters-tabs {
+      display: none;
+    }
+
+    &__filters-divider {
+      display: none;
+    }
+
+    &__filters-panels {
+      display: contents;
+    }
+
+    &__filters-panel {
+      display: flex !important;
     }
   }
 
