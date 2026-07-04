@@ -82,8 +82,8 @@ html.theme-light {
     }
 
     &__theme-btn svg.navbar__theme-icon--moon {
-      color: $color-black;
-      stroke: $color-black;
+      color: $color-dark-orange;
+      stroke: $color-dark-orange;
     }
 
     &__theme-btn:hover {
@@ -94,8 +94,8 @@ html.theme-light {
       }
 
       svg.navbar__theme-icon--moon {
-        color: $color-black;
-        stroke: $color-black;
+        color: $color-dark-orange;
+        stroke: $color-dark-orange;
       }
     }
 
@@ -310,6 +310,18 @@ html.theme-light {
     &__categories ul li svg {
       fill: $color-orange;
     }
+
+    &__share .brand-icon {
+      @media (max-width: 1024px) {
+        filter: brightness(0) saturate(100%) invert(88%) sepia(15%) saturate(707%) hue-rotate(314deg)
+          brightness(102%) contrast(98%);
+      }
+
+      @media (min-width: 1025px) {
+        filter: brightness(0) saturate(100%) invert(9%) sepia(4%) saturate(13%) hue-rotate(314deg)
+          brightness(95%) contrast(91%);
+      }
+    }
   }
 
   .copyright {
@@ -336,7 +348,7 @@ html.theme-light {
 
       & pre,
       & p:has(> code:only-child) {
-        background-color: $color-black;
+        background-color: $color-dark-orange;
         color: $color-off-white;
       }
     }

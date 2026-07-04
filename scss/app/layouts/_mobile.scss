@@ -291,21 +291,29 @@
           display: none;
         }
 
-        &.blog__share ul {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.8rem 1.2rem;
-          list-style: none;
-          margin: 0;
-          padding: 0;
+        &.blog__share {
+          padding: 1.6rem;
+          border-radius: 0.5rem;
+          background-color: $color-dark-orange;
 
-          & li {
+          ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.6rem;
             list-style: none;
-          }
+            margin: 0;
+            padding: 0;
 
-          & .brand-icon {
-            height: 2.4rem;
-            width: 2.4rem;
+            & li {
+              list-style: none;
+            }
+
+            & .brand-icon {
+              height: 3.2rem;
+              width: 3.2rem;
+              filter: brightness(0) saturate(100%) invert(88%) sepia(15%) saturate(707%)
+                hue-rotate(314deg) brightness(102%) contrast(98%);
+            }
           }
         }
       }
@@ -333,49 +341,6 @@
           &.is-active {
             color: $color-orange;
           }
-        }
-      }
-    }
-
-    &__share {
-      width: 100%;
-      flex-direction: row;
-      padding: 1.6rem;
-      background-color: rgba(#3b3a38, 0.8);
-      border-radius: 0.5rem;
-
-      & > * {
-        &:not(:last-child) {
-          margin-right: 1.6rem;
-          margin-bottom: 0;
-        }
-      }
-
-      & h6 {
-        color: $color-white;
-        font-weight: unset;
-      }
-
-      & hr {
-        width: 0.2rem;
-        height: 2.2rem;
-      }
-
-      & ul {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-
-        & > * {
-          &:not(:last-child) {
-            margin-right: 1.6rem;
-            margin-bottom: 0;
-          }
-        }
-
-        & li {
-          color: $color-white;
-          font-weight: unset;
         }
       }
     }
