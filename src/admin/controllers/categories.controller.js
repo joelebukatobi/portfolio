@@ -7,7 +7,6 @@ import {
   renderFragment,
   renderEmpty,
   errorAlert,
-  htmxLocation,
   htmxRedirect,
   setHtmxToast,
 } from '../render.js';
@@ -110,9 +109,7 @@ class CategoriesController {
         description,
       }, user.id);
 
-      return htmxLocation(reply, `/admin/categories/${category.id}/edit`, {
-        message: 'Category created successfully!',
-      });
+      return htmxRedirect(reply, '/admin/categories?toast=created');
     } catch (error) {
       request.log.error(error);
       reply.code(400);
