@@ -1,7 +1,7 @@
 // src/admin/templates/pages/albums/edit.js
 // Edit Album Page
 
-import { escapeHtml } from '../../utils/helpers.js';
+import { escapeHtml, toPublicMediaUrl } from '../../utils/helpers.js';
 
 /**
  * Edit album page inner content (layout applied via fastify-html addLayout).
@@ -100,7 +100,7 @@ export function albumEditContent({ user, album, albumImages = [] }) {
                         data-image-path="${img.path}"
                         onclick="selectCoverImage('${img.id}', '${img.path}')"
                       >
-                        <img src="${img.thumbnailPath || img.path}" alt="${escapeHtml(img.title || '')}" />
+                        <img src="${escapeHtml(toPublicMediaUrl(img.thumbnailPath || img.path))}" alt="${escapeHtml(img.title || '')}" />
                       </div>
                     `).join('')}
                   </div>

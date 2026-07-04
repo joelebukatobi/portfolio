@@ -1,9 +1,9 @@
 // src/admin/controllers/api/categories.controller.js
 // Public API controller for categories
 
-import { db, categories, posts, users, tags, postTags, mediaItems } from '../../../db/index.js';
+import { db, categories, posts, users, tags, postTags } from '../../../db/index.js';
 import { eq, and, desc, sql, count } from 'drizzle-orm';
-import { toPublicMediaUrl } from '../../../utils/media.js';
+import { postsService } from '../../../services/posts.service.js';
 
 /**
  * Format category for API response
@@ -173,14 +173,10 @@ class CategoriesAPIController {
             createdAt: categories.createdAt,
             updatedAt: categories.updatedAt,
           },
-          featuredImage: {
-            path: mediaItems.path,
-          },
         })
         .from(posts)
         .leftJoin(users, eq(posts.authorId, users.id))
         .leftJoin(categories, eq(posts.categoryId, categories.id))
-        .leftJoin(mediaItems, eq(posts.featuredImageId, mediaItems.id))
         .where(and(
           eq(posts.categoryId, category.id),
           eq(posts.status, 'PUBLISHED')
@@ -214,13 +210,15 @@ class CategoriesAPIController {
       });
 
       // Format posts
-      const formattedPosts = results.map(r => ({
-        ...r.post,
-        author: r.author,
-        category: r.category,
-        tags: tagsByPost[r.post.id] || [],
-        featuredImageUrl: toPublicMediaUrl(r.featuredImage?.path),
-      })).map(formatPostForAPI);
+      const postsWithImages = await postsService.attachFeaturedImageUrls(
+        results.map(r => ({
+          ...r.post,
+          author: r.author,
+          category: r.category,
+          tags: tagsByPost[r.post.id] || [],
+        })),
+      );
+      const formattedPosts = postsWithImages.map(formatPostForAPI);
 
       return reply.send({
         category: formatCategoryForAPI(category),

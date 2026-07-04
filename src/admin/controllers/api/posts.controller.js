@@ -2,9 +2,9 @@
 // Public API controller for posts - serves JSON for frontend consumption
 
 import { postsService } from '../../../services/posts.service.js';
-import { db, posts, categories, users, tags, postTags, mediaItems } from '../../../db/index.js';
-import { eq, and, desc, sql, count, inArray, or, like } from 'drizzle-orm';
-import { toPublicMediaUrl } from '../../../utils/media.js';
+import { getPublicPageLimit } from '../../../lib/site-pagination.js';
+import { db, posts, categories, users, tags, postTags } from '../../../db/index.js';
+import { eq, and, desc, asc, sql, count, inArray } from 'drizzle-orm';
 
 /**
  * Format post for API response (matches existing website structure)
@@ -22,7 +22,6 @@ function formatPostForAPI(post) {
     views: post.viewCount || 0,
     created_at: post.createdAt?.toISOString() || null,
     updated_at: post.updatedAt?.toISOString() || null,
-    published_at: post.publishedAt?.toISOString() || post.createdAt?.toISOString() || null,
     category: post.category ? {
       id: post.category.id,
       name: post.category.title,
@@ -65,9 +64,10 @@ class PostsAPIController {
    */
   async list(request, reply) {
     try {
-      const { page = 1, limit = 10, category, tag, search, year } = request.query;
+      const { page = 1, limit, category, tag } = request.query;
       const pageNum = parseInt(page, 10) || 1;
-      const limitNum = parseInt(limit, 10) || 10;
+      const siteMap = request.siteSettingsMap ?? {};
+      const limitNum = getPublicPageLimit(siteMap, limit);
       const offset = (pageNum - 1) * limitNum;
 
       // Build conditions
@@ -80,35 +80,10 @@ class PostsAPIController {
           .from(categories)
           .where(eq(categories.slug, category))
           .limit(1);
-
+        
         if (categoryData.length > 0) {
           conditions.push(eq(posts.categoryId, categoryData[0].id));
         }
-      }
-
-      if (tag) {
-        conditions.push(
-          inArray(
-            posts.id,
-            db
-              .select({ id: postTags.postId })
-              .from(postTags)
-              .innerJoin(tags, eq(postTags.tagId, tags.id))
-              .where(eq(tags.slug, tag)),
-          ),
-        );
-      }
-
-      if (search) {
-        const term = `%${search}%`;
-        conditions.push(or(like(posts.title, term), like(posts.excerpt, term)));
-      }
-
-      const yearNum = parseInt(year, 10);
-      if (year && !Number.isNaN(yearNum)) {
-        conditions.push(
-          sql`YEAR(COALESCE(${posts.publishedAt}, ${posts.createdAt})) = ${yearNum}`,
-        );
       }
 
       // Get total count
@@ -138,14 +113,10 @@ class PostsAPIController {
             createdAt: categories.createdAt,
             updatedAt: categories.updatedAt,
           },
-          featuredImage: {
-            path: mediaItems.path,
-          },
         })
         .from(posts)
         .leftJoin(users, eq(posts.authorId, users.id))
         .leftJoin(categories, eq(posts.categoryId, categories.id))
-        .leftJoin(mediaItems, eq(posts.featuredImageId, mediaItems.id))
         .where(and(...conditions))
         .orderBy(desc(posts.publishedAt))
         .limit(limitNum)
@@ -181,16 +152,26 @@ class PostsAPIController {
       }
 
       // Format posts
-      const formattedPosts = results.map(r => ({
-        ...r.post,
-        author: r.author,
-        category: r.category,
-        tags: tagsByPost[r.post.id] || [],
-        featuredImageUrl: toPublicMediaUrl(r.featuredImage?.path),
-      })).map(formatPostForAPI);
+      const postsWithImages = await postsService.attachFeaturedImageUrls(
+        results.map(r => ({
+          ...r.post,
+          author: r.author,
+          category: r.category,
+          tags: tagsByPost[r.post.id] || [],
+        })),
+      );
+      const formattedPosts = postsWithImages.map(formatPostForAPI);
+
+      // Filter by tag if provided (do this after fetching)
+      let filteredPosts = formattedPosts;
+      if (tag) {
+        filteredPosts = formattedPosts.filter(post => 
+          post.tags.some(t => t.slug === tag)
+        );
+      }
 
       return reply.send({
-        data: formattedPosts,
+        data: filteredPosts,
         meta: {
           current_page: pageNum,
           per_page: limitNum,
@@ -238,14 +219,10 @@ class PostsAPIController {
             createdAt: categories.createdAt,
             updatedAt: categories.updatedAt,
           },
-          featuredImage: {
-            path: mediaItems.path,
-          },
         })
         .from(posts)
         .leftJoin(users, eq(posts.authorId, users.id))
         .leftJoin(categories, eq(posts.categoryId, categories.id))
-        .leftJoin(mediaItems, eq(posts.featuredImageId, mediaItems.id))
         .where(and(
           eq(posts.slug, slug),
           eq(posts.status, 'PUBLISHED')
@@ -276,13 +253,12 @@ class PostsAPIController {
         .innerJoin(tags, eq(postTags.tagId, tags.id))
         .where(eq(postTags.postId, post.id));
 
-      const postWithRelations = {
+      const postWithRelations = await postsService.attachFeaturedImageUrls({
         ...post,
         author,
         category,
         tags: tagsData,
-        featuredImageUrl: toPublicMediaUrl(result[0].featuredImage?.path),
-      };
+      });
 
       // Increment view count
       await postsService.incrementViewCount(post.id);
