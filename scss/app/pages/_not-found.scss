@@ -39,7 +39,7 @@
     padding: 0.8rem 1.2rem 0.8rem 1.6rem;
     border-bottom: 0.1rem solid rgba($color-light-orange, 0.2);
     border-radius: 0.4rem 0.4rem 0 0;
-    background-color: rgba($color-black, 0.18);
+    background-color: rgba($color-dark-orange, 0.18);
   }
 
   &__controls {
@@ -55,7 +55,7 @@
     width: 1.6rem;
     height: 1.6rem;
     border-radius: 50%;
-    background-color: $color-black;
+    background-color: $color-dark-orange;
     color: $color-white;
     transition: color 0.2s ease;
 
@@ -197,7 +197,7 @@
     padding: 1.6rem;
     border: 0.1rem solid rgba($color-light-orange, 0.2);
     border-radius: 0.4rem;
-    background-color: rgba($color-black, 0.18);
+    background-color: rgba($color-dark-orange, 0.18);
     box-sizing: border-box;
   }
 

@@ -135,8 +135,8 @@
     }
 
     & svg.navbar__theme-icon--moon {
-      color: $color-black;
-      stroke: $color-black;
+      color: $color-dark-orange;
+      stroke: $color-dark-orange;
     }
 
     &:hover {
@@ -147,8 +147,8 @@
       }
 
       svg.navbar__theme-icon--moon {
-        color: $color-black;
-        stroke: $color-black;
+        color: $color-dark-orange;
+        stroke: $color-dark-orange;
       }
     }
   }
@@ -158,7 +158,7 @@
     height: 100vh;
     width: 100vw;
     top: 0;
-    background-color: rgba($color-black-orange, 0.95);
+    background-color: rgba($color-dark-orange, 0.95);
     &__nav {
       position: absolute;
       top: 50%;
