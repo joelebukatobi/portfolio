@@ -60,6 +60,7 @@
         height: 1.6rem;
         width: 1.6rem;
         margin: 0;
+        color: $color-orange;
         stroke: $color-orange;
         fill: none;
       }
@@ -75,6 +76,7 @@
         }
 
         & svg {
+          color: $color-orange;
           stroke: $color-orange;
         }
       }

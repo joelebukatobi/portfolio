@@ -11,7 +11,7 @@ export function projectCard({ project }) {
   <div class="works__card__group">
     <a href="${website}" target="_blank" rel="noopener noreferrer">
       <div class="works__card__project">
-        <svg><use href="/images/sprite.svg#icon-link" /></svg>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="/images/icons/link.svg" /></svg>
         <p>Live</p>
       </div>
     </a>
