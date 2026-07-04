@@ -3,8 +3,8 @@
  */
 
 const COLORS = {
-  black: '#181818',
-  orange: '#ea580c',
+  black: '#252422',
+  orange: '#d45524',
   body: '#646464',
   muted: '#909090',
   footer: '#a6a6a6',
@@ -46,20 +46,15 @@ function resolveSiteName(map = {}) {
 }
 
 /**
- * Email clients often block SVG images. The app serves the configured site icon at /favicon.ico.
+ * Text logo matching the portfolio navbar: Fira Code, black name, orange brackets.
  */
-function resolveEmailLogoUrl(map = {}) {
-  const siteUrl = resolveSiteUrl(map);
-  const icon = String(map.siteIcon || '').trim();
-
-  if (icon && !icon.endsWith('.svg') && icon !== '/favicon.svg') {
-    if (/^https?:\/\//i.test(icon)) return icon;
-    if (icon.startsWith('/public/')) return `${siteUrl}${icon}`;
-    if (icon.startsWith('/uploads/')) return `${siteUrl}${icon}`;
-    return `${siteUrl}${icon.startsWith('/') ? icon : `/${icon}`}`;
-  }
-
-  return `${siteUrl}/favicon.ico`;
+function renderEmailLogo(siteUrl) {
+  const safeUrl = escapeHtml(siteUrl);
+  return `<a href="${safeUrl}" style="display:inline-block;text-decoration:none;">
+    <span style="font-family:'Fira Code','Courier New',Courier,monospace;font-size:2.1rem;font-weight:700;line-height:1.2;color:${COLORS.black};letter-spacing:0;">
+      <span style="color:${COLORS.orange};">&lt;</span>joelebukatobi <span style="color:${COLORS.orange};">&#47;&gt;</span>
+    </span>
+  </a>`;
 }
 
 /**
@@ -82,7 +77,8 @@ export function renderBrandedEmail({
   footerNote,
 }) {
   const siteName = escapeHtml(toTitleCase(resolveSiteName(settingsMap)));
-  const iconUrl = escapeHtml(resolveEmailLogoUrl(settingsMap));
+  const siteUrl = resolveSiteUrl(settingsMap);
+  const emailLogo = renderEmailLogo(siteUrl);
   const heroIcon = ICONS[iconKey] || ICONS.test;
   const safeHeadline = escapeHtml(toTitleCase(headline));
   const safeFooter = escapeHtml(footerNote);
@@ -110,6 +106,7 @@ export function renderBrandedEmail({
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>${safeHeadline}</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@700&display=swap" />
 </head>
 <body style="margin:0;padding:0;background:${COLORS.bg};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:${COLORS.bg};padding:40px 16px;">
@@ -118,8 +115,7 @@ export function renderBrandedEmail({
         <table role="presentation" width="560" cellspacing="0" cellpadding="0" style="max-width:560px;width:100%;background:${COLORS.card};border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
           <tr>
             <td style="padding:32px 40px 0;text-align:center;">
-              <img src="${iconUrl}" alt="${siteName}" width="40" height="40" style="display:block;margin:0 auto;border:0;outline:none;width:40px;height:40px;" />
-              <div style="font-size:14px;font-weight:600;color:${COLORS.black};margin-top:10px;letter-spacing:0.02em;text-transform:capitalize;">${siteName}</div>
+              ${emailLogo}
             </td>
           </tr>
           <tr>

@@ -8,6 +8,36 @@ import { readFileSync } from 'fs';
 import { homedir } from 'os';
 
 /**
+ * Load environment variables from cPanel Node.js selector config.
+ * Fills process.env only for keys not already set (e.g. JWT_SECRET for SSH/CLI).
+ */
+export function loadCpanelEnvVars() {
+  try {
+    const configPath = resolve(homedir(), '.cl.selector', 'node-selector.json');
+    const configContent = readFileSync(configPath, 'utf-8');
+    const cpanelConfig = JSON.parse(configContent);
+    const currentDir = basename(resolve('.'));
+
+    const applyVars = (envVars) => {
+      if (!envVars || typeof envVars !== 'object') return;
+      for (const [key, value] of Object.entries(envVars)) {
+        if (value != null && value !== '' && !process.env[key]) {
+          process.env[key] = String(value);
+        }
+      }
+    };
+
+    applyVars(cpanelConfig[currentDir]?.env_vars);
+
+    for (const appConfig of Object.values(cpanelConfig)) {
+      applyVars(appConfig.env_vars);
+    }
+  } catch {
+    // Silently fail if file doesn't exist
+  }
+}
+
+/**
  * Load DATABASE_URL from available sources
  * Priority:
  *   1. process.env.DATABASE_URL (already set)

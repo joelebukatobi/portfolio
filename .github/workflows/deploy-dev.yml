@@ -199,29 +199,37 @@ jobs:
             npm run db:migrate
             echo "Database migrations: OK"
 
+            node --input-type=module -e "import mysql from 'mysql2/promise'; const conn = await mysql.createConnection(process.env.DATABASE_URL); const [cols] = await conn.query(\"SHOW COLUMNS FROM users LIKE 'totp_%'\"); await conn.end(); if (cols.length < 2) { console.error('Expected totp_secret and totp_enabled columns after migration'); process.exit(1); } console.log('Migration verify: users.totp_* columns present');"
+
             echo "✅ Deployment complete. Run 'node scripts/cli.js setup-token' to generate setup URL."
 
             mkdir -p tmp
             date > tmp/restart.txt
+            echo "Restart signal written to tmp/restart.txt"
 
       - name: Health check - verify app responds
         if: steps.ssh_check.outputs.enabled == 'true'
         run: |
           set -e
-          echo "Waiting for app to start..."
-          sleep 10
+          echo "Waiting for app to restart after deploy..."
+          sleep 20
 
           HEALTH_URL="${{ secrets.DEV_URL || 'https://dev.joelebukatobi.dev' }}/health"
           echo "Checking health at: $HEALTH_URL"
 
-          for i in 1 2 3; do
+          for i in 1 2 3 4 5 6; do
             if curl -sf "$HEALTH_URL" > /dev/null; then
               echo "✅ Health check passed - app is responding"
+              curl -s "$HEALTH_URL"
               exit 0
             fi
-            echo "Attempt $i failed, retrying in 5s..."
-            sleep 5
+            echo "Attempt $i failed, retrying in 10s..."
+            sleep 10
           done
 
           echo "❌ Health check failed - app is not responding"
+          echo "Last response:"
+          curl -sv "$HEALTH_URL" 2>&1 | tail -30 || true
+          echo ""
+          echo "If migrations ran but health still fails, check cPanel Node app logs for startup errors."
           exit 1

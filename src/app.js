@@ -12,13 +12,15 @@ import path from 'path';
 import { readFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import { checkSetupStatus } from './middleware/setup-check.js';
-import { ensureDatabaseUrl } from '../env.js';
+import { ensureDatabaseUrl, loadCpanelEnvVars } from '../env.js';
+import { getAppSecret } from './lib/app-secrets.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PUBLIC_DIR = path.join(__dirname, '../public');
 
 // Load environment variables (process.env, .env.local, .env.development, .env, cPanel)
+loadCpanelEnvVars();
 ensureDatabaseUrl({ scriptName: 'server', exitOnError: false });
 
 export default async function app(fastify, opts) {
@@ -67,7 +69,7 @@ export default async function app(fastify, opts) {
   }
 
   await fastify.register(fastifyJwt, {
-    secret: process.env.JWT_SECRET || 'dev-secret-change-in-production',
+    secret: getAppSecret(),
     cookie: {
       cookieName: 'token',
       signed: false,
