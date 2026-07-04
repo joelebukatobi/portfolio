@@ -1,7 +1,6 @@
 import { escapeHtml, truncate, imageUrl } from '../../utils/helpers.js';
 import { navbar } from '../../partials/navbar.js';
 import { footer } from '../../partials/footer.js';
-import { share } from '../../partials/share.js';
 import { asideForPost } from '../../partials/aside.js';
 import { postComments } from '../../partials/post-comments.js';
 import { formatSiteDate } from '../../../../lib/site-dates.js';
@@ -54,7 +53,6 @@ ${navbar({ activePage: null })}
   <div class="blogpost__main">
     <div class="blogpost__aside">
       ${asideForPost({ post })}
-      ${share({ slug: post.slug, className: 'blogpost__share' })}
     </div>
     <div class="blogpost__content">
       <div class="blogpost__meta">
@@ -122,7 +120,7 @@ ${navbar({ activePage: null })}
       btn.type = 'button';
       btn.className = 'blogpost__code-copy';
       btn.setAttribute('aria-label', 'Copy code');
-      btn.innerHTML = '<svg aria-hidden="true"><use href="/images/sprite.svg#icon-copy" /></svg>';
+      btn.innerHTML = '<svg aria-hidden="true"><use href="/images/icons/copy.svg" /></svg>';
       wrapper.appendChild(btn);
 
       btn.addEventListener('click', async () => {
@@ -131,11 +129,11 @@ ${navbar({ activePage: null })}
           const icon = btn.querySelector('use');
           btn.classList.add('is-copied');
           btn.setAttribute('aria-label', 'Copied');
-          if (icon) icon.setAttribute('href', '/images/sprite.svg#icon-check');
+          if (icon) icon.setAttribute('href', '/images/icons/check.svg');
           setTimeout(() => {
             btn.classList.remove('is-copied');
             btn.setAttribute('aria-label', 'Copy code');
-            if (icon) icon.setAttribute('href', '/images/sprite.svg#icon-copy');
+            if (icon) icon.setAttribute('href', '/images/icons/copy.svg');
           }, 2000);
         } catch (error) {
           console.error('Copy failed:', error);

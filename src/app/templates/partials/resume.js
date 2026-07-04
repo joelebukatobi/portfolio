@@ -3,11 +3,11 @@ export function resume() {
 <section id="resume" class="resume container">
   <ul class="resume__external">
     <li>
-      <svg><use href="/images/sprite.svg#icon-download" /></svg>
+      <svg><use href="/images/icons/download.svg" /></svg>
       <a href="https://docs.google.com/document/d/1mSW8ae8Dpoojbqee7XjOWQMRpL41PzJtEfzK8B8M3WM/edit?usp=sharing">Resume</a>
     </li>
     <li>
-      <svg><use href="/images/sprite.svg#icon-download" /></svg>
+      <svg><use href="/images/icons/download.svg" /></svg>
       <a href="https://docs.google.com/document/d/1pLffM_nQwl2bsBqcBk455NHh9sAe5yMrVCefXl55lvc/edit?usp=sharing">Cover Letter</a>
     </li>
   </ul>

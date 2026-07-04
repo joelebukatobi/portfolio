@@ -3,7 +3,7 @@ export function successPartial() {
 <section class="flex success" id="contact-result">
   <div class="success__main">
     <div class="success__icon">
-      <svg><use href="/images/sprite.svg#icon-check" /></svg>
+      <svg><use href="/images/icons/check.svg" /></svg>
     </div>
     <h5>Message Sent!</h5>
     <hr />

@@ -149,12 +149,12 @@ export default async function app(fastify, opts) {
   });
 
   fastify.get('/favicon.svg', async (_request, reply) => {
-    const data = await readFile(path.join(PUBLIC_DIR, 'images', 'favicon.svg'));
+    const data = await readFile(path.join(PUBLIC_DIR, 'images', 'icons', 'favicon.svg'));
     return reply.type('image/svg+xml').send(data);
   });
 
   fastify.get('/favicon.ico', async (_request, reply) => {
-    const data = await readFile(path.join(PUBLIC_DIR, 'images', 'favicon.svg'));
+    const data = await readFile(path.join(PUBLIC_DIR, 'images', 'icons', 'favicon.svg'));
     return reply.type('image/svg+xml').send(data);
   });
 

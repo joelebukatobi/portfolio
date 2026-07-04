@@ -1,5 +1,5 @@
 /** Site logo used as thumbnail fallback for project placeholders */
-export const PLACEHOLDER_IMAGE = '/images/favicon.svg';
+export const PLACEHOLDER_IMAGE = '/images/icons/favicon.svg';
 
 export const PLACEHOLDER_PROJECTS = [
   {
