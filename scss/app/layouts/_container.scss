@@ -1,9 +1,6 @@
 @use '../base/variables' as *;
 
 body {
-  --social-icon-bg: #{$color-orange};
-  --social-icon-in: #{$color-dark-orange};
-
   font-family: $font-primary;
   background-color: $color-dark-orange;
   min-height: 100vh;
