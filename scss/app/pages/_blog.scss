@@ -218,13 +218,9 @@ $filter-control-border: 0.2rem solid rgba($color-light-orange, 0.6);
         }
 
         & svg {
-          fill: $color-white;
+          fill: none;
           height: 2.4rem;
           width: 2.4rem;
-        }
-
-        & a[href*='linkedin.com'] svg {
-          fill: none;
         }
       }
     }

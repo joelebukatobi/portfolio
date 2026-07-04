@@ -1,8 +1,8 @@
 @use '../base/variables' as *;
 
 body {
-  --linkedin-bg: transparent;
-  --linkedin-in: #{$color-white};
+  --social-icon-bg: #{$color-orange};
+  --social-icon-in: #{$color-dark-orange};
 
   font-family: $font-primary;
   background-color: $color-dark-orange;

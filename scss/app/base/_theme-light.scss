@@ -25,8 +25,8 @@ html.theme-light {
   }
 
   body {
-    --linkedin-bg: #{$color-orange};
-    --linkedin-in: #{$color-white};
+    --social-icon-bg: #{$color-orange};
+    --social-icon-in: #{$color-white};
 
     background-color: $color-off-white;
     color: $color-dark-orange;
@@ -292,16 +292,7 @@ html.theme-light {
 
     &__categories ul li svg,
     &__share ul li svg {
-      fill: $color-orange;
-    }
-
-    &__share ul li a[href*='linkedin.com'] svg {
       fill: none;
-    }
-
-    &__share ul li a[href*='linkedin.com'] {
-      --linkedin-bg: #{$color-orange};
-      --linkedin-in: #{$color-white};
     }
   }
 
@@ -311,19 +302,6 @@ html.theme-light {
     }
 
     &__list li {
-      svg {
-        fill: $color-orange;
-      }
-
-      a[href*='linkedin.com'] svg {
-        fill: none;
-      }
-
-      a[href^='mailto:'] svg {
-        fill: none;
-        color: $color-orange;
-      }
-
       p {
         color: $color-dark-orange;
 
@@ -335,11 +313,6 @@ html.theme-light {
   }
 
   .blogpost {
-    &__aside .blog__share ul li a[href*='linkedin.com'] {
-      --linkedin-bg: #{$color-orange};
-      --linkedin-in: #{$color-white};
-    }
-
     &__content {
       & > h3 {
         color: $color-dark-orange;

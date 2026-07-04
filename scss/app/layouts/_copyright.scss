@@ -34,19 +34,11 @@
         align-items: center;
       }
       & svg {
-        fill: $color-orange;
+        fill: none;
+        flex-shrink: 0;
         height: 1.6rem;
         width: 1.6rem;
         margin-right: 0.4rem;
-      }
-
-      & a[href*='linkedin.com'] svg {
-        fill: none;
-      }
-
-      & a[href^='mailto:'] svg {
-        fill: none;
-        color: $color-orange;
       }
 
       & p {
