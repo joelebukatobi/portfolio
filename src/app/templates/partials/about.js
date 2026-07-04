@@ -4,7 +4,7 @@ export function about() {
   <div class="about__headline">
     <div class="about__photo">
       <img
-        src="/images/profile.png"
+        src="/images/pics/profile.png"
         width="160"
         height="160"
         alt="Joel Onwuanaku"
