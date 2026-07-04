@@ -265,6 +265,12 @@ $filter-control-border: 0.2rem solid rgba($color-light-orange, 0.6);
     &__filters-panel {
       display: flex !important;
     }
+
+    &__categories.blog__filters-panel,
+    &__tags.blog__filters-panel,
+    &__date.blog__filters-panel {
+      margin-bottom: 4.8rem;
+    }
   }
 
   &__card {

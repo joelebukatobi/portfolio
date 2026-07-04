@@ -47,6 +47,14 @@
         margin-bottom: 4rem;
       }
     }
+
+    @media (min-width: 1025px) {
+      .blog__categories.blog__filters-panel,
+      .blog__tags.blog__filters-panel,
+      .blog__date.blog__filters-panel {
+        margin-bottom: 4rem;
+      }
+    }
   }
 
   &__code {
@@ -287,7 +295,7 @@
       margin-top: 1.2rem;
       padding: 1.6rem;
       border-radius: 0.4rem;
-      background-color: rgba($color-black-orange, 0.35);
+      background-color: rgba($color-dark-orange, 0.35);
 
       textarea {
         min-height: 8rem;
