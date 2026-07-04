@@ -30,31 +30,17 @@ function escapeHtml(value) {
 function toTitleCase(value) {
   return String(value ?? '')
     .trim()
-    .toLowerCase()
     .split(/\s+/)
     .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => {
+      if (word === word.toUpperCase() && word.length > 1) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
     .join(' ');
-}
-
-function resolveSiteUrl(map = {}) {
-  return String(map.siteUrl || '').trim().replace(/\/$/, '') || 'http://localhost:3000';
 }
 
 function resolveSiteName(map = {}) {
   return String(map.siteName || 'Dashboard').trim() || 'Dashboard';
-}
-
-/**
- * Text logo matching the portfolio navbar: Fira Code, black name, orange brackets.
- */
-function renderEmailLogo(siteUrl) {
-  const safeUrl = escapeHtml(siteUrl);
-  return `<a href="${safeUrl}" style="display:inline-block;text-decoration:none;">
-    <span style="font-family:'Fira Code','Courier New',Courier,monospace;font-size:2.1rem;font-weight:700;line-height:1.2;color:${COLORS.black};letter-spacing:0;">
-      <span style="color:${COLORS.orange};">&lt;</span>joelebukatobi <span style="color:${COLORS.orange};">&#47;&gt;</span>
-    </span>
-  </a>`;
 }
 
 /**
@@ -77,8 +63,6 @@ export function renderBrandedEmail({
   footerNote,
 }) {
   const siteName = escapeHtml(toTitleCase(resolveSiteName(settingsMap)));
-  const siteUrl = resolveSiteUrl(settingsMap);
-  const emailLogo = renderEmailLogo(siteUrl);
   const heroIcon = ICONS[iconKey] || ICONS.test;
   const safeHeadline = escapeHtml(toTitleCase(headline));
   const safeFooter = escapeHtml(footerNote);
@@ -106,7 +90,6 @@ export function renderBrandedEmail({
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>${safeHeadline}</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@700&display=swap" />
 </head>
 <body style="margin:0;padding:0;background:${COLORS.bg};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:${COLORS.bg};padding:40px 16px;">
@@ -114,12 +97,7 @@ export function renderBrandedEmail({
       <td align="center">
         <table role="presentation" width="560" cellspacing="0" cellpadding="0" style="max-width:560px;width:100%;background:${COLORS.card};border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
           <tr>
-            <td style="padding:32px 40px 0;text-align:center;">
-              ${emailLogo}
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:28px 40px 0;text-align:center;">${heroIcon}</td>
+            <td style="padding:32px 40px 0;text-align:center;">${heroIcon}</td>
           </tr>
           <tr>
             <td style="padding:20px 40px 0;text-align:center;font-size:22px;font-weight:700;line-height:1.3;color:${COLORS.black};text-transform:capitalize;">${safeHeadline}</td>
@@ -181,7 +159,7 @@ export function renderTestEmail(settingsMap, { actionUrl }) {
   return renderBrandedEmail({
     settingsMap,
     iconKey: 'test',
-    headline: 'smtp test successful',
+    headline: 'SMTP test successful',
     bodyHtml: `<p style="margin:0;">This is a test email from <strong>${siteName}</strong>. Your SMTP settings are working correctly.</p>`,
     ctaLabel: 'open dashboard',
     ctaUrl: actionUrl,

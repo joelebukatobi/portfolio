@@ -20,10 +20,7 @@ describe('email templates', () => {
     });
 
     expect(html).toContain('Joel Onwuanaku');
-    expect(html).toContain('joelebukatobi');
-    expect(html).toContain('Fira+Code');
-    expect(html).toContain('color:#d45524');
-    expect(html).toContain('font-size:2.1rem');
+    expect(html).not.toContain('joelebukatobi');
     expect(html).toContain('Hi Lucas');
     expect(html).toContain('Joel Admin');
     expect(html).toContain('Accept Invitation');
@@ -47,20 +44,10 @@ describe('email templates', () => {
       actionUrl: 'https://example.com/admin',
     });
 
-    expect(html).toContain('Smtp Test Successful');
+    expect(html).toContain('SMTP Test Successful');
     expect(html).toContain('Open Dashboard');
     expect(html).toContain('background:#d45524');
     expect(html).toContain('https://example.com/admin');
-  });
-
-  it('renders portfolio text logo with bracket markup', () => {
-    const html = renderTestEmail(settingsMap, {
-      actionUrl: 'https://example.com/admin',
-    });
-
-    expect(html).toContain('&lt;');
-    expect(html).toContain('&#47;&gt;');
-    expect(html).toContain('href="https://example.com"');
   });
 
   it('escapes HTML in user-provided names', () => {
