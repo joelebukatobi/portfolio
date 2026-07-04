@@ -134,11 +134,21 @@
       fill: none;
     }
 
+    & svg.navbar__theme-icon--moon {
+      color: $color-black;
+      stroke: $color-black;
+    }
+
     &:hover {
       background-color: rgba($color-grey, 0.12);
 
       svg {
         stroke: $color-orange;
+      }
+
+      svg.navbar__theme-icon--moon {
+        color: $color-black;
+        stroke: $color-black;
       }
     }
   }
