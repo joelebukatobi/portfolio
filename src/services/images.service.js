@@ -244,6 +244,24 @@ class ImagesService {
   }
 
   /**
+   * Resolve stored media path to an absolute filesystem path.
+   * @param {string} storedPath
+   * @returns {string|null}
+   */
+  resolveMediaFsPath(storedPath) {
+    if (!storedPath) return null;
+
+    const rel = String(storedPath).replace(/^\//, '');
+    if (rel.startsWith('public/')) {
+      return path.join(process.cwd(), rel);
+    }
+    if (rel.startsWith('uploads/')) {
+      return path.join(process.cwd(), 'public', rel);
+    }
+    return path.join(process.cwd(), rel);
+  }
+
+  /**
    * Delete image
    * @param {string} id - Image ID
    * @returns {Promise<boolean>} - Success status
@@ -254,18 +272,27 @@ class ImagesService {
       throw new Error('Image not found');
     }
 
-    // Delete files
-    const filepath = path.join(process.cwd(), image.path.replace(/^\//, ''));
-    const thumbpath = image.thumbnailPath 
-      ? path.join(process.cwd(), image.thumbnailPath.replace(/^\//, ''))
-      : null;
+    // Clear references that block deletion (posts FK has no ON DELETE action)
+    await db
+      .update(posts)
+      .set({ featuredImageId: null, updatedAt: new Date() })
+      .where(eq(posts.featuredImageId, id));
 
-    await fs.unlink(filepath).catch(() => {});
+    await db
+      .update(albums)
+      .set({ coverImageId: null, updatedAt: new Date() })
+      .where(eq(albums.coverImageId, id));
+
+    const filepath = this.resolveMediaFsPath(image.path);
+    const thumbpath = this.resolveMediaFsPath(image.thumbnailPath);
+
+    if (filepath) {
+      await fs.unlink(filepath).catch(() => {});
+    }
     if (thumbpath) {
       await fs.unlink(thumbpath).catch(() => {});
     }
 
-    // Delete database record
     await db.delete(mediaItems).where(eq(mediaItems.id, id));
 
     return true;

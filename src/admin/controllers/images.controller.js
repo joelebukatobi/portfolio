@@ -8,6 +8,7 @@ import {
   renderFragment,
   renderEmpty,
   errorAlert,
+  errorFragment,
   htmxLocation,
   htmxRedirect,
   setHtmxToast,
@@ -284,10 +285,14 @@ class ImagesController {
       return htmxRedirect(reply, '/admin/media/images?toast=deleted');
     } catch (error) {
       request.log.error(error);
+
+      const message = error.message?.includes('foreign key')
+        || String(error.code || '').startsWith('ER_ROW_IS_REFERENCED')
+        ? 'This image is in use and could not be deleted.'
+        : error.message || 'Failed to delete image.';
+
       reply.code(400);
-      return renderFragment(reply, errorAlert({
-        message: error.message || 'Failed to delete image.',
-      }));
+      return errorFragment(reply, { message });
     }
   }
 

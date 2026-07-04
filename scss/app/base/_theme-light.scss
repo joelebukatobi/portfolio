@@ -298,6 +298,11 @@ html.theme-light {
     &__share ul li a[href*='linkedin.com'] svg {
       fill: none;
     }
+
+    &__share ul li a[href*='linkedin.com'] {
+      --linkedin-bg: #{$color-orange};
+      --linkedin-in: #{$color-white};
+    }
   }
 
   .copyright {
@@ -330,6 +335,11 @@ html.theme-light {
   }
 
   .blogpost {
+    &__aside .blog__share ul li a[href*='linkedin.com'] {
+      --linkedin-bg: #{$color-orange};
+      --linkedin-in: #{$color-white};
+    }
+
     &__content {
       & > h3 {
         color: $color-dark-orange;
