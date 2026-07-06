@@ -129,32 +129,23 @@ jobs:
             **/.idea/**
             **/.build/**
 
-      - name: Encode database URL for SSH
-        id: deploy_db
-        if: steps.ssh_check.outputs.enabled == 'true'
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: echo "database_url_b64=$(printf '%s' "$DATABASE_URL" | base64 -w 0)" >> "$GITHUB_OUTPUT"
-
       - name: Install production dependencies and restart app
         if: steps.ssh_check.outputs.enabled == 'true'
         uses: appleboy/ssh-action@v1.0.3
-        env:
-          DATABASE_URL_B64: ${{ steps.deploy_db.outputs.database_url_b64 }}
         with:
           host: ${{ env.CPANEL_SSH_HOST }}
           username: ${{ env.CPANEL_SSH_USER }}
           key: ${{ env.CPANEL_SSH_KEY }}
           port: ${{ env.CPANEL_SSH_PORT }}
-          envs: DATABASE_URL_B64
+          envs: DATABASE_URL
           script: |
             set -e
             set -o pipefail
 
-            export DATABASE_URL="$(printf '%s' "$DATABASE_URL_B64" | base64 -d)"
-
             if [ -f ~/.bashrc ]; then
+              set +e
               source ~/.bashrc
+              set -e
             fi
 
             DEPLOY_DIR="${{ steps.paths.outputs.deploy_dir }}"
@@ -165,6 +156,7 @@ jobs:
               exit 1
             fi
 
+            echo "Step: deploy diagnostics"
             echo "Deploy diagnostics:"
             echo "- SSH deploy directory: $(pwd)"
             echo "- FTP upload directory: $FTP_DIR"
@@ -194,10 +186,12 @@ jobs:
             fi
 
             if [ ! -d node_modules ] || [ "$CURRENT_LOCK_HASH" != "$PREVIOUS_LOCK_HASH" ]; then
+              echo "Step: npm ci (production dependencies)"
               echo "Installing production dependencies"
               npm ci --omit=dev --no-audit --no-fund
               printf '%s\n' "$CURRENT_LOCK_HASH" > "$LOCK_HASH_FILE"
             else
+              echo "Step: skip npm ci (lockfile unchanged)"
               echo "Skipping dependency install (lockfile unchanged)"
             fi
 
@@ -208,11 +202,13 @@ jobs:
 
             node --input-type=module -e "import mysql from 'mysql2/promise'; const conn = await mysql.createConnection(process.env.DATABASE_URL); await conn.query('SELECT 1'); await conn.end(); console.log('Database connectivity check: OK');"
 
+            echo "Step: db:migrate"
             npm run db:migrate
             echo "Database migrations: OK"
 
             node --input-type=module -e "import mysql from 'mysql2/promise'; const conn = await mysql.createConnection(process.env.DATABASE_URL); const [cols] = await conn.query(\"SHOW COLUMNS FROM users LIKE 'totp_%'\"); await conn.end(); if (cols.length < 2) { console.error('Expected totp_secret and totp_enabled columns after migration'); process.exit(1); } console.log('Migration verify: users.totp_* columns present');"
 
+            echo "Step: restart signal"
             echo "✅ Deployment complete. Run 'node scripts/cli.js setup-token' to generate setup URL."
 
             mkdir -p tmp
