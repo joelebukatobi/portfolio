@@ -1,15 +1,18 @@
-// src/services/analytics.service.js
 // Analytics service for traffic data and page views
-// Hybrid approach: Historical data from daily aggregates + today's data calculated on-demand
+// Daily chart data is recorded in real time via recordDailyView()
 
 import { db, posts, dailyPageViews } from '../db/index.js';
-import { eq, gte, lte, desc, sql, sum, and } from 'drizzle-orm';
+import { eq, gte, lte, sql, sum, and } from 'drizzle-orm';
+
+function toDateKey(date = new Date()) {
+  const normalized = new Date(date);
+  normalized.setHours(0, 0, 0, 0);
+  return normalized.toISOString().split('T')[0];
+}
 
 /**
  * Analytics Service
- * Handles traffic analytics with shared-hosting-friendly approach:
- * - Daily cron aggregates historical data
- * - Today's partial data calculated on-demand
+ * Records daily traffic in daily_page_views as real page views occur.
  */
 class AnalyticsService {
   /**
@@ -74,26 +77,42 @@ class AnalyticsService {
   }
 
   /**
-   * Get traffic data for a date range
-   * Combines historical daily aggregates + today's calculated partial data
+   * Increment today's daily aggregate when a page view is recorded
+   */
+  async recordDailyView() {
+    const todayKey = toDateKey();
+
+    await db
+      .insert(dailyPageViews)
+      .values({
+        date: todayKey,
+        totalViews: 1,
+        uniqueVisitors: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .onConflictDoUpdate({
+        target: dailyPageViews.date,
+        set: {
+          totalViews: sql`${dailyPageViews.totalViews} + 1`,
+          updatedAt: new Date(),
+        },
+      });
+  }
+
+  /**
+   * Get traffic data for a date range from daily_page_views
    * @param {Object} options - Query options
    * @param {number} options.days - Number of days to fetch (default: 30)
    * @returns {Promise<Array>} - Array of daily traffic data
    */
   async getTrafficData({ days = 30 } = {}) {
     const endDate = new Date();
-    endDate.setHours(23, 59, 59, 999);
+    endDate.setHours(0, 0, 0, 0);
 
-    const startDate = new Date();
+    const startDate = new Date(endDate);
     startDate.setDate(startDate.getDate() - days + 1);
-    startDate.setHours(0, 0, 0, 0);
 
-    // Get yesterday's date for boundary
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    yesterday.setHours(0, 0, 0, 0);
-
-    // Fetch historical data from daily_page_views (up to yesterday)
     const historicalData = await db
       .select({
         date: dailyPageViews.date,
@@ -103,40 +122,15 @@ class AnalyticsService {
       .from(dailyPageViews)
       .where(and(
         gte(dailyPageViews.date, startDate),
-        lte(dailyPageViews.date, yesterday)
+        lte(dailyPageViews.date, endDate),
       ))
       .orderBy(dailyPageViews.date);
 
-    // Build complete dataset
-    const result = [];
-
-    // Add historical data
-    for (const record of historicalData) {
-      result.push({
-        date: record.date,
-        views: record.totalViews,
-        uniqueVisitors: record.uniqueVisitors || Math.floor(record.totalViews * 0.7), // Estimate 70% unique
-      });
-    }
-
-    // Add today's data only if there's historical data
-    if (endDate >= yesterday && historicalData.length > 0) {
-      const recentDays = historicalData.slice(-7); // Last 7 days
-      const avgRecentViews = recentDays.length > 0
-        ? recentDays.reduce((sum, d) => sum + d.totalViews, 0) / recentDays.length
-        : 0;
-
-      // Today's views: average of recent days (no random variation)
-      const todayViews = Math.max(0, Math.round(avgRecentViews));
-
-      result.push({
-        date: new Date(),
-        views: todayViews,
-        uniqueVisitors: Math.floor(todayViews * 0.5),
-      });
-    }
-
-    return result;
+    return historicalData.map((record) => ({
+      date: record.date,
+      views: record.totalViews,
+      uniqueVisitors: record.uniqueVisitors || Math.floor(record.totalViews * 0.7),
+    }));
   }
 
   /**
@@ -238,71 +232,6 @@ class AnalyticsService {
     change = Math.min(change, 99);
 
     return { trend, change };
-  }
-
-  /**
-   * Generate mock traffic data for demonstration
-   * Useful for development and testing
-   * @param {number} days - Number of days to generate
-   * @returns {Array} - Mock traffic data
-   */
-  generateMockTrafficData(days = 30) {
-    const data = [];
-    const today = new Date();
-
-    // Base values with some randomness
-    let baseViews = 250;
-
-    for (let i = days - 1; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-
-      // Add some variation and upward trend
-      const dayOfWeek = date.getDay();
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-      const weekendMultiplier = isWeekend ? 0.7 : 1.0;
-
-      // Random variation ±30%
-      const variation = 0.7 + Math.random() * 0.6;
-
-      // Slight upward trend over time
-      const trendMultiplier = 1 + ((days - i) / days) * 0.3;
-
-      const views = Math.floor(baseViews * weekendMultiplier * variation * trendMultiplier);
-      const uniqueVisitors = Math.floor(views * (0.6 + Math.random() * 0.2));
-
-      data.push({
-        date: date.toISOString().split('T')[0],
-        views,
-        uniqueVisitors,
-      });
-
-      // Slightly increase base for next iteration
-      baseViews += Math.random() * 5;
-    }
-
-    return data;
-  }
-
-  /**
-   * Seed mock traffic data into database
-   * For development and demonstration
-   * @param {number} days - Number of days to seed
-   */
-  async seedMockTrafficData(days = 30) {
-    const mockData = this.generateMockTrafficData(days);
-
-    for (const day of mockData) {
-      await db.insert(dailyPageViews).values({
-        date: day.date,
-        totalViews: day.views,
-        uniqueVisitors: day.uniqueVisitors,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }).onConflictDoNothing();
-    }
-
-    return mockData.length;
   }
 }
 

@@ -3,6 +3,7 @@ import { db, posts, categories, tags, postTags, users, mediaItems, comments } fr
 import { eq, and, desc, asc, like, sql, gte, lt, inArray } from 'drizzle-orm';
 import { activityService } from './activity.service.js';
 import { commentsService } from './comments.service.js';
+import { analyticsService } from './analytics.service.js';
 import { mediaItemPublicUrl } from '../lib/media-paths.js';
 import { normalizeOptionalId } from '../lib/post-input.js';
 import crypto from 'crypto';
@@ -690,7 +691,9 @@ class PostsService {
         viewCount: sql`${posts.viewCount} + 1`,
       })
       .where(eq(posts.id, id));
-    
+
+    await analyticsService.recordDailyView();
+
     return true;
   }
 

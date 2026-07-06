@@ -2,6 +2,7 @@ import { ensureDatabaseUrl } from '../../../env.js';
 import { eq, sql } from 'drizzle-orm';
 import crypto from 'crypto';
 import config from '../simulation.config.js';
+import { assertLocalDevelopment } from '../local-dev-only.js';
 
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -27,6 +28,7 @@ function categorizePost(title) {
 }
 
 export async function simulateDay(args = []) {
+  assertLocalDevelopment('analytics day');
   ensureDatabaseUrl({ scriptName: 'cli analytics day' });
 
   console.log('Starting analytics simulation...\n');
@@ -146,6 +148,7 @@ export async function simulateDay(args = []) {
 }
 
 export async function runSimulation() {
+  assertLocalDevelopment('analytics run');
   ensureDatabaseUrl({ scriptName: 'cli analytics run' });
 
   const { db, posts, comments, subscribers, activities, dailyPageViews } = await import('../../../src/db/index.js');
@@ -306,6 +309,7 @@ async function simulateSubscribers(db, subscribers, activities) {
 }
 
 export async function aggregateDailyViews() {
+  assertLocalDevelopment('analytics aggregate');
   ensureDatabaseUrl({ scriptName: 'cli analytics aggregate' });
 
   console.log('Running daily view aggregation...\n');
@@ -320,6 +324,7 @@ export async function aggregateDailyViews() {
 }
 
 export async function runScheduler() {
+  assertLocalDevelopment('analytics scheduler');
   const cron = (await import('node-cron')).default;
 
   console.log('Analytics simulation scheduler');
