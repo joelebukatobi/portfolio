@@ -1,5 +1,29 @@
 import { activeNavClass } from '../utils/helpers.js';
 
+const sunIcon = `
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" />
+  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+</svg>`;
+
+const moonIcon = `
+<svg class="navbar__theme-icon--moon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+</svg>`;
+
+const menuIcon = `
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M6 6H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M6 18H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M10 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+</svg>`;
+
+const closeIcon = `
+<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+  <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+</svg>`;
+
 function themeToggleButton() {
   return `
 <li class="navbar__item navbar__theme">
@@ -9,8 +33,8 @@ function themeToggleButton() {
     @click="toggleTheme()"
     :aria-label="light ? 'Switch to dark mode' : 'Switch to light mode'"
   >
-    <svg x-show="!light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="/images/icons/sun.svg" /></svg>
-    <svg x-show="light" class="navbar__theme-icon--moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="/images/icons/moon.svg" /></svg>
+    <span x-show="!light">${sunIcon}</span>
+    <span x-show="light" x-cloak>${moonIcon}</span>
   </button>
 </li>`;
 }
@@ -44,9 +68,10 @@ export function navbar({ activePage = null } = {}) {
       </div>
       <div class="navbar__mobile-actions">
         ${themeToggleButton()}
-        <div @click="open = !open" class="navbar__menu">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><use :href="open ? '/images/icons/navbar-close.svg' : '/images/icons/navbar-menu.svg'" /></svg>
-        </div>
+        <button type="button" class="navbar__menu" @click="open = !open" :aria-expanded="open" aria-label="Toggle navigation menu">
+          <span x-show="!open">${menuIcon}</span>
+          <span x-show="open" x-cloak>${closeIcon}</span>
+        </button>
       </div>
     </div>
 
