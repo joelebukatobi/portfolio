@@ -22,6 +22,7 @@ jobs:
       CPANEL_SSH_USER: ${{ secrets.CPANEL_FTP_USER }}
       CPANEL_SSH_KEY: ${{ secrets.CPANEL_SSH_KEY }}
       CPANEL_SSH_PORT: 22
+      DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -125,68 +126,96 @@ jobs:
             **/.build/**
             **/dist/css/**
 
-      - name: Prepare remote deploy script
-        if: steps.ssh_check.outputs.enabled == 'true'
-        env:
-          DEPLOY_DIR: ${{ steps.paths.outputs.deploy_dir }}
-          FTP_DIR: ${{ steps.paths.outputs.ftp_dir }}
-        run: |
-          mkdir -p tmp
-          python3 <<'PY'
-          import os
-          from pathlib import Path
-
-          text = Path("scripts/deploy-remote.sh").read_text()
-          text = text.replace("@DEPLOY_DIR@", os.environ["DEPLOY_DIR"])
-          text = text.replace("@FTP_DIR@", os.environ["FTP_DIR"])
-          Path("tmp/deploy-remote.run.sh").write_text(text)
-          PY
-          chmod +x tmp/deploy-remote.run.sh
-
-      - name: Setup SSH agent
-        if: steps.ssh_check.outputs.enabled == 'true'
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.CPANEL_SSH_KEY }}
-
-      - name: Test SSH connection
-        if: steps.ssh_check.outputs.enabled == 'true'
-        run: |
-          set -euo pipefail
-          SSH_TARGET="${CPANEL_SSH_USER}@${CPANEL_SSH_HOST}"
-          echo "Testing SSH to ${SSH_TARGET}:${CPANEL_SSH_PORT}..."
-
-          if ! ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-              -o BatchMode=yes -o ConnectTimeout=30 \
-              -p "${CPANEL_SSH_PORT}" "$SSH_TARGET" \
-              'echo SSH_OK; whoami; pwd; echo shell=${SHELL:-unknown}'; then
-            echo "::error::SSH failed. In cPanel check: SSH Access enabled, login shell is bash/jailshell (not disabled), public key authorized, and fail2ban is not blocking GitHub runner IPs."
-            exit 1
-          fi
-
       - name: Install production dependencies and restart app
         if: steps.ssh_check.outputs.enabled == 'true'
-        run: |
-          set -euo pipefail
-          SSH_TARGET="${CPANEL_SSH_USER}@${CPANEL_SSH_HOST}"
-          REMOTE_SCRIPT=~/deploy-remote.run.sh
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.CPANEL_SSH_HOST }}
+          username: ${{ env.CPANEL_SSH_USER }}
+          key: ${{ env.CPANEL_SSH_KEY }}
+          port: ${{ env.CPANEL_SSH_PORT }}
+          envs: DATABASE_URL
+          script: |
+            set -e
+            set -o pipefail
 
-          scp -P "${CPANEL_SSH_PORT}" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            tmp/deploy-remote.run.sh "${SSH_TARGET}:${REMOTE_SCRIPT}"
+            # Source .bashrc to get Node 24 in PATH
+            if [ -f ~/.bashrc ]; then
+              source ~/.bashrc
+            fi
 
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            -p "${CPANEL_SSH_PORT}" "$SSH_TARGET" "bash ${REMOTE_SCRIPT}"
+            DEPLOY_DIR="${{ steps.paths.outputs.deploy_dir }}"
+            cd "$DEPLOY_DIR"
+
+            echo "Deploy diagnostics:"
+            echo "- working directory: $(pwd)"
+            if [ -n "$DATABASE_URL" ]; then
+              echo "- DATABASE_URL: present"
+            else
+              echo "- DATABASE_URL: missing"
+            fi
+
+            echo "- Node version: $(node --version)"
+
+            if [ ! -f package.json ] || [ ! -f package-lock.json ]; then
+              echo "::error::package.json or package-lock.json is missing in the deploy directory."
+              echo "PRODUCTION_DEPLOY_PATH must match the folder FTP uploads to."
+              ls -la
+              exit 1
+            fi
+
+            LOCK_HASH_FILE=".package-lock.sha256"
+            CURRENT_LOCK_HASH="$(sha256sum package-lock.json | awk '{print $1}')"
+            PREVIOUS_LOCK_HASH=""
+
+            if [ -f "$LOCK_HASH_FILE" ]; then
+              PREVIOUS_LOCK_HASH="$(cat "$LOCK_HASH_FILE")"
+            fi
+
+            if [ ! -d node_modules ] || [ "$CURRENT_LOCK_HASH" != "$PREVIOUS_LOCK_HASH" ]; then
+              echo "Installing production dependencies"
+              npm ci --omit=dev --no-audit --no-fund
+              printf '%s\n' "$CURRENT_LOCK_HASH" > "$LOCK_HASH_FILE"
+            else
+              echo "Skipping dependency install (lockfile unchanged)"
+            fi
+
+            if [ -z "$DATABASE_URL" ]; then
+              echo "DATABASE_URL secret is required for migrations"
+              exit 1
+            fi
+
+            # Check database connectivity
+            node --input-type=module -e "import mysql from 'mysql2/promise'; const conn = await mysql.createConnection(process.env.DATABASE_URL); await conn.query('SELECT 1'); await conn.end(); console.log('Database connectivity check: OK');"
+
+            # Run migrations using drizzle-kit migrate
+            npm run db:migrate
+            echo "Database migrations: OK"
+
+            # NOTE: NO SEEDING IN PRODUCTION - Use setup wizard instead.
+            # To set up the site, SSH into the server and run:
+            #   cd ${{ secrets.DEPLOY_PATH }} && node scripts/cli.js setup-token
+            # Then share the generated URL with the client for first-time setup.
+
+            echo "✅ Deployment complete. Run 'node scripts/cli.js setup-token' to generate setup URL."
+
+            mkdir -p tmp
+            date > tmp/restart.txt
 
       - name: Verify deployed files on server
         if: steps.ssh_check.outputs.enabled == 'true'
-        run: |
-          set -euo pipefail
-          SSH_TARGET="${CPANEL_SSH_USER}@${CPANEL_SSH_HOST}"
-          DEPLOY_DIR="${{ steps.paths.outputs.deploy_dir }}"
-
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            -p "${CPANEL_SSH_PORT}" "$SSH_TARGET" \
-            "cd \"${DEPLOY_DIR}\" && pwd && ls -la"
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.CPANEL_SSH_HOST }}
+          username: ${{ env.CPANEL_SSH_USER }}
+          key: ${{ env.CPANEL_SSH_KEY }}
+          port: ${{ env.CPANEL_SSH_PORT }}
+          script: |
+            set -e
+            DEPLOY_DIR="${{ steps.paths.outputs.deploy_dir }}"
+            cd "$DEPLOY_DIR"
+            pwd
+            ls -la
 
       - name: Health check - verify app responds
         if: steps.ssh_check.outputs.enabled == 'true'
