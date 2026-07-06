@@ -91,8 +91,7 @@ class AnalyticsService {
         createdAt: new Date(),
         updatedAt: new Date(),
       })
-      .onConflictDoUpdate({
-        target: dailyPageViews.date,
+      .onDuplicateKeyUpdate({
         set: {
           totalViews: sql`${dailyPageViews.totalViews} + 1`,
           updatedAt: new Date(),

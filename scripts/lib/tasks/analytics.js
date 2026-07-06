@@ -87,8 +87,9 @@ export async function simulateDay(args = []) {
       date: dateStr,
       totalViews: baseViews,
       uniqueVisitors,
-    }).onConflictDoUpdate({
-      target: dailyPageViews.date,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }).onDuplicateKeyUpdate({
       set: { totalViews: baseViews, uniqueVisitors, updatedAt: new Date() },
     });
 

@@ -692,7 +692,11 @@ class PostsService {
       })
       .where(eq(posts.id, id));
 
-    await analyticsService.recordDailyView();
+    try {
+      await analyticsService.recordDailyView();
+    } catch (error) {
+      console.error('Failed to record daily page view:', error);
+    }
 
     return true;
   }
