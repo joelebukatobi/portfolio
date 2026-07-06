@@ -126,6 +126,13 @@ jobs:
             **/.build/**
             **/dist/css/**
 
+      - name: Encode database URL for SSH
+        id: deploy_db
+        if: steps.ssh_check.outputs.enabled == 'true'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: echo "database_url_b64=$(printf '%s' "$DATABASE_URL" | base64 -w 0)" >> "$GITHUB_OUTPUT"
+
       - name: Install production dependencies and restart app
         if: steps.ssh_check.outputs.enabled == 'true'
         uses: appleboy/ssh-action@v1.0.3
@@ -134,10 +141,12 @@ jobs:
           username: ${{ env.CPANEL_SSH_USER }}
           key: ${{ env.CPANEL_SSH_KEY }}
           port: ${{ env.CPANEL_SSH_PORT }}
-          envs: DATABASE_URL
           script: |
             set -e
             set -o pipefail
+
+            DATABASE_URL="$(printf '%s' '${{ steps.deploy_db.outputs.database_url_b64 }}' | base64 -d)"
+            export DATABASE_URL
 
             # Source .bashrc to get Node 24 in PATH
             if [ -f ~/.bashrc ]; then
