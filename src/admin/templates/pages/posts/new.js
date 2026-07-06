@@ -26,9 +26,11 @@ export function postNewContent({ categories, tags, user }) {
           <form
             class="form"
             id="newPostForm"
+            novalidate
             hx-post="/admin/posts"
             hx-target="#form-response"
             hx-swap="innerHTML"
+            hx-on:config-request="window.syncFormSelectValues(event.detail.elt)"
           >
             <div id="form-response"></div>
 
@@ -81,7 +83,7 @@ export function postNewContent({ categories, tags, user }) {
             <!-- Author, Category & Tags Row -->
             <div class="form__row form__row--3col">
               <!-- Author -->
-              <div class="form__group">
+              <div class="form__group form__group--ordered">
                 <label class="label label--required" for="postAuthor">Author</label>
                 <select
                   name="authorId"
@@ -99,7 +101,7 @@ export function postNewContent({ categories, tags, user }) {
               </div>
 
               <!-- Category -->
-              <div class="form__group">
+              <div class="form__group form__group--ordered">
                 <label class="label label--required" for="postCategory">Category</label>
                 <select
                   name="categoryId"
@@ -124,7 +126,7 @@ export function postNewContent({ categories, tags, user }) {
               </div>
 
               <!-- Tags -->
-              <div class="form__group">
+              <div class="form__group form__group--ordered">
                 <label class="label" for="postTags">Tags</label>
                 <select
                   name="tagIds"

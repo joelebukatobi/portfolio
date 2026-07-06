@@ -33,9 +33,11 @@ export function postEditContent({ categories, tags, post, user, toast }) {
           <form
             class="form"
             id="editPostForm"
+            novalidate
             hx-put="/admin/posts/${post.id}"
             hx-target="#form-response"
             hx-swap="innerHTML"
+            hx-on:config-request="window.syncFormSelectValues(event.detail.elt)"
           >
             <!-- Featured Image -->
             <div class="form__group">
@@ -88,7 +90,7 @@ export function postEditContent({ categories, tags, post, user, toast }) {
             <!-- Author, Category & Tags Row -->
             <div class="form__row form__row--3col">
               <!-- Author -->
-              <div class="form__group">
+              <div class="form__group form__group--ordered">
                 <label class="label label--required" for="postAuthor">Author</label>
                 <select
                   name="authorId"
@@ -106,7 +108,7 @@ export function postEditContent({ categories, tags, post, user, toast }) {
               </div>
 
               <!-- Category -->
-              <div class="form__group">
+              <div class="form__group form__group--ordered">
                 <label class="label label--required" for="postCategory">Category</label>
                 <select
                   name="categoryId"
@@ -127,7 +129,7 @@ export function postEditContent({ categories, tags, post, user, toast }) {
               </div>
 
               <!-- Tags -->
-              <div class="form__group">
+              <div class="form__group form__group--ordered">
                 <label class="label" for="postTags">Tags</label>
                 <select
                   name="tagIds"
