@@ -9,8 +9,8 @@ function themeToggleButton() {
     @click="toggleTheme()"
     :aria-label="light ? 'Switch to dark mode' : 'Switch to light mode'"
   >
-    <svg x-show="!light" aria-hidden="true"><use href="/images/icons/sun.svg" /></svg>
-    <svg x-show="light" class="navbar__theme-icon--moon" aria-hidden="true"><use href="/images/icons/moon.svg" /></svg>
+    <svg x-show="!light" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="/images/icons/sun.svg" /></svg>
+    <svg x-show="light" class="navbar__theme-icon--moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="/images/icons/moon.svg" /></svg>
   </button>
 </li>`;
 }
@@ -45,7 +45,7 @@ export function navbar({ activePage = null } = {}) {
       <div class="navbar__mobile-actions">
         ${themeToggleButton()}
         <div @click="open = !open" class="navbar__menu">
-          <svg><use :href="open ? '/images/icons/navbar-close.svg' : '/images/icons/navbar-menu.svg'" /></svg>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><use :href="open ? '/images/icons/navbar-close.svg' : '/images/icons/navbar-menu.svg'" /></svg>
         </div>
       </div>
     </div>

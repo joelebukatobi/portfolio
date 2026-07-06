@@ -67,11 +67,15 @@
       height: 4rem;
       width: 4rem;
       border-radius: 100%;
-      background-color: rgba($color-grey, 0.1);
+      background-color: rgba($color-grey, 0.25);
+      cursor: pointer;
+
       & svg {
         height: 2.4rem;
         width: 2.4rem;
+        color: $color-off-white;
         stroke: $color-off-white;
+        fill: none;
       }
     }
   }
@@ -288,7 +292,7 @@
       &-panel {
         h6,
         hr {
-          display: none;
+          display: none !important;
         }
 
         &.blog__share {

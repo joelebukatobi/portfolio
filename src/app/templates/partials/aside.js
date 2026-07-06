@@ -96,7 +96,7 @@ function defaultFilterTab(filters = {}) {
 
 function filterPanel({ className, tabId, title, listContent }) {
   return `
-<div class="${className} blog__filters-panel" x-show="filterTab === '${tabId}'" role="tabpanel">
+<div class="${className} blog__filters-panel" x-show="filterTab === '${tabId}'" x-cloak role="tabpanel">
   <h6>${title}</h6>
   <hr />
   <ul>

@@ -1,5 +1,9 @@
 @use 'variables' as *;
 
+[x-cloak] {
+  display: none !important;
+}
+
 @font-face {
   font-family: 'Hurme Geometric Sans';
   src: url('/fonts/Hurme Geometric Sans.otf');
