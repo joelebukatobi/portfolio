@@ -1,11 +1,15 @@
 // Edit video page template
 
-import { escapeHtml, toPublicMediaUrl } from '../../../utils/helpers.js';
+import { escapeHtml, toPublicMediaUrl, toastQueryScript } from '../../../utils/helpers.js';
 
 /**
  * Edit video page inner content (layout applied via fastify-html addLayout).
  */
-export function videosEditContent({ user, video, posts, albums = [] }) {
+export function videosEditContent({ user, video, posts, albums = [], toast }) {
+  const toastScript = toastQueryScript(toast, {
+    uploaded: 'Video uploaded successfully!',
+  });
+
   return `
     <div class="media">
       <div class="content">
@@ -246,6 +250,7 @@ export function videosEditModals({ user, video }) {
         }
       });
     </script>
+    ${toastScript}
   `;
 }
 

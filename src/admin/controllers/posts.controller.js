@@ -5,14 +5,13 @@ import { eq } from 'drizzle-orm';
 import { imagesService } from '../../services/images.service.js';
 import { videosService } from '../../services/videos.service.js';
 import { toPublicMediaUrl } from '../../lib/media-paths.js';
-import { parsePostTagIds } from '../../lib/post-input.js';
 import crypto from 'crypto';
+import { parsePostTagIds } from '../../lib/post-input.js';
 import {
   renderAdminPage,
   renderFragment,
   renderEmpty,
   errorAlert,
-  successAlert,
   htmxRedirect,
   setHtmxToast,
 } from '../render.js';
@@ -166,7 +165,6 @@ class PostsController {
 
       const tagIds = parsePostTagIds({ tags: tagIdsString });
 
-      // Create post
       const post = await postsService.createPost({
         title,
         slug,
@@ -181,7 +179,13 @@ class PostsController {
       }, request.user.id);
 
       const toastKey = status === 'PUBLISHED' ? 'published' : 'draftSaved';
-      return htmxRedirect(reply, `/admin/posts/${post.id}/edit?toast=${toastKey}`);
+      const redirectUrl = `/admin/posts/${post.id}/edit?toast=${toastKey}`;
+
+      if (request.headers['hx-request'] !== 'true') {
+        return reply.redirect(redirectUrl);
+      }
+
+      return htmxRedirect(reply, redirectUrl);
 
     } catch (error) {
       request.log.error(error);

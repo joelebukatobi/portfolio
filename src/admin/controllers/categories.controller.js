@@ -109,7 +109,11 @@ class CategoriesController {
         description,
       }, user.id);
 
-      return htmxRedirect(reply, '/admin/categories?toast=created');
+      const redirectUrl = '/admin/categories?toast=created';
+      if (request.headers['hx-request'] !== 'true') {
+        return reply.redirect(redirectUrl);
+      }
+      return htmxRedirect(reply, redirectUrl);
     } catch (error) {
       request.log.error(error);
       reply.code(400);

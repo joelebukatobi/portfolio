@@ -325,6 +325,12 @@ export function buildDashboardShell({
         const redirectUrl = xhr.getResponseHeader('HX-Redirect');
         if (redirectUrl) {
           window.location.href = redirectUrl;
+          return;
+        }
+
+        const locationUrl = xhr.getResponseHeader('HX-Location');
+        if (locationUrl) {
+          window.location.href = locationUrl;
         }
 
         const triggerHeader = xhr.getResponseHeader('HX-Trigger');

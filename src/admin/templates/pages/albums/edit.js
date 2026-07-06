@@ -1,12 +1,16 @@
 // src/admin/templates/pages/albums/edit.js
 // Edit Album Page
 
-import { escapeHtml, toPublicMediaUrl } from '../../utils/helpers.js';
+import { escapeHtml, toPublicMediaUrl, toastQueryScript } from '../../utils/helpers.js';
 
 /**
  * Edit album page inner content (layout applied via fastify-html addLayout).
  */
-export function albumEditContent({ user, album, albumImages = [] }) {
+export function albumEditContent({ user, album, albumImages = [], toast }) {
+  const toastScript = toastQueryScript(toast, {
+    created: 'Album created successfully!',
+  });
+
   const hasCover = album.coverImage && album.coverImage.path;
   const coverImageId = album.coverImageId || '';
 
@@ -144,6 +148,7 @@ export function albumEditContent({ user, album, albumImages = [] }) {
         htmx.trigger('#editAlbumForm', 'submit');
       }
     </script>
+    ${toastScript}
   `;
 }
 

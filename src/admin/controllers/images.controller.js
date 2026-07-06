@@ -8,8 +8,6 @@ import {
   renderFragment,
   renderEmpty,
   errorAlert,
-  errorFragment,
-  htmxLocation,
   htmxRedirect,
   setHtmxToast,
 } from '../render.js';
@@ -183,9 +181,11 @@ class ImagesController {
         await imagesService.attachToPost(image.id, postId);
       }
 
-      return htmxLocation(reply, `/admin/media/images/${image.id}/edit`, {
-        message: 'Image uploaded successfully!',
-      });
+      const redirectUrl = `/admin/media/images/${image.id}/edit?toast=uploaded`;
+      if (request.headers['hx-request'] !== 'true') {
+        return reply.redirect(redirectUrl);
+      }
+      return htmxRedirect(reply, redirectUrl);
     } catch (error) {
       request.log.error('Upload error:', error);
       reply.code(400);
@@ -228,6 +228,7 @@ class ImagesController {
           image: imageData,
           posts,
           albums,
+          toast: request.query?.toast,
         }),
       );
     } catch (error) {
@@ -285,14 +286,10 @@ class ImagesController {
       return htmxRedirect(reply, '/admin/media/images?toast=deleted');
     } catch (error) {
       request.log.error(error);
-
-      const message = error.message?.includes('foreign key')
-        || String(error.code || '').startsWith('ER_ROW_IS_REFERENCED')
-        ? 'This image is in use and could not be deleted.'
-        : error.message || 'Failed to delete image.';
-
       reply.code(400);
-      return errorFragment(reply, { message });
+      return renderFragment(reply, errorAlert({
+        message: error.message || 'Failed to delete image.',
+      }));
     }
   }
 

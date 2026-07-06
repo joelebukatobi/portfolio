@@ -108,8 +108,11 @@ class TagsController {
         description,
       }, user.id);
 
-      // Redirect to edit page with toast notification
-      return htmxRedirect(reply, '/admin/tags?toast=created');
+      const redirectUrl = '/admin/tags?toast=created';
+      if (request.headers['hx-request'] !== 'true') {
+        return reply.redirect(redirectUrl);
+      }
+      return htmxRedirect(reply, redirectUrl);
     } catch (error) {
       request.log.error(error);
       reply.code(400);
