@@ -58,11 +58,22 @@ export function toPublicMediaUrl(storedPath) {
 }
 
 /**
- * Best public URL for a media item (prefers thumbnail).
+ * Public URL for a media item (full image).
  * @param {{ path?: string, thumbnailPath?: string }|null|undefined} item
  * @returns {string|null}
  */
 export function mediaItemPublicUrl(item) {
+  if (!item) return null;
+  const url = toPublicMediaUrl(item.path || item.thumbnailPath);
+  return url || null;
+}
+
+/**
+ * Thumbnail URL for admin grids and pickers.
+ * @param {{ path?: string, thumbnailPath?: string }|null|undefined} item
+ * @returns {string|null}
+ */
+export function mediaItemThumbnailUrl(item) {
   if (!item) return null;
   const url = toPublicMediaUrl(item.thumbnailPath || item.path);
   return url || null;

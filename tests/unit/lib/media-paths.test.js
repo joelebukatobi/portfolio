@@ -59,10 +59,18 @@ describe('rewriteContentMediaUrls', () => {
 });
 
 describe('mediaItemPublicUrl', () => {
-  it('prefers thumbnail over full path', () => {
+  it('prefers full path over thumbnail', () => {
     expect(
       mediaItemPublicUrl({
         path: 'public/uploads/posts/full.jpg',
+        thumbnailPath: '/public/uploads/posts/thumbs/thumb.jpg',
+      }),
+    ).toBe('/public/uploads/posts/full.jpg');
+  });
+
+  it('falls back to thumbnail when full path is missing', () => {
+    expect(
+      mediaItemPublicUrl({
         thumbnailPath: '/public/uploads/posts/thumbs/thumb.jpg',
       }),
     ).toBe('/public/uploads/posts/thumbs/thumb.jpg');
