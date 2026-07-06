@@ -125,7 +125,25 @@ jobs:
             **/.build/**
             **/dist/css/**
 
-      - name: Install production dependencies and restart app
+      - name: Prepare remote deploy script
+        if: steps.ssh_check.outputs.enabled == 'true'
+        env:
+          DEPLOY_DIR: ${{ steps.paths.outputs.deploy_dir }}
+          FTP_DIR: ${{ steps.paths.outputs.ftp_dir }}
+        run: |
+          mkdir -p tmp
+          python3 <<'PY'
+          import os
+          from pathlib import Path
+
+          text = Path("scripts/deploy-remote.sh").read_text()
+          text = text.replace("@DEPLOY_DIR@", os.environ["DEPLOY_DIR"])
+          text = text.replace("@FTP_DIR@", os.environ["FTP_DIR"])
+          Path("tmp/deploy-remote.run.sh").write_text(text)
+          PY
+          chmod +x tmp/deploy-remote.run.sh
+
+      - name: SSH connectivity check
         if: steps.ssh_check.outputs.enabled == 'true'
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -134,58 +152,22 @@ jobs:
           key: ${{ env.CPANEL_SSH_KEY }}
           port: ${{ env.CPANEL_SSH_PORT }}
           script: |
-            set -e
+            echo "SSH connectivity OK"
+            echo "user=$(whoami)"
+            echo "home=$HOME"
+            echo "shell=${SHELL:-unknown}"
 
-            # Source .bashrc to get Node 24 in PATH
-            if [ -f ~/.bashrc ]; then
-              set +e
-              source ~/.bashrc
-              set -e
-            fi
-
-            DEPLOY_DIR="${{ steps.paths.outputs.deploy_dir }}"
-            cd "$DEPLOY_DIR"
-
-            echo "Deploy diagnostics:"
-            echo "- working directory: $(pwd)"
-            echo "- Node version: $(node --version)"
-
-            if [ ! -f package.json ] || [ ! -f package-lock.json ]; then
-              echo "::error::package.json or package-lock.json is missing in the deploy directory."
-              echo "PRODUCTION_DEPLOY_PATH must match the folder FTP uploads to."
-              ls -la
-              exit 1
-            fi
-
-            LOCK_HASH_FILE=".package-lock.sha256"
-            CURRENT_LOCK_HASH="$(sha256sum package-lock.json | awk '{print $1}')"
-            PREVIOUS_LOCK_HASH=""
-
-            if [ -f "$LOCK_HASH_FILE" ]; then
-              PREVIOUS_LOCK_HASH="$(cat "$LOCK_HASH_FILE")"
-            fi
-
-            if [ ! -d node_modules ] || [ "$CURRENT_LOCK_HASH" != "$PREVIOUS_LOCK_HASH" ]; then
-              echo "Installing production dependencies"
-              npm ci --omit=dev --no-audit --no-fund
-              printf '%s\n' "$CURRENT_LOCK_HASH" > "$LOCK_HASH_FILE"
-            else
-              echo "Skipping dependency install (lockfile unchanged)"
-            fi
-
-            npm run db:test
-            npm run db:migrate
-            echo "Database migrations: OK"
-
-            # NOTE: NO SEEDING IN PRODUCTION - Use setup wizard instead.
-            # To set up the site, SSH into the server and run:
-            #   cd ${{ secrets.DEPLOY_PATH }} && node scripts/cli.js setup-token
-            # Then share the generated URL with the client for first-time setup.
-
-            echo "✅ Deployment complete. Run 'node scripts/cli.js setup-token' to generate setup URL."
-
-            mkdir -p tmp
-            date > tmp/restart.txt
+      - name: Install production dependencies and restart app
+        if: steps.ssh_check.outputs.enabled == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.CPANEL_SSH_HOST }}
+          username: ${{ env.CPANEL_SSH_USER }}
+          key: ${{ env.CPANEL_SSH_KEY }}
+          port: ${{ env.CPANEL_SSH_PORT }}
+          command_timeout: 30m
+          debug: true
+          script_path: tmp/deploy-remote.run.sh
 
       - name: Verify deployed files on server
         if: steps.ssh_check.outputs.enabled == 'true'

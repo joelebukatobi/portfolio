@@ -128,7 +128,25 @@ jobs:
             **/.idea/**
             **/.build/**
 
-      - name: Install production dependencies and restart app
+      - name: Prepare remote deploy script
+        if: steps.ssh_check.outputs.enabled == 'true'
+        env:
+          DEPLOY_DIR: ${{ steps.paths.outputs.deploy_dir }}
+          FTP_DIR: ${{ steps.paths.outputs.ftp_dir }}
+        run: |
+          mkdir -p tmp
+          python3 <<'PY'
+          import os
+          from pathlib import Path
+
+          text = Path("scripts/deploy-remote.sh").read_text()
+          text = text.replace("@DEPLOY_DIR@", os.environ["DEPLOY_DIR"])
+          text = text.replace("@FTP_DIR@", os.environ["FTP_DIR"])
+          Path("tmp/deploy-remote.run.sh").write_text(text)
+          PY
+          chmod +x tmp/deploy-remote.run.sh
+
+      - name: SSH connectivity check
         if: steps.ssh_check.outputs.enabled == 'true'
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -137,71 +155,22 @@ jobs:
           key: ${{ env.CPANEL_SSH_KEY }}
           port: ${{ env.CPANEL_SSH_PORT }}
           script: |
-            set -e
+            echo "SSH connectivity OK"
+            echo "user=$(whoami)"
+            echo "home=$HOME"
+            echo "shell=${SHELL:-unknown}"
 
-            if [ -f ~/.bashrc ]; then
-              set +e
-              source ~/.bashrc
-              set -e
-            fi
-
-            DEPLOY_DIR="${{ steps.paths.outputs.deploy_dir }}"
-            FTP_DIR="${{ steps.paths.outputs.ftp_dir }}"
-
-            if ! cd "$DEPLOY_DIR"; then
-              echo "::error::Cannot cd to DEPLOY_PATH: $DEPLOY_DIR"
-              exit 1
-            fi
-
-            echo "Step: deploy diagnostics"
-            echo "Deploy diagnostics:"
-            echo "- SSH deploy directory: $(pwd)"
-            echo "- FTP upload directory: $FTP_DIR"
-            echo "- directory listing:"
-            ls -la
-
-            if [ ! -f package.json ] || [ ! -f package-lock.json ]; then
-              echo "::error::package.json or package-lock.json is missing in the deploy directory."
-              echo "DEPLOY_PATH must match the folder FTPS uploads to (Node app root on cPanel)."
-              exit 1
-            fi
-
-            echo "- Node version: $(node --version)"
-
-            LOCK_HASH_FILE=".package-lock.sha256"
-            CURRENT_LOCK_HASH="$(sha256sum package-lock.json | awk '{print $1}')"
-            PREVIOUS_LOCK_HASH=""
-
-            if [ -f "$LOCK_HASH_FILE" ]; then
-              PREVIOUS_LOCK_HASH="$(cat "$LOCK_HASH_FILE")"
-            fi
-
-            if [ ! -d node_modules ] || [ "$CURRENT_LOCK_HASH" != "$PREVIOUS_LOCK_HASH" ]; then
-              echo "Step: npm ci (production dependencies)"
-              echo "Installing production dependencies"
-              npm ci --omit=dev --no-audit --no-fund
-              printf '%s\n' "$CURRENT_LOCK_HASH" > "$LOCK_HASH_FILE"
-            else
-              echo "Step: skip npm ci (lockfile unchanged)"
-              echo "Skipping dependency install (lockfile unchanged)"
-            fi
-
-            echo "Step: db:test"
-            npm run db:test
-
-            echo "Step: db:migrate"
-            npm run db:migrate
-            echo "Database migrations: OK"
-
-            echo "Step: verify migrations"
-            node scripts/verify-migrations.js
-
-            echo "Step: restart signal"
-            echo "✅ Deployment complete. Run 'node scripts/cli.js setup-token' to generate setup URL."
-
-            mkdir -p tmp
-            date > tmp/restart.txt
-            echo "Restart signal written to tmp/restart.txt"
+      - name: Install production dependencies and restart app
+        if: steps.ssh_check.outputs.enabled == 'true'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.CPANEL_SSH_HOST }}
+          username: ${{ env.CPANEL_SSH_USER }}
+          key: ${{ env.CPANEL_SSH_KEY }}
+          port: ${{ env.CPANEL_SSH_PORT }}
+          command_timeout: 30m
+          debug: true
+          script_path: tmp/deploy-remote.run.sh
 
       - name: Health check - verify app responds
         if: steps.ssh_check.outputs.enabled == 'true'
