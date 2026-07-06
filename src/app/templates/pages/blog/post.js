@@ -1,4 +1,5 @@
 import { escapeHtml, truncate, imageUrl } from '../../utils/helpers.js';
+import { rewriteContentMediaUrls } from '../../../../lib/media-paths.js';
 import { navbar } from '../../partials/navbar.js';
 import { footer } from '../../partials/footer.js';
 import { asideForPost } from '../../partials/aside.js';
@@ -63,7 +64,7 @@ ${navbar({ activePage: null })}
       </div>
       <h3>${title}</h3>
       <hr class="blogpost__title-divider" />
-      ${post.post || ''}
+      ${rewriteContentMediaUrls(post.post || '')}
       ${postComments({
         slug: post.slug,
         comments,
@@ -78,6 +79,14 @@ ${navbar({ activePage: null })}
   (function () {
     const content = document.querySelector('.blogpost__content');
     if (!content) return;
+
+    content.querySelectorAll('img').forEach((img) => {
+      img.addEventListener('error', () => {
+        img.style.display = 'none';
+        const figure = img.closest('figure');
+        if (figure) figure.style.display = 'none';
+      }, { once: true });
+    });
 
     function isCodeParagraph(p) {
       const code = p.querySelector(':scope > code');

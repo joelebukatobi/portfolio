@@ -4,8 +4,19 @@
 import path from 'path';
 
 /**
+ * True when URL points at this app on localhost / loopback (editor dev inserts).
+ * @param {string} value
+ * @returns {boolean}
+ */
+export function isLocalDevMediaUrl(value) {
+  if (!value || typeof value !== 'string') return false;
+  return /^https?:\/\/(?:localhost|127\.0\.0\.1|0\.0\.0\.0)(?::\d+)?\//i.test(value.trim());
+}
+
+/**
  * Convert a stored media path to a browser URL under /public/.
  * Handles legacy values: public/..., /public/..., uploads/..., /uploads/...
+ * and localhost absolute URLs saved from the admin editor.
  * @param {string|null|undefined} storedPath
  * @returns {string}
  */
@@ -14,6 +25,14 @@ export function toPublicMediaUrl(storedPath) {
 
   const value = String(storedPath).trim();
   if (!value) return '';
+
+  if (isLocalDevMediaUrl(value)) {
+    try {
+      return toPublicMediaUrl(new URL(value).pathname);
+    } catch {
+      return '';
+    }
+  }
 
   if (/^https?:\/\//i.test(value)) {
     return value;
@@ -65,4 +84,18 @@ export function resolveMediaFsPath(storedPath) {
     return path.join(process.cwd(), 'public', rel);
   }
   return path.join(process.cwd(), rel);
+}
+
+/**
+ * Rewrite localhost media URLs embedded in post HTML to /public/... paths.
+ * @param {string|null|undefined} html
+ * @returns {string}
+ */
+export function rewriteContentMediaUrls(html) {
+  if (!html || typeof html !== 'string') return '';
+
+  return html.replace(
+    /(<(?:img|source|video)\b[^>]*\ssrc=["'])(https?:\/\/(?:localhost|127\.0\.0\.1|0\.0\.0\.0)(?::\d+)?)(\/[^"']*)(["'])/gi,
+    (_, before, _origin, pathname, after) => `${before}${toPublicMediaUrl(pathname)}${after}`,
+  );
 }
