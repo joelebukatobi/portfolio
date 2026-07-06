@@ -2,7 +2,7 @@
 // New Post Page - Exact structure from new-post.html
 
 import { escapeHtml } from '../../utils/helpers.js';
-import { DEFAULT_PLACEHOLDER_IMAGE_URL } from '../../../lib/media-defaults.js';
+import { DEFAULT_PLACEHOLDER_IMAGE_URL } from '../../../../lib/media-defaults.js';
 
 /**
  * New Post page inner content (layout applied via fastify-html addLayout).

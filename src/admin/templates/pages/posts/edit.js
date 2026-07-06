@@ -2,7 +2,7 @@
 // Edit Post Page - Exact structure from edit-post.html
 
 import { escapeHtml, toastQueryScript } from '../../utils/helpers.js';
-import { DEFAULT_PLACEHOLDER_IMAGE_URL } from '../../../lib/media-defaults.js';
+import { DEFAULT_PLACEHOLDER_IMAGE_URL } from '../../../../lib/media-defaults.js';
 
 /**
  * Edit Post page inner content (layout applied via fastify-html addLayout).
