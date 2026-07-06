@@ -5,6 +5,7 @@ import { eq } from 'drizzle-orm';
 import { imagesService } from '../../services/images.service.js';
 import { videosService } from '../../services/videos.service.js';
 import { toPublicMediaUrl } from '../../lib/media-paths.js';
+import { parsePostTagIds } from '../../lib/post-input.js';
 import crypto from 'crypto';
 import {
   renderAdminPage,
@@ -161,14 +162,10 @@ class PostsController {
         status = 'DRAFT',
         metaTitle,
         metaDescription,
+        featuredImageId,
       } = request.body;
 
-      // Parse tags - handle both array (from multi-select) and comma-separated string
-      const tagIds = Array.isArray(tagIdsString)
-        ? tagIdsString.filter(Boolean)
-        : tagIdsString
-          ? tagIdsString.split(',').filter(Boolean)
-          : [];
+      const tagIds = parsePostTagIds({ tags: tagIdsString });
 
       // Create post
       const post = await postsService.createPost({
@@ -181,6 +178,7 @@ class PostsController {
         status,
         metaTitle,
         metaDescription,
+        featuredImageId,
       }, request.user.id);
 
       // Send location for delayed redirect + toast trigger
@@ -260,14 +258,10 @@ class PostsController {
         status,
         metaTitle,
         metaDescription,
+        featuredImageId,
       } = request.body;
 
-      // Parse tags - handle both array (from multi-select) and comma-separated string
-      const tagIds = Array.isArray(tagIdsString)
-        ? tagIdsString.filter(Boolean)
-        : tagIdsString
-          ? tagIdsString.split(',').filter(Boolean)
-          : undefined;
+      const tagIds = parsePostTagIds({ tags: tagIdsString });
 
       // Update post
       const post = await postsService.updatePost(id, {
@@ -280,6 +274,7 @@ class PostsController {
         status,
         metaTitle,
         metaDescription,
+        featuredImageId,
       });
 
       return renderEmpty(setHtmxToast(reply, {

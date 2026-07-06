@@ -351,7 +351,18 @@ export function postNewContent({ categories, tags, user }) {
       });
 
       // Submit form
+      function ensurePostSlug() {
+        if (!slugInput?.value?.trim() && titleInput?.value?.trim()) {
+          slugInput.value = titleInput.value
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+        }
+      }
+
       function submitForm(status) {
+        ensurePostSlug();
+
         // Update content from CKEditor
         if (editor) {
           document.getElementById('contentInput').value = editor.getData();
