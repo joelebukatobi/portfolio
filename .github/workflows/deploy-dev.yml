@@ -14,7 +14,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
       CPANEL_FTP_HOST: ${{ secrets.CPANEL_FTP_HOST }}
       CPANEL_FTP_USER: ${{ secrets.CPANEL_FTP_USER }}
       CPANEL_FTP_PASSWORD: ${{ secrets.CPANEL_FTP_PASSWORD }}
@@ -26,10 +25,10 @@ jobs:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: npm
@@ -106,7 +105,7 @@ jobs:
           fi
 
       - name: Upload files via FTPS
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ env.CPANEL_FTP_HOST }}
           username: ${{ env.CPANEL_FTP_USER }}
