@@ -1,5 +1,6 @@
 import Fastify from 'fastify';
 import app from './app.js';
+import { runMigrations } from './db/run-migrations.js';
 
 const server = Fastify({
   logger: {
@@ -9,6 +10,17 @@ const server = Fastify({
       : undefined
   }
 });
+
+// Apply pending database migrations before serving traffic.
+// Idempotent and guarded by a MySQL advisory lock (see run-migrations.js).
+if (process.env.RUN_MIGRATIONS_ON_BOOT !== 'false') {
+  try {
+    await runMigrations();
+  } catch (err) {
+    server.log.error({ err }, 'Database migrations failed during startup');
+    process.exit(1);
+  }
+}
 
 // Register application
 await server.register(app);

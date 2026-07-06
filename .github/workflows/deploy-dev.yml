@@ -18,10 +18,6 @@ jobs:
       CPANEL_FTP_USER: ${{ secrets.CPANEL_FTP_USER }}
       CPANEL_FTP_PASSWORD: ${{ secrets.CPANEL_FTP_PASSWORD }}
       DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-      CPANEL_SSH_HOST: ${{ secrets.CPANEL_FTP_HOST }}
-      CPANEL_SSH_USER: ${{ secrets.CPANEL_FTP_USER }}
-      CPANEL_SSH_KEY: ${{ secrets.CPANEL_SSH_KEY }}
-      CPANEL_SSH_PORT: 22
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -89,19 +85,22 @@ jobs:
             *) FTP_DIR="$FTP_DIR/" ;;
           esac
 
-          echo "deploy_dir=$DEPLOY_DIR" >> "$GITHUB_OUTPUT"
           echo "ftp_dir=$FTP_DIR" >> "$GITHUB_OUTPUT"
-          echo "SSH deploy directory: $DEPLOY_DIR"
           echo "FTP upload directory: $FTP_DIR"
 
-      - name: Detect SSH configuration
-        id: ssh_check
+      - name: Generate Passenger restart signal
         run: |
-          if [ -n "$CPANEL_SSH_HOST" ] && [ -n "$CPANEL_SSH_USER" ] && [ -n "$CPANEL_SSH_KEY" ]; then
-            echo "enabled=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "enabled=false" >> "$GITHUB_OUTPUT"
-          fi
+          set -e
+          mkdir -p tmp
+          date -u +"%Y-%m-%dT%H:%M:%SZ deploy ${GITHUB_SHA}" > tmp/restart.txt
+          echo "Wrote restart signal:"
+          cat tmp/restart.txt
+
+      - name: Warn on dependency changes
+        run: |
+          set -e
+          echo "Reminder: if package-lock.json changed, run 'Run NPM Install' in the"
+          echo "cPanel Node.js App UI once. Production node_modules are not uploaded via FTP."
 
       - name: Upload files via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
@@ -123,79 +122,11 @@ jobs:
             **/.env*
             **/.github/**
             **/.DS_Store
-            **/tmp/**
             **/.vscode/**
             **/.idea/**
             **/.build/**
 
-      - name: Install production dependencies and restart app
-        if: steps.ssh_check.outputs.enabled == 'true'
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ env.CPANEL_SSH_HOST }}
-          username: ${{ env.CPANEL_SSH_USER }}
-          key: ${{ env.CPANEL_SSH_KEY }}
-          port: ${{ env.CPANEL_SSH_PORT }}
-          script: |
-            set -e
-            set -o pipefail
-
-            if [ -f ~/.bashrc ]; then
-              source ~/.bashrc
-            fi
-
-            DEPLOY_DIR="${{ steps.paths.outputs.deploy_dir }}"
-            FTP_DIR="${{ steps.paths.outputs.ftp_dir }}"
-
-            if ! cd "$DEPLOY_DIR"; then
-              echo "::error::Cannot cd to DEPLOY_PATH: $DEPLOY_DIR"
-              exit 1
-            fi
-
-            echo "Deploy diagnostics:"
-            echo "- SSH deploy directory: $(pwd)"
-            echo "- FTP upload directory: $FTP_DIR"
-            echo "- directory listing:"
-            ls -la
-
-            if [ ! -f package.json ] || [ ! -f package-lock.json ]; then
-              echo "::error::package.json or package-lock.json is missing in the deploy directory."
-              echo "DEPLOY_PATH must match the folder FTPS uploads to (Node app root on cPanel)."
-              exit 1
-            fi
-
-            echo "- Node version: $(node --version)"
-
-            LOCK_HASH_FILE=".package-lock.sha256"
-            CURRENT_LOCK_HASH="$(sha256sum package-lock.json | awk '{print $1}')"
-            PREVIOUS_LOCK_HASH=""
-
-            if [ -f "$LOCK_HASH_FILE" ]; then
-              PREVIOUS_LOCK_HASH="$(cat "$LOCK_HASH_FILE")"
-            fi
-
-            if [ ! -d node_modules ] || [ "$CURRENT_LOCK_HASH" != "$PREVIOUS_LOCK_HASH" ]; then
-              echo "Installing production dependencies"
-              npm ci --omit=dev --no-audit --no-fund
-              printf '%s\n' "$CURRENT_LOCK_HASH" > "$LOCK_HASH_FILE"
-            else
-              echo "Skipping dependency install (lockfile unchanged)"
-            fi
-
-            npm run db:test
-            npm run db:migrate
-            echo "Database migrations: OK"
-
-            node scripts/verify-migrations.js
-
-            echo "✅ Deployment complete. Run 'node scripts/cli.js setup-token' to generate setup URL."
-
-            mkdir -p tmp
-            date > tmp/restart.txt
-            echo "Restart signal written to tmp/restart.txt"
-
       - name: Health check - verify app responds
-        if: steps.ssh_check.outputs.enabled == 'true'
         run: |
           set -e
           echo "Waiting for app to restart after deploy..."
@@ -218,5 +149,7 @@ jobs:
           echo "Last response:"
           curl -sv "$HEALTH_URL" 2>&1 | tail -30 || true
           echo ""
-          echo "If migrations ran but health still fails, check cPanel Node app logs for startup errors."
+          echo "If the app fails to boot, check cPanel Node.js App logs. A failed"
+          echo "migration aborts startup by design (see src/db/run-migrations.js)."
+          echo "If package-lock.json changed, run 'Run NPM Install' in cPanel."
           exit 1
