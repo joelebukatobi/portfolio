@@ -86,6 +86,7 @@ public/uploads/videos/thumbs/
 public/uploads/videos/video-*
 public/uploads/videos/*.mp4
 !public/uploads/videos/seeder-video.mp4
+public/uploads/site/
 
 # Built vendor bundles
 public/vendor/

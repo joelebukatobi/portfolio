@@ -2,6 +2,7 @@
 // Edit Post Page - Exact structure from edit-post.html
 
 import { escapeHtml, toastQueryScript } from '../../utils/helpers.js';
+import { DEFAULT_PLACEHOLDER_IMAGE_URL } from '../../../lib/media-defaults.js';
 
 /**
  * Edit Post page inner content (layout applied via fastify-html addLayout).
@@ -11,6 +12,8 @@ export function postEditContent({ categories, tags, post, user, toast }) {
     draftSaved: 'Draft saved successfully!',
     published: 'Post published successfully!',
   });
+  const placeholderImage = escapeHtml(DEFAULT_PLACEHOLDER_IMAGE_URL);
+  const featuredPreviewSrc = escapeHtml(post.featuredImageUrl || DEFAULT_PLACEHOLDER_IMAGE_URL);
 
   const content = `
     <div class="content content-main">
@@ -44,7 +47,7 @@ export function postEditContent({ categories, tags, post, user, toast }) {
               <label class="label" for="imageInput">Featured Image</label>
               <div class="image-upload">
                 <div class="image-upload__preview has-image" id="imagePreview">
-                  <img src="${post.featuredImageUrl || '/public/uploads/images/featured-posts.jpg'}" alt="Featured image preview" id="previewImg" />
+                  <img src="${featuredPreviewSrc}" alt="Featured image preview" id="previewImg" data-default-src="${placeholderImage}" />
                   <div class="image-upload__dropzone image-upload__dropzone--overlay" id="dropzone">
                     <i data-lucide="image-plus" class="image-upload__icon"></i>
                     <p class="image-upload__text">Click to upload or drag and drop</p>

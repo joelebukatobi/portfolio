@@ -13,7 +13,6 @@
   &__branding {
     @apply hidden lg:flex lg:w-1/2;
     @apply relative overflow-hidden z-[60];
-    background-image: url('https://images.unsplash.com/photo-1637689113621-73951984fcc1?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
     @apply bg-cover bg-center;
   }
 

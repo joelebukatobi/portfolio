@@ -1,10 +1,15 @@
 // src/admin/templates/pages/posts/new.js
 // New Post Page - Exact structure from new-post.html
 
+import { escapeHtml } from '../../utils/helpers.js';
+import { DEFAULT_PLACEHOLDER_IMAGE_URL } from '../../../lib/media-defaults.js';
+
 /**
  * New Post page inner content (layout applied via fastify-html addLayout).
  */
 export function postNewContent({ categories, tags, user }) {
+  const placeholderImage = escapeHtml(DEFAULT_PLACEHOLDER_IMAGE_URL);
+
   const content = `
     <div class="content content-main">
       <!-- Page Header -->
@@ -39,7 +44,7 @@ export function postNewContent({ categories, tags, user }) {
               <label class="label" for="imageInput">Featured Image</label>
               <div class="image-upload">
                 <div class="image-upload__preview has-image" id="imagePreview">
-                  <img src="/public/uploads/images/featured-posts.jpg" alt="Featured image" id="previewImg" />
+                  <img src="${placeholderImage}" alt="Featured image" id="previewImg" data-default-src="${placeholderImage}" />
                   <div class="image-upload__dropzone image-upload__dropzone--overlay" id="dropzone">
                     <i data-lucide="image-plus" class="image-upload__icon"></i>
                     <p class="image-upload__text">Click to upload or drag and drop</p>
@@ -536,6 +541,7 @@ export function postNewContent({ categories, tags, user }) {
       removeImage?.addEventListener('click', () => {
         imageInput.value = '';
         featuredImageId.value = '';
+        previewImg.src = previewImg.dataset.defaultSrc || '';
         imagePreview.classList.remove('has-image');
       });
     </script>
