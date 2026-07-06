@@ -22,7 +22,6 @@ jobs:
       CPANEL_SSH_USER: ${{ secrets.CPANEL_FTP_USER }}
       CPANEL_SSH_KEY: ${{ secrets.CPANEL_SSH_KEY }}
       CPANEL_SSH_PORT: 22
-      DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -134,7 +133,6 @@ jobs:
           username: ${{ env.CPANEL_SSH_USER }}
           key: ${{ env.CPANEL_SSH_KEY }}
           port: ${{ env.CPANEL_SSH_PORT }}
-          envs: DATABASE_URL
           script: |
             set -e
             set -o pipefail
@@ -149,12 +147,6 @@ jobs:
 
             echo "Deploy diagnostics:"
             echo "- working directory: $(pwd)"
-            if [ -n "$DATABASE_URL" ]; then
-              echo "- DATABASE_URL: present"
-            else
-              echo "- DATABASE_URL: missing"
-            fi
-
             echo "- Node version: $(node --version)"
 
             if [ ! -f package.json ] || [ ! -f package-lock.json ]; then
@@ -180,15 +172,7 @@ jobs:
               echo "Skipping dependency install (lockfile unchanged)"
             fi
 
-            if [ -z "$DATABASE_URL" ]; then
-              echo "DATABASE_URL secret is required for migrations"
-              exit 1
-            fi
-
-            # Check database connectivity
-            node --input-type=module -e "import mysql from 'mysql2/promise'; const conn = await mysql.createConnection(process.env.DATABASE_URL); await conn.query('SELECT 1'); await conn.end(); console.log('Database connectivity check: OK');"
-
-            # Run migrations using drizzle-kit migrate
+            npm run db:test
             npm run db:migrate
             echo "Database migrations: OK"
 
