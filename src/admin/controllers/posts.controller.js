@@ -13,7 +13,6 @@ import {
   renderEmpty,
   errorAlert,
   successAlert,
-  htmxLocation,
   htmxRedirect,
   setHtmxToast,
 } from '../render.js';
@@ -181,10 +180,8 @@ class PostsController {
         featuredImageId,
       }, request.user.id);
 
-      // Send location for delayed redirect + toast trigger
-      return htmxLocation(reply, `/admin/posts/${post.id}/edit`, {
-        message: status === 'PUBLISHED' ? 'Post published successfully!' : 'Draft saved successfully!',
-      });
+      const toastKey = status === 'PUBLISHED' ? 'published' : 'draftSaved';
+      return htmxRedirect(reply, `/admin/posts/${post.id}/edit?toast=${toastKey}`);
 
     } catch (error) {
       request.log.error(error);
@@ -221,6 +218,7 @@ class PostsController {
         tags: allTags,
         post,
         user: request.user,
+        toast: request.query?.toast,
       };
 
       const { postEditContent, postEditMeta } = await import('../templates/pages/posts/index.js');

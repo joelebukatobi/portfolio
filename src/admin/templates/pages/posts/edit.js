@@ -1,12 +1,17 @@
 // src/admin/templates/pages/posts/edit.js
 // Edit Post Page - Exact structure from edit-post.html
 
-import { escapeHtml } from '../../utils/helpers.js';
+import { escapeHtml, toastQueryScript } from '../../utils/helpers.js';
 
 /**
  * Edit Post page inner content (layout applied via fastify-html addLayout).
  */
-export function postEditContent({ categories, tags, post, user }) {
+export function postEditContent({ categories, tags, post, user, toast }) {
+  const toastScript = toastQueryScript(toast, {
+    draftSaved: 'Draft saved successfully!',
+    published: 'Post published successfully!',
+  });
+
   const content = `
     <div class="content content-main">
       <!-- Page Header -->
@@ -514,6 +519,7 @@ export function postEditContent({ categories, tags, post, user }) {
         }
       });
     </script>
+    ${toastScript}
   `;
 
   return content;
