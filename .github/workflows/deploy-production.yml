@@ -171,23 +171,10 @@ jobs:
 
             echo "Deploy directory: $(pwd)"
 
-            APP_NAME="$(basename "$DEPLOY_DIR")"
-            NODEVENV_ACTIVATE="$(ls "$HOME"/nodevenv/"$APP_NAME"/*/bin/activate 2>/dev/null | head -1)"
-            if [ -n "$NODEVENV_ACTIVATE" ]; then
-              echo "Activating cPanel node virtual environment: $NODEVENV_ACTIVATE"
-              # shellcheck disable=SC1090
-              source "$NODEVENV_ACTIVATE"
-            else
-              echo "::warning::No nodevenv activate script found at $HOME/nodevenv/$APP_NAME/*/bin/activate — npm ci will use whatever node/npm is on PATH, which may not match what Passenger runs"
-            fi
-
             if [ ! -f package.json ] || [ ! -f package-lock.json ]; then
               echo "::error::package.json or package-lock.json missing in deploy directory"
               exit 1
             fi
-
-            echo "Node version: $(node --version 2>&1 || echo 'not found')"
-            echo "npm binary: $(command -v npm 2>&1 || echo 'not found')"
 
             LOCK_HASH_FILE=".package-lock.sha256"
             CURRENT_LOCK_HASH="$(sha256sum package-lock.json | awk '{print $1}')"
@@ -198,6 +185,20 @@ jobs:
 
             if [ ! -d node_modules ] || [ "$CURRENT_LOCK_HASH" != "$PREVIOUS_LOCK_HASH" ]; then
               echo "Installing production dependencies (node_modules missing or lockfile changed)"
+
+              APP_NAME="$(basename "$DEPLOY_DIR")"
+              NODEVENV_ACTIVATE="$(ls "$HOME"/nodevenv/"$APP_NAME"/*/bin/activate 2>/dev/null | head -1)"
+              if [ -n "$NODEVENV_ACTIVATE" ]; then
+                echo "Activating cPanel node virtual environment: $NODEVENV_ACTIVATE"
+                # shellcheck disable=SC1090
+                source "$NODEVENV_ACTIVATE"
+              else
+                echo "::warning::No nodevenv activate script found at $HOME/nodevenv/$APP_NAME/*/bin/activate — npm ci will use whatever node/npm is on PATH, which may not match what Passenger runs"
+              fi
+
+              echo "Node version: $(node --version 2>&1 || echo 'not found')"
+              echo "npm binary: $(command -v npm 2>&1 || echo 'not found')"
+
               npm ci --omit=dev --no-audit --no-fund
               printf '%s\n' "$CURRENT_LOCK_HASH" > "$LOCK_HASH_FILE"
             else
