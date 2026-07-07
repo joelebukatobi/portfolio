@@ -127,30 +127,17 @@ jobs:
             **/.idea/**
             **/.build/**
 
-      - name: Health check - verify app responds
-        run: |
-          set -e
-          echo "Waiting for app to restart after deploy..."
-          sleep 20
+      - name: Verify remote node_modules
+        env:
+          FTP_HOST: ${{ env.CPANEL_FTP_HOST }}
+          FTP_USER: ${{ env.CPANEL_FTP_USER }}
+          FTP_PASS: ${{ env.CPANEL_FTP_PASSWORD }}
+          FTP_DIR: ${{ steps.paths.outputs.ftp_dir }}
+          FTP_PROTOCOL: ftps
+        run: bash scripts/verify-remote-deps.sh
 
+      - name: Health check - verify app is stable
+        run: |
           HEALTH_URL="${{ secrets.DEV_URL || 'https://dev.joelebukatobi.dev' }}/health"
           echo "Checking health at: $HEALTH_URL"
-
-          for i in 1 2 3 4 5 6; do
-            if curl -sf "$HEALTH_URL" > /dev/null; then
-              echo "✅ Health check passed - app is responding"
-              curl -s "$HEALTH_URL"
-              exit 0
-            fi
-            echo "Attempt $i failed, retrying in 10s..."
-            sleep 10
-          done
-
-          echo "❌ Health check failed - app is not responding"
-          echo "Last response:"
-          curl -sv "$HEALTH_URL" 2>&1 | tail -30 || true
-          echo ""
-          echo "If the app fails to boot, check cPanel Node.js App logs. A failed"
-          echo "migration aborts startup by design (see src/db/run-migrations.js)."
-          echo "If package-lock.json changed, run 'Run NPM Install' in cPanel."
-          exit 1
+          bash scripts/verify-remote-health.sh "$HEALTH_URL"

@@ -125,26 +125,17 @@ jobs:
             **/.build/**
             **/dist/css/**
 
-      - name: Health check - verify app responds
+      - name: Verify remote node_modules
+        env:
+          FTP_HOST: ${{ env.CPANEL_FTP_HOST }}
+          FTP_USER: ${{ env.CPANEL_FTP_USER }}
+          FTP_PASS: ${{ env.CPANEL_FTP_PASSWORD }}
+          FTP_DIR: ${{ steps.paths.outputs.ftp_dir }}
+          FTP_PROTOCOL: ftp
+        run: bash scripts/verify-remote-deps.sh
+
+      - name: Health check - verify app is stable
         run: |
-          set -e
-          echo "Waiting for app to start..."
-          sleep 20
-
-          PRODUCTION_URL="${{ secrets.PRODUCTION_URL || 'https://joelebukatobi.dev' }}"
-          echo "Checking health at: $PRODUCTION_URL"
-
-          for i in 1 2 3 4 5 6; do
-            if curl -sf "$PRODUCTION_URL" > /dev/null; then
-              echo "✅ Health check passed - app is responding"
-              exit 0
-            fi
-            echo "Attempt $i failed, retrying in 10s..."
-            sleep 10
-          done
-
-          echo "❌ Health check failed - app is not responding"
-          echo "If the app fails to boot, check cPanel Node.js App logs. A failed"
-          echo "migration aborts startup by design (see src/db/run-migrations.js)."
-          echo "If package-lock.json changed, run 'Run NPM Install' in cPanel."
-          exit 1
+          HEALTH_URL="${{ secrets.PRODUCTION_URL || 'https://joelebukatobi.dev' }}/health"
+          echo "Checking health at: $HEALTH_URL"
+          bash scripts/verify-remote-health.sh "$HEALTH_URL"
