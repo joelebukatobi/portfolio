@@ -133,15 +133,10 @@ jobs:
             **/.idea/**
             **/.build/**
 
-      - name: Verify remote deploy artifacts
-        env:
-          FTP_HOST: ${{ env.CPANEL_FTP_HOST }}
-          FTP_USER: ${{ env.CPANEL_FTP_USER }}
-          FTP_PASS: ${{ env.CPANEL_FTP_PASSWORD }}
-          FTP_DIR: ${{ steps.paths.outputs.ftp_dir }}
-          FTP_PROTOCOL: ftps
-          EXPECTED_SHA: ${{ github.sha }}
-        run: bash scripts/verify-remote-artifacts.sh
+      - name: Verify deployed artifacts
+        run: |
+          BASE_URL="${{ secrets.DEV_URL || 'https://dev.joelebukatobi.dev' }}"
+          bash scripts/verify-remote-artifacts.sh "$BASE_URL" "${{ github.sha }}"
 
       - name: Health check - verify app is stable
         env:
