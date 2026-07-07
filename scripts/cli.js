@@ -14,6 +14,9 @@ Maintenance CLI
 
   setup-token [--json]    Generate first-launch setup URL
 
+  bootstrap
+    fresh-install --yes   Drop all tables so migrations run clean (DESTRUCTIVE — first install only)
+
   analytics
     day [flags]           Simulate daily analytics (local development only)
     run                   Run one day of the 7-day simulation engine (local only)
@@ -62,6 +65,12 @@ async function main() {
 
     case 'setup-token':
       return run((await import('./lib/tasks/setup.js')).generateSetupToken, [subcommand, ...rest].filter(Boolean));
+
+    case 'bootstrap': {
+      const bootstrap = await import('./lib/tasks/bootstrap.js');
+      if (subcommand === 'fresh-install') return run(bootstrap.resetFreshInstall, args);
+      break;
+    }
 
     case 'analytics': {
       const analytics = await import('./lib/tasks/analytics.js');

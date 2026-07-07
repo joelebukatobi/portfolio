@@ -1,6 +1,6 @@
 import { createRequire } from 'module';
 import { testConnection } from '../db/index.js';
-import { areBootMigrationsOk } from '../db/run-migrations.js';
+import { areBootMigrationsOk, getBootMigrationsError } from '../db/run-migrations.js';
 import { getAssetVersion } from './asset-version.js';
 
 const require = createRequire(import.meta.url);
@@ -52,5 +52,6 @@ export async function buildHealthReport() {
       assetVersion: getAssetVersion(),
     },
     checks,
+    ...(checks.migrations === 'error' ? { migrationError: getBootMigrationsError() } : {}),
   };
 }

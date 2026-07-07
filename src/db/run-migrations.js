@@ -14,9 +14,14 @@ const LOCK_NAME = 'blogcms_migrations';
 const LOCK_TIMEOUT_SECONDS = 60;
 
 let bootMigrationsOk = false;
+let bootMigrationsError = null;
 
 export function areBootMigrationsOk() {
   return bootMigrationsOk;
+}
+
+export function getBootMigrationsError() {
+  return bootMigrationsError;
 }
 
 export async function runMigrations() {
@@ -45,6 +50,11 @@ export async function runMigrations() {
       await migrate(db, { migrationsFolder: MIGRATIONS_FOLDER });
       console.log('Migrations: up to date');
       bootMigrationsOk = true;
+      bootMigrationsError = null;
+    } catch (err) {
+      bootMigrationsOk = false;
+      bootMigrationsError = err.message;
+      throw err;
     } finally {
       await connection.query('SELECT RELEASE_LOCK(?)', [LOCK_NAME]);
     }

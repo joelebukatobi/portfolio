@@ -13,12 +13,14 @@ const server = Fastify({
 
 // Apply pending database migrations before serving traffic.
 // Idempotent and guarded by a MySQL advisory lock (see run-migrations.js).
+// A failure here does not stop the server from starting — it's surfaced
+// through /health (checks.migrations + migrationError) instead of exiting,
+// so a CI health check or operator can see *why* rather than just a crash loop.
 if (process.env.RUN_MIGRATIONS_ON_BOOT !== 'false') {
   try {
     await runMigrations();
   } catch (err) {
-    server.log.error({ err }, 'Database migrations failed during startup');
-    process.exit(1);
+    server.log.error({ err }, 'Database migrations failed during startup — continuing so /health can report it');
   }
 }
 

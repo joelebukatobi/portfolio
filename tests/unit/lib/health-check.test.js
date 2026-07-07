@@ -6,6 +6,7 @@ vi.mock('../../../src/db/index.js', () => ({
 
 vi.mock('../../../src/db/run-migrations.js', () => ({
   areBootMigrationsOk: vi.fn(),
+  getBootMigrationsError: vi.fn(),
 }));
 
 vi.mock('../../../src/lib/asset-version.js', () => ({
@@ -13,7 +14,7 @@ vi.mock('../../../src/lib/asset-version.js', () => ({
 }));
 
 import { testConnection } from '../../../src/db/index.js';
-import { areBootMigrationsOk } from '../../../src/db/run-migrations.js';
+import { areBootMigrationsOk, getBootMigrationsError } from '../../../src/db/run-migrations.js';
 import { buildHealthReport } from '../../../src/lib/health-check.js';
 
 describe('health-check', () => {
@@ -46,5 +47,17 @@ describe('health-check', () => {
 
     expect(report.status).toBe('unhealthy');
     expect(report.checks.database).toBe('error');
+  });
+
+  it('reports the migration error message when migrations failed at boot', async () => {
+    testConnection.mockResolvedValue(true);
+    areBootMigrationsOk.mockReturnValue(false);
+    getBootMigrationsError.mockReturnValue("Duplicate column name 'totp_secret'");
+
+    const report = await buildHealthReport();
+
+    expect(report.status).toBe('unhealthy');
+    expect(report.checks.migrations).toBe('error');
+    expect(report.migrationError).toBe("Duplicate column name 'totp_secret'");
   });
 });
