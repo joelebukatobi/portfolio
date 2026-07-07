@@ -8,6 +8,7 @@ import { usersService } from '../../services/users.service.js';
 import { mailService } from '../../services/mail.service.js';
 import { errorAlert, successAlert, htmxRedirect, renderAdminPage } from '../render.js';
 import { acceptInvitePanel } from '../templates/pages/accept-invite.js';
+import { forgotPasswordPanel } from '../templates/pages/forgot-password.js';
 import {
   loginPanelContent,
   totpPageContent,
@@ -415,14 +416,16 @@ class AuthController {
         }
       }
 
-      return reply.html`!${successAlert({
-        message: 'If an account exists with this email, you will receive reset instructions.',
+      return reply.html`!${forgotPasswordPanel({
+        email,
+        success: 'If an account exists with this email, you will receive reset instructions.',
       })}`;
     } catch (error) {
       request.log.error(error);
       reply.code(500);
-      return reply.html`!${errorAlert({
-        message: 'An error occurred. Please try again.',
+      return reply.html`!${forgotPasswordPanel({
+        email: request.body?.email ?? '',
+        alert: 'An error occurred. Please try again.',
       })}`;
     }
   }

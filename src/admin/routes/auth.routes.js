@@ -4,6 +4,7 @@ import { authenticate, optionalAuth } from '../../middleware/authenticate.js';
 import { requireAdmin } from '../../middleware/authorize.js';
 import { loginContent, loginMeta } from '../templates/pages/login.js';
 import { resetPasswordContent, resetPasswordMeta } from '../templates/pages/reset-password.js';
+import { forgotPasswordContent, forgotPasswordMeta, forgotPasswordPanel } from '../templates/pages/forgot-password.js';
 import { acceptInviteContent, acceptInviteMeta, acceptInvitePanel } from '../templates/pages/accept-invite.js';
 import { renderAdminPage } from '../render.js';
 import { validateBody } from '../middleware/validate.js';
@@ -22,6 +23,14 @@ function acceptInviteValidationFail(request, reply, _message, zodError) {
   reply.code(400);
   return reply.html`!${acceptInvitePanel({
     token,
+    errors: mapZodErrorsToFields(zodError),
+  })}`;
+}
+
+function forgotPasswordValidationFail(request, reply, _message, zodError) {
+  reply.code(400);
+  return reply.html`!${forgotPasswordPanel({
+    email: String(request.body?.email ?? ''),
     errors: mapZodErrorsToFields(zodError),
   })}`;
 }
@@ -96,8 +105,15 @@ export default async function authRoutes(fastify) {
   // POST /admin/auth/forgot-password
   // Public - request password reset
   fastify.post('/forgot-password', {
-    preHandler: validateBody(forgotPasswordSchema, { onFail: authFormValidationFail }),
+    preHandler: validateBody(forgotPasswordSchema, { onFail: forgotPasswordValidationFail }),
     handler: authController.forgotPassword.bind(authController),
+  });
+
+  // GET /admin/auth/forgot-password
+  fastify.get('/forgot-password', {
+    handler: async (request, reply) => {
+      return renderAdminPage(request, reply, forgotPasswordMeta({}), forgotPasswordContent());
+    },
   });
   
   // POST /admin/auth/reset-password
