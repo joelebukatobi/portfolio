@@ -13,8 +13,30 @@ EXPECTED_ENV="${EXPECTED_ENV:-}"
 echo "Waiting ${INITIAL_WAIT}s for app to settle after deploy..."
 sleep "$INITIAL_WAIT"
 
+is_valid_json() {
+  node -e "
+    let data = '';
+    process.stdin.on('data', (chunk) => { data += chunk; });
+    process.stdin.on('end', () => {
+      try {
+        JSON.parse(data);
+        process.exit(0);
+      } catch {
+        process.exit(1);
+      }
+    });
+  "
+}
+
+# Fetches /health and only succeeds if the response is both a 2xx and valid JSON.
+# During a slow boot (migrations run before the app listens), cPanel's proxy can
+# return an HTML gateway-error page instead — treat that as a failed attempt so
+# the retry loops below wait it out instead of crashing on JSON.parse.
 fetch_health() {
-  curl -sS "$HEALTH_URL"
+  local response
+  response=$(curl -sSf "$HEALTH_URL") || return 1
+  echo "$response" | is_valid_json || return 1
+  echo "$response"
 }
 
 BODY=""
@@ -22,13 +44,14 @@ for attempt in 1 2 3 4 5 6; do
   if BODY=$(fetch_health 2>/dev/null); then
     break
   fi
+  BODY=""
   echo "Health attempt ${attempt} failed, retrying in 10s..."
   sleep 10
 done
 
 if [[ -z "$BODY" ]]; then
-  echo "::error::Health check failed: no response from ${HEALTH_URL}"
-  echo "Check cPanel Node.js stderr logs. Common causes: missing node_modules (run NPM Install), migration failure, app paused."
+  echo "::error::Health check failed: no valid JSON response from ${HEALTH_URL}"
+  echo "Check cPanel Node.js stderr logs. Common causes: missing node_modules (run NPM Install), migration failure, app paused, or a slow boot exceeding the gateway timeout."
   exit 1
 fi
 
@@ -92,7 +115,7 @@ STABLE=0
 for stability_attempt in 1 2 3 4 5 6; do
   sleep "$INTERVAL_WAIT"
 
-  BODY2=$(fetch_health) || {
+  BODY2=$(fetch_health 2>/dev/null) || {
     echo "Health sample failed on stability attempt ${stability_attempt}, retrying in 10s..."
     sleep 10
     continue
