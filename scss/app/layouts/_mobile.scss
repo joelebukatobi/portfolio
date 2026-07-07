@@ -340,7 +340,7 @@
         & li a.blog__aside-link {
           font-family: $font-primary;
           font-size: 1.8rem;
-          font-weight: 500;
+          font-weight: 600;
           color: $color-white;
           text-transform: capitalize;
 
@@ -390,6 +390,10 @@
       & p {
         line-height: unset;
       }
+    }
+
+    &__title-divider {
+      margin-top: 1.6rem;
     }
   }
 }
