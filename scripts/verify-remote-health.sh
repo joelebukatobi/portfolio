@@ -88,26 +88,46 @@ validate_checks() {
 U1=$(echo "$BODY" | read_field 'uptime')
 echo "First uptime: ${U1}s"
 
-sleep "$INTERVAL_WAIT"
+STABLE=0
+for stability_attempt in 1 2 3 4 5 6; do
+  sleep "$INTERVAL_WAIT"
 
-BODY2=$(fetch_health) || {
-  echo "::error::Health check failed on second request"
+  BODY2=$(fetch_health) || {
+    echo "Health sample failed on stability attempt ${stability_attempt}, retrying in 10s..."
+    sleep 10
+    continue
+  }
+
+  U2=$(echo "$BODY2" | read_field 'uptime')
+  echo "Next uptime: ${U2}s (stability attempt ${stability_attempt})"
+
+  HANDOFF=$(node -e "process.stdout.write(String(parseFloat(process.argv[2]) < parseFloat(process.argv[1])))" "$U1" "$U2")
+  GROWTH_OK=$(node -e "
+    const growth = parseFloat(process.argv[2]) - parseFloat(process.argv[1]);
+    process.stdout.write(String(Number.isFinite(growth) && growth >= parseFloat(process.argv[3])));
+  " "$U1" "$U2" "$MIN_UPTIME_GROWTH")
+
+  if [[ "$GROWTH_OK" == "true" ]]; then
+    echo "✅ Health stable — uptime grew ${U1} -> ${U2}"
+    STABLE=1
+    break
+  fi
+
+  if [[ "$HANDOFF" == "true" ]]; then
+    echo "Passenger handoff detected (${U1}s -> ${U2}s), sampling the new process..."
+    U1="$U2"
+    BODY="$BODY2"
+    continue
+  fi
+
+  echo "Uptime did not grow enough yet (${U1}s -> ${U2}s), retrying..."
+  U1="$U2"
+  BODY="$BODY2"
+done
+
+if [[ "$STABLE" -ne 1 ]]; then
+  echo "::error::Uptime did not stabilize (possible crash loop)."
   exit 1
-}
-
-U2=$(echo "$BODY2" | read_field 'uptime')
-echo "Second uptime: ${U2}s"
-
-node -e "
-const u1 = parseFloat(process.argv[1]);
-const u2 = parseFloat(process.argv[2]);
-const minGrowth = parseFloat(process.argv[3]);
-const growth = u2 - u1;
-if (!Number.isFinite(u1) || !Number.isFinite(u2) || growth < minGrowth) {
-  console.error('::error::Uptime did not grow enough (possible crash loop).', u1, '->', u2, 'growth', growth);
-  process.exit(1);
-}
-console.log('✅ Health stable — uptime grew', u1, '->', u2, '(+' + growth.toFixed(1) + 's)');
-" "$U1" "$U2" "$MIN_UPTIME_GROWTH"
+fi
 
 echo "$BODY2" | validate_checks

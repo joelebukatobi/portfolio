@@ -33,9 +33,7 @@ export * from './schema.js';
 
 // Graceful shutdown helper
 export async function closePool() {
-  console.log('🔌 Closing database pool...');
   await pool.end();
-  console.log('✅ Database pool closed');
 }
 
 // Test connection helper
