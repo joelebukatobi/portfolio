@@ -11,7 +11,7 @@ export function acceptInviteContent({ token, error = '' } = {}) {
         <div class="login__container">
           <div class="auth-card">
             <div class="auth-card__header">
-              <h1 class="auth-card__title">Accept invitation</h1>
+              <h1 class="auth-card__title">Accept Invitation</h1>
               <p class="auth-card__subtitle">Set your password to activate your account</p>
             </div>
 
@@ -60,7 +60,7 @@ export function acceptInviteContent({ token, error = '' } = {}) {
                 />
               </div>
 
-              <button type="submit" class="btn btn--primary btn--lg btn--full">Activate account</button>
+              <button type="submit" class="btn btn--primary btn--lg btn--full">Activate Account</button>
             </form>
 
             <div class="auth-card__footer">

@@ -2,6 +2,7 @@
 // Auth layout for login, reset password, and other auth pages
 
 import { DEFAULT_PLACEHOLDER_IMAGE_URL } from '../../../lib/media-defaults.js';
+import { assetUrl } from '../../../lib/asset-version.js';
 
 /**
  * Auth Layout Template
@@ -54,7 +55,7 @@ export function buildAuthShell({
     />
 
     <!-- Compiled CSS -->
-    <link rel="stylesheet" href="/dist/css/admin.css" />
+    <link rel="stylesheet" href="${assetUrl('/dist/css/admin.css')}" />
 
     <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
@@ -122,6 +123,19 @@ export function buildAuthShell({
       }
 
       // HTMX event handlers
+      document.body.addEventListener('htmx:beforeSwap', function(evt) {
+        const xhr = evt.detail.xhr;
+        // Auth forms return 400 with inline error HTML; swap it into the target.
+        if (xhr.status >= 400 && xhr.status < 500 && xhr.responseText) {
+          evt.detail.shouldSwap = true;
+          evt.detail.isError = false;
+        }
+      });
+
+      document.body.addEventListener('htmx:afterSwap', function() {
+        lucide.createIcons();
+      });
+
       document.body.addEventListener('htmx:afterRequest', function(evt) {
         // Handle redirect from server
         const redirectUrl = evt.detail.xhr.getResponseHeader('HX-Redirect');
