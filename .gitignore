@@ -66,6 +66,7 @@ playwright-report/
 .playwright-mcp/
 .tmp/
 .cursor/
+.claude/
 dashboard-prompt.json
 session*.json
 cookies.txt
