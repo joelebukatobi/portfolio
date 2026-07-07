@@ -39,7 +39,7 @@ export default async function app(fastify, opts) {
             'https://unpkg.com',
             'https://fonts.googleapis.com',
           ],
-          scriptSrc: ["'self'", 'https://unpkg.com', 'https://cdn.jsdelivr.net', "'unsafe-inline'"],
+          scriptSrc: ["'self'", 'https://unpkg.com', 'https://cdn.jsdelivr.net', "'unsafe-inline'", "'unsafe-eval'"],
           scriptSrcAttr: ["'unsafe-inline'"],
           imgSrc: ["'self'", 'data:', 'blob:', 'https://images.unsplash.com'],
           connectSrc: ["'self'"],

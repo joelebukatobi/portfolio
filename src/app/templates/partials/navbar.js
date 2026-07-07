@@ -75,7 +75,7 @@ export function navbar({ activePage = null } = {}) {
       </div>
     </div>
 
-    <nav x-show="open" class="navbar__active">
+    <nav x-show="open" x-cloak class="navbar__active">
       <div class="navbar__active__nav">
         <ul class="navbar__active__list">
           <li class="navbar__active__item ${nav('about')}">
