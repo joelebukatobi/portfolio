@@ -53,7 +53,7 @@ done
 
 if [[ -z "$BODY" ]]; then
   echo "::error::Health check failed: no valid JSON response from ${HEALTH_URL}"
-  echo "Check cPanel Node.js stderr logs. Common causes: missing node_modules (run NPM Install), migration failure, app paused, or a slow boot exceeding the gateway timeout."
+  echo "Check cPanel Node.js stderr logs. Common causes: missing node_modules (run NPM Install), migration failure, app paused, a slow boot exceeding the gateway timeout, or the Node.js app not registered/Application URL not matching this domain in cPanel's Setup Node.js App (requests never reach Passenger at all in that case)."
   exit 1
 fi
 
