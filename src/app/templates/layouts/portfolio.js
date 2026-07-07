@@ -1,4 +1,5 @@
 import { escapeHtml, mergeSeo } from '../utils/helpers.js';
+import { assetUrl } from '../../../lib/asset-version.js';
 
 export function buildPortfolioShell({ content, meta = {} }) {
   const seo = mergeSeo(meta);
@@ -57,7 +58,7 @@ export function buildPortfolioShell({ content, meta = {} }) {
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600;700&display=swap" />
-    <link rel="stylesheet" href="/dist/css/app.css" />
+    <link rel="stylesheet" href="${assetUrl('/dist/css/app.css')}" />
     <script src="/vendor/htmx/htmx.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </head>
@@ -126,7 +127,7 @@ export function buildComingSoonShell({ content }) {
     <title>Coming Soon</title>
     <meta name="description" content="This site is being configured" />
     <link rel="icon" type="image/svg+xml" href="/images/icons/favicon.svg" />
-    <link rel="stylesheet" href="/dist/css/admin.css" />
+    <link rel="stylesheet" href="${assetUrl('/dist/css/admin.css')}" />
   </head>
   <body>
     ${content}

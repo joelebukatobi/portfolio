@@ -32,6 +32,7 @@ jobs:
         run: |
           npm ci --no-audit --no-fund
           npm run build:css
+          echo "${GITHUB_SHA}" > dist/asset-version.txt
           grep -q 'blogpost__meta' dist/css/app.css || (echo "::error::Post page styles missing from CSS build output" && exit 1)
           grep -q 'blogpost__comment-field' dist/css/app.css || (echo "::error::Comment form styles missing from CSS build output" && exit 1)
 

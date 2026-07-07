@@ -5,6 +5,7 @@
 import { sidebar } from '../partials/sidebar.js';
 import { header } from '../partials/header.js';
 import { escapeHtml } from '../utils/helpers.js';
+import { assetUrl } from '../../../lib/asset-version.js';
 
 /**
  * Main Dashboard Layout Template
@@ -69,7 +70,7 @@ export function buildDashboardShell({
     />
 
     <!-- Compiled CSS -->
-    <link rel="stylesheet" href="/dist/css/admin.css" />
+    <link rel="stylesheet" href="${assetUrl('/dist/css/admin.css')}" />
 
     <!-- Lucide Icons -->
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
