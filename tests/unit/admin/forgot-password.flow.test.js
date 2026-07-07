@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
-import Fastify from 'fastify';
-import app from '../../../src/app.js';
+import { createIntegrationServer } from '../../helpers/integration-server.js';
 import { authService } from '../../../src/services/auth.service.js';
 
 describe('forgot password flow', () => {
@@ -8,8 +7,7 @@ describe('forgot password flow', () => {
   let server;
 
   beforeAll(async () => {
-    server = Fastify({ logger: false });
-    await server.register(app);
+    server = await createIntegrationServer();
   });
 
   afterAll(async () => {

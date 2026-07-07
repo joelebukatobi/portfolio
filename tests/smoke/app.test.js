@@ -1,14 +1,12 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import Fastify from 'fastify';
-import app from '../../src/app.js';
+import { createIntegrationServer } from '../helpers/integration-server.js';
 
 describe('app smoke', () => {
   /** @type {import('fastify').FastifyInstance} */
   let server;
 
   beforeAll(async () => {
-    server = Fastify({ logger: false });
-    await server.register(app);
+    server = await createIntegrationServer();
   });
 
   afterAll(async () => {
