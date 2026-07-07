@@ -47,6 +47,16 @@ export function escapeHtml(text) {
 }
 
 /**
+ * Inline field validation error below a form input.
+ * @param {string} [message]
+ * @returns {string}
+ */
+export function fieldErrorHtml(message) {
+  if (!message) return '';
+  return `<p class="form-feedback form-feedback--error" role="alert">${escapeHtml(message)}</p>`;
+}
+
+/**
  * Format date using site settings (timezone + dateFormat).
  * @param {Date|string} date
  * @param {string} [format] - Legacy short/medium/long; ignored when site settings are bound

@@ -4,16 +4,26 @@ import { authenticate, optionalAuth } from '../../middleware/authenticate.js';
 import { requireAdmin } from '../../middleware/authorize.js';
 import { loginContent, loginMeta } from '../templates/pages/login.js';
 import { resetPasswordContent, resetPasswordMeta } from '../templates/pages/reset-password.js';
-import { acceptInviteContent, acceptInviteMeta } from '../templates/pages/accept-invite.js';
+import { acceptInviteContent, acceptInviteMeta, acceptInvitePanel } from '../templates/pages/accept-invite.js';
 import { renderAdminPage } from '../render.js';
 import { validateBody } from '../middleware/validate.js';
 import { loginSchema } from '../../utils/validators.js';
 import { forgotPasswordSchema, resetPasswordSchema, verifyTotpSchema } from '../schemas/auth.schema.js';
-import { errorAlert } from '../render.js';
+import { mapZodErrorsToFields } from '../schemas/common.schema.js';
+import { errorAlert, successAlert } from '../render.js';
 
 function authFormValidationFail(request, reply, message) {
   reply.code(400);
   return reply.html`!${errorAlert({ message })}`;
+}
+
+function acceptInviteValidationFail(request, reply, _message, zodError) {
+  const token = String(request.body?.token ?? '');
+  reply.code(400);
+  return reply.html`!${acceptInvitePanel({
+    token,
+    errors: mapZodErrorsToFields(zodError),
+  })}`;
 }
 
 export default async function authRoutes(fastify) {
@@ -112,7 +122,7 @@ export default async function authRoutes(fastify) {
   });
 
   fastify.post('/accept-invite', {
-    preHandler: validateBody(resetPasswordSchema, { onFail: authFormValidationFail }),
+    preHandler: validateBody(resetPasswordSchema, { onFail: acceptInviteValidationFail }),
     handler: authController.acceptInvite.bind(authController),
   });
 

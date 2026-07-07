@@ -80,3 +80,22 @@ export function formatZodError(error) {
     })
     .join(', ');
 }
+
+/**
+ * Map Zod issues to field error messages (joins multiple issues per field).
+ * @param {import('zod').ZodError} error
+ * @returns {Record<string, string>}
+ */
+export function mapZodErrorsToFields(error) {
+  /** @type {Record<string, string>} */
+  const errors = {};
+
+  for (const issue of error.errors) {
+    const key = issue.path[0];
+    if (typeof key === 'string') {
+      errors[key] = errors[key] ? `${errors[key]}. ${issue.message}` : issue.message;
+    }
+  }
+
+  return errors;
+}
