@@ -7,24 +7,23 @@
 // Login Layout - Split screen with image and form
 // ============================================================================
 .login {
-  @apply min-h-screen flex;
+  @apply min-h-screen flex relative;
 
-  // Left side - Image/branding panel
+  // Left side - Image/branding panel (full-bleed bg on mobile, split panel on desktop)
   &__branding {
-    @apply hidden lg:flex lg:w-1/2;
-    @apply relative overflow-hidden z-[60];
-    @apply bg-cover bg-center;
+    @apply absolute inset-0 z-0 bg-cover bg-center overflow-hidden;
+    @apply lg:static lg:flex lg:w-1/2 lg:z-[60];
   }
 
   // Right side - Form panel
   &__form-panel {
-    @apply w-full lg:w-1/2;
+    @apply relative z-10 w-full lg:w-1/2 overflow-hidden;
     @apply flex items-center justify-center;
     @apply px-[2.4rem] py-[4rem];
-    @apply bg-white relative overflow-hidden;
+    @apply bg-transparent lg:bg-white;
 
     .dark & {
-      @apply bg-grey-900;
+      @apply lg:bg-grey-900;
     }
   }
 

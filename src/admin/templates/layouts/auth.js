@@ -68,7 +68,7 @@ export function buildAuthShell({
     <div class="admin">
       <!-- Login Layout - Split screen -->
       <div class="login">
-        <!-- Left side - Branding panel (hidden on mobile) -->
+        <!-- Branding panel (full-bleed bg on mobile, left split on desktop) -->
         <div class="login__branding" style="background-image: url(&quot;${brandingBackground}&quot;);"></div>
 
         <!-- Right side - Form panel (contains modals) -->
