@@ -40,7 +40,7 @@ export default async function app(fastify, opts) {
             'https://fonts.googleapis.com',
           ],
           scriptSrc: ["'self'", 'https://unpkg.com', 'https://cdn.jsdelivr.net', "'unsafe-inline'"],
-          imgSrc: ["'self'", 'data:', 'blob:'],
+          imgSrc: ["'self'", 'data:', 'blob:', 'https://images.unsplash.com'],
           connectSrc: ["'self'"],
           fontSrc: ["'self'", 'https://fonts.gstatic.com'],
         },
