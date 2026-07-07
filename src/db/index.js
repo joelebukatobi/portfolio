@@ -39,13 +39,18 @@ export async function closePool() {
 }
 
 // Test connection helper
-export async function testConnection() {
+export async function testConnection({ quiet = false } = {}) {
   try {
-    const [rows] = await pool.query('SELECT NOW() AS now');
-    console.log('✅ Database connected:', rows[0]?.now);
+    await pool.query('SELECT 1 AS ok');
+    if (!quiet) {
+      const [rows] = await pool.query('SELECT NOW() AS now');
+      console.log('✅ Database connected:', rows[0]?.now);
+    }
     return true;
   } catch (err) {
-    console.error('❌ Database connection failed:', err.message);
+    if (!quiet) {
+      console.error('❌ Database connection failed:', err.message);
+    }
     return false;
   }
 }

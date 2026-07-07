@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Confirm /health responds and uptime increases (detects crash/restart loops).
+# Confirm /health responds, uptime increases, and deep checks pass.
 set -euo pipefail
 
 HEALTH_URL="${1:?HEALTH_URL required}"
@@ -7,11 +7,14 @@ INITIAL_WAIT="${2:-20}"
 INTERVAL_WAIT="${3:-15}"
 MIN_UPTIME_GROWTH="${4:-10}"
 
+EXPECTED_ASSET_VERSION="${EXPECTED_ASSET_VERSION:-}"
+EXPECTED_ENV="${EXPECTED_ENV:-}"
+
 echo "Waiting ${INITIAL_WAIT}s for app to settle after deploy..."
 sleep "$INITIAL_WAIT"
 
 fetch_health() {
-  curl -sf "$HEALTH_URL"
+  curl -sS "$HEALTH_URL"
 }
 
 BODY=""
@@ -29,22 +32,60 @@ if [[ -z "$BODY" ]]; then
   exit 1
 fi
 
-read_uptime() {
+read_field() {
+  local field="$1"
   node -e "
     let data = '';
     process.stdin.on('data', (chunk) => { data += chunk; });
     process.stdin.on('end', () => {
       const body = JSON.parse(data);
-      if (body.status !== 'healthy') {
-        console.error('Unexpected health status:', body.status);
+      const value = body['${field}'];
+      if (value === undefined || value === null || value === '') {
         process.exit(2);
       }
-      process.stdout.write(String(body.uptime));
+      process.stdout.write(String(value));
     });
   "
 }
 
-U1=$(echo "$BODY" | read_uptime)
+validate_checks() {
+  node -e "
+    let data = '';
+    process.stdin.on('data', (chunk) => { data += chunk; });
+    process.stdin.on('end', () => {
+      const body = JSON.parse(data);
+      const expectedAsset = process.argv[1] || '';
+      const expectedEnv = process.argv[2] || '';
+
+      if (body.status !== 'healthy') {
+        console.error('::error::Health status is not healthy:', body.status, body.checks || {});
+        process.exit(1);
+      }
+
+      const checks = body.checks || {};
+      for (const [name, value] of Object.entries(checks)) {
+        if (value === 'error') {
+          console.error('::error::Health check failed:', name);
+          process.exit(1);
+        }
+      }
+
+      if (expectedAsset && body.build?.assetVersion !== expectedAsset) {
+        console.error('::error::assetVersion mismatch. expected', expectedAsset, 'got', body.build?.assetVersion);
+        process.exit(1);
+      }
+
+      if (expectedEnv && body.environment !== expectedEnv) {
+        console.error('::error::environment mismatch. expected', expectedEnv, 'got', body.environment);
+        process.exit(1);
+      }
+
+      console.log('✅ Deep health checks passed');
+    });
+  " "$EXPECTED_ASSET_VERSION" "$EXPECTED_ENV"
+}
+
+U1=$(echo "$BODY" | read_field 'uptime')
 echo "First uptime: ${U1}s"
 
 sleep "$INTERVAL_WAIT"
@@ -54,7 +95,7 @@ BODY2=$(fetch_health) || {
   exit 1
 }
 
-U2=$(echo "$BODY2" | read_uptime)
+U2=$(echo "$BODY2" | read_field 'uptime')
 echo "Second uptime: ${U2}s"
 
 node -e "
@@ -69,4 +110,4 @@ if (!Number.isFinite(u1) || !Number.isFinite(u2) || growth < minGrowth) {
 console.log('✅ Health stable — uptime grew', u1, '->', u2, '(+' + growth.toFixed(1) + 's)');
 " "$U1" "$U2" "$MIN_UPTIME_GROWTH"
 
-echo "$BODY2"
+echo "$BODY2" | validate_checks

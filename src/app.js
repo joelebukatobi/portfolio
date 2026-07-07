@@ -161,14 +161,14 @@ export default async function app(fastify, opts) {
   // Site settings (cached; used by API, layouts, auth)
   await fastify.register(import('./plugins/site-settings.js'));
 
-  // Health check endpoint
-  fastify.get('/health', async () => {
-    return {
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime(),
-      environment: process.env.NODE_ENV || 'development',
-    };
+  // Health check endpoint (used by deploy CI and external monitors)
+  fastify.get('/health', async (_request, reply) => {
+    const { buildHealthReport } = await import('./lib/health-check.js');
+    const report = await buildHealthReport();
+    if (report.status !== 'healthy') {
+      reply.code(503);
+    }
+    return report;
   });
 
    // Register admin routes (fastify-html layouts scoped per plugin)

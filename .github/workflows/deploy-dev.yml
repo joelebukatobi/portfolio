@@ -97,11 +97,17 @@ jobs:
           echo "Wrote restart signal:"
           cat tmp/restart.txt
 
-      - name: Warn on dependency changes
+      - name: Flag lockfile changes
+        if: github.event_name == 'push'
         run: |
-          set -e
-          echo "Reminder: if package-lock.json changed, run 'Run NPM Install' in the"
-          echo "cPanel Node.js App UI once. Production node_modules are not uploaded via FTP."
+          BEFORE="${{ github.event.before }}"
+          if [ -n "$BEFORE" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            if git diff --name-only "$BEFORE" "${{ github.sha }}" | grep -qx 'package-lock.json'; then
+              echo "::warning::package-lock.json changed in this push. Run NPM Install in cPanel before expecting a green deploy."
+            fi
+          else
+            echo "Reminder: if package-lock.json changed, run NPM Install in cPanel Node.js App."
+          fi
 
       - name: Upload files via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
@@ -127,17 +133,26 @@ jobs:
             **/.idea/**
             **/.build/**
 
-      - name: Verify remote node_modules
+      - name: Verify remote deploy artifacts
         env:
           FTP_HOST: ${{ env.CPANEL_FTP_HOST }}
           FTP_USER: ${{ env.CPANEL_FTP_USER }}
           FTP_PASS: ${{ env.CPANEL_FTP_PASSWORD }}
           FTP_DIR: ${{ steps.paths.outputs.ftp_dir }}
           FTP_PROTOCOL: ftps
-        run: bash scripts/verify-remote-deps.sh
+          EXPECTED_SHA: ${{ github.sha }}
+        run: bash scripts/verify-remote-artifacts.sh
 
       - name: Health check - verify app is stable
+        env:
+          EXPECTED_ASSET_VERSION: ${{ github.sha }}
         run: |
-          HEALTH_URL="${{ secrets.DEV_URL || 'https://dev.joelebukatobi.dev' }}/health"
+          BASE_URL="${{ secrets.DEV_URL || 'https://dev.joelebukatobi.dev' }}"
+          HEALTH_URL="${BASE_URL}/health"
           echo "Checking health at: $HEALTH_URL"
           bash scripts/verify-remote-health.sh "$HEALTH_URL"
+
+      - name: Smoke check - key routes and assets
+        run: |
+          BASE_URL="${{ secrets.DEV_URL || 'https://dev.joelebukatobi.dev' }}"
+          bash scripts/verify-remote-smoke.sh "$BASE_URL" "${{ github.sha }}"

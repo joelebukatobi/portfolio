@@ -13,6 +13,12 @@ const MIGRATIONS_FOLDER = path.join(__dirname, 'migrations');
 const LOCK_NAME = 'blogcms_migrations';
 const LOCK_TIMEOUT_SECONDS = 60;
 
+let bootMigrationsOk = false;
+
+export function areBootMigrationsOk() {
+  return bootMigrationsOk;
+}
+
 export async function runMigrations() {
   if (!process.env.DATABASE_URL) {
     throw new Error('DATABASE_URL is required to run migrations');
@@ -30,6 +36,7 @@ export async function runMigrations() {
       // Another process is migrating (or holds the lock). It will apply the
       // pending migrations, so this process can continue booting.
       console.log('Migrations: another process holds the lock, skipping');
+      bootMigrationsOk = true;
       return;
     }
 
@@ -37,6 +44,7 @@ export async function runMigrations() {
       const db = drizzle(connection);
       await migrate(db, { migrationsFolder: MIGRATIONS_FOLDER });
       console.log('Migrations: up to date');
+      bootMigrationsOk = true;
     } finally {
       await connection.query('SELECT RELEASE_LOCK(?)', [LOCK_NAME]);
     }
