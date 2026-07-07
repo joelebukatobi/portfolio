@@ -32,7 +32,7 @@ export function acceptInviteForm({ token, errors = {} }) {
                     minlength="8"
                     required
                   />
-                  <button type="button" class="input__addon" onclick="togglePassword()">
+                  <button type="button" class="input__addon" onclick="togglePassword('password', 'password-icon')">
                     <i data-lucide="eye" id="password-icon"></i>
                   </button>
                 </div>
@@ -41,15 +41,20 @@ export function acceptInviteForm({ token, errors = {} }) {
 
               <div class="${confirmGroupClass}">
                 <label class="label" for="confirmPassword">Confirm Password</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  class="input input--lg"
-                  placeholder="Confirm your password"
-                  minlength="8"
-                  required
-                />
+                <div class="form__wrapper">
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    class="input input--lg input--icon-right"
+                    placeholder="Confirm your password"
+                    minlength="8"
+                    required
+                  />
+                  <button type="button" class="input__addon" onclick="togglePassword('confirmPassword', 'confirmPassword-icon')">
+                    <i data-lucide="eye" id="confirmPassword-icon"></i>
+                  </button>
+                </div>
                 ${fieldErrorHtml(errors.confirmPassword)}
               </div>
 

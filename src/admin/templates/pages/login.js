@@ -54,7 +54,7 @@ export function loginPanelContent({ error = '', email = '', rememberMe = false }
               placeholder="Enter your password"
               required
             />
-            <button type="button" class="input__addon" onclick="togglePassword()">
+            <button type="button" class="input__addon" onclick="togglePassword('password', 'password-icon')">
               <i data-lucide="eye" id="password-icon"></i>
             </button>
           </div>

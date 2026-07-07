@@ -152,14 +152,19 @@ export function setupWizardContent({ step, token, expiresIn, error, errors = {},
 
         <div class="${formGroupClass(errors, 'confirmPassword')}">
           <label class="label" for="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            class="input input--lg"
-            placeholder="Confirm your password"
-            required
-          />
+          <div class="form__wrapper">
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              class="input input--lg input--icon-right"
+              placeholder="Confirm your password"
+              required
+            />
+            <button type="button" class="input__addon" onclick="togglePassword('confirmPassword', 'confirmPassword-icon')">
+              <i data-lucide="eye" id="confirmPassword-icon"></i>
+            </button>
+          </div>
           ${confirmPasswordError}
         </div>
 
@@ -228,21 +233,6 @@ export function setupWizardContent({ step, token, expiresIn, error, errors = {},
 
       updateCountdown();
       setInterval(updateCountdown, 1000);
-
-      function togglePassword(inputId, iconId) {
-        const passwordInput = document.getElementById(inputId);
-        const passwordIcon = document.getElementById(iconId);
-
-        if (passwordInput.type === 'password') {
-          passwordInput.type = 'text';
-          passwordIcon.setAttribute('data-lucide', 'eye-off');
-        } else {
-          passwordInput.type = 'password';
-          passwordIcon.setAttribute('data-lucide', 'eye');
-        }
-
-        lucide.createIcons();
-      }
     </script>
   `;
 }

@@ -107,9 +107,13 @@ export function buildAuthShell({
         alert('Email copied to clipboard!');
       }
 
-      function togglePassword() {
-        const passwordInput = document.getElementById('password');
-        const passwordIcon = document.getElementById('password-icon');
+      function togglePassword(inputId, iconId) {
+        const passwordInput = document.getElementById(inputId || 'password');
+        const passwordIcon = document.getElementById(iconId || 'password-icon');
+
+        if (!passwordInput || !passwordIcon) {
+          return;
+        }
 
         if (passwordInput.type === 'password') {
           passwordInput.type = 'text';
