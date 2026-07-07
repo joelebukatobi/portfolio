@@ -43,7 +43,8 @@ for attempt in 1 2 3 4 5 6; do
 done
 
 if [[ -z "$ASSET_VERSION" ]]; then
-  echo "::error::Could not read /dist/asset-version.txt"
+  CODE="$(curl -sS -o /dev/null -w '%{http_code}' "${BASE_URL}/dist/asset-version.txt" 2>/dev/null || echo 'no response')"
+  echo "::error::Could not read /dist/asset-version.txt (last HTTP status: ${CODE})"
   exit 1
 fi
 

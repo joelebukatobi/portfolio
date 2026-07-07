@@ -130,11 +130,6 @@ jobs:
             **/.idea/**
             **/.build/**
 
-      - name: Verify deployed artifacts
-        run: |
-          BASE_URL="${{ secrets.PRODUCTION_URL || 'https://joelebukatobi.dev' }}"
-          bash scripts/verify-remote-artifacts.sh "$BASE_URL" "${{ github.sha }}"
-
       - name: Health check - verify app is stable
         env:
           EXPECTED_ASSET_VERSION: ${{ github.sha }}
@@ -144,6 +139,11 @@ jobs:
           HEALTH_URL="${BASE_URL}/health"
           echo "Checking health at: $HEALTH_URL"
           bash scripts/verify-remote-health.sh "$HEALTH_URL"
+
+      - name: Verify deployed artifacts
+        run: |
+          BASE_URL="${{ secrets.PRODUCTION_URL || 'https://joelebukatobi.dev' }}"
+          bash scripts/verify-remote-artifacts.sh "$BASE_URL" "${{ github.sha }}" 0
 
       - name: Smoke check - key routes and assets
         run: |
