@@ -28,13 +28,15 @@ is_valid_json() {
   "
 }
 
-# Fetches /health and only succeeds if the response is both a 2xx and valid JSON.
-# During a slow boot (migrations run before the app listens), cPanel's proxy can
-# return an HTML gateway-error page instead — treat that as a failed attempt so
-# the retry loops below wait it out instead of crashing on JSON.parse.
+# Fetches /health and only succeeds if the response is valid JSON. Note this
+# deliberately does NOT gate on HTTP status: the app returns 503 with a real
+# JSON body when unhealthy (see checks.database/migrations), and that body is
+# useful diagnostic output for validate_checks below. Only a non-JSON body —
+# e.g. an HTML gateway-error page during a slow boot, before the app is even
+# listening — should be treated as a failed attempt and retried.
 fetch_health() {
   local response
-  response=$(curl -sSf "$HEALTH_URL") || return 1
+  response=$(curl -sS "$HEALTH_URL") || return 1
   echo "$response" | is_valid_json || return 1
   echo "$response"
 }
