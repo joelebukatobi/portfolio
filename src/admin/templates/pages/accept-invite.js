@@ -60,7 +60,7 @@ export function acceptInviteContent({ token, error = '' } = {}) {
                 />
               </div>
 
-              <button type="submit" class="btn btn--primary btn--lg btn--full">Activate Account</button>
+              <button type="submit" class="btn btn--primary btn--xl btn--full">Activate Account</button>
             </form>
 
             <div class="auth-card__footer">

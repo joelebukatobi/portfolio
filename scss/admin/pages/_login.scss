@@ -125,6 +125,11 @@
     @apply space-y-[2rem];
   }
 
+  // Full-width buttons match input--lg height (4rem)
+  .btn--full {
+    @apply h-[4rem] min-h-[4rem] px-[1.6rem] py-0 text-body rounded-md;
+  }
+
   .btn--primary {
     @apply bg-[#181818] text-white border border-[#181818];
     @apply hover:bg-[#212121] hover:border-[#212121] hover:text-white;

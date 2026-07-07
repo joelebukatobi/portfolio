@@ -76,7 +76,7 @@ export function resetPasswordContent({ token, error = '' } = {}) {
               </div>
 
               <!-- Submit button -->
-              <button type="submit" class="btn btn--primary btn--lg btn--full">Reset Password</button>
+              <button type="submit" class="btn btn--primary btn--xl btn--full">Reset Password</button>
             </form>
 
             <!-- Footer -->
