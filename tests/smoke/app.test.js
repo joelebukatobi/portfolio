@@ -25,6 +25,8 @@ describe('app smoke', () => {
     const body = response.json();
     expect(body.status).toBe('healthy');
     expect(body.timestamp).toBeDefined();
+    expect(body.checks?.database).toBe('ok');
+    expect(body.checks?.dependencies).toBe('ok');
   });
 
   it('GET /admin/auth/login returns login page HTML', async () => {
