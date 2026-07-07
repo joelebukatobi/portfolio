@@ -43,7 +43,7 @@ jobs:
       - name: Prepare database
         run: |
           npm run db:migrate
-          ALLOW_LOCAL_SIMULATION=true npm run db:seed -- --core
+          node scripts/ci-test-fixtures.js
 
       - name: Guardrails and tests
         run: npm run check
