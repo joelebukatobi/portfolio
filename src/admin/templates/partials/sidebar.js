@@ -62,6 +62,14 @@ export function sidebar({ activeRoute = '/', user, siteName = 'BlogCMS', siteIco
               </a>
             </li>
             <li>
+              <a href="/admin/projects" class="sidebar__item ${isActive('/admin/projects')}">
+                <span class="sidebar__item-icon">
+                  <i data-lucide="briefcase"></i>
+                </span>
+                <span class="sidebar__item-text">Projects</span>
+              </a>
+            </li>
+            <li>
               <a href="/admin/posts" class="sidebar__item ${isActive('/admin/posts')}">
                 <span class="sidebar__item-icon">
                   <i data-lucide="file-text"></i>
@@ -84,21 +92,6 @@ export function sidebar({ activeRoute = '/', user, siteName = 'BlogCMS', siteIco
                   <i data-lucide="tags"></i>
                 </span>
                 <span class="sidebar__item-text">Tags</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Portfolio Group -->
-        <div class="sidebar__group">
-          <div class="sidebar__group-title">Portfolio</div>
-          <ul class="sidebar__menu">
-            <li>
-              <a href="/admin/projects" class="sidebar__item ${isActive('/admin/projects')}">
-                <span class="sidebar__item-icon">
-                  <i data-lucide="briefcase"></i>
-                </span>
-                <span class="sidebar__item-text">Projects</span>
               </a>
             </li>
           </ul>
