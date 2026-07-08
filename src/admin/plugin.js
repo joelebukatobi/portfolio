@@ -42,6 +42,7 @@ export default async function adminPlugin(fastify) {
   await fastify.register(import('./routes/posts.routes.js'), { prefix: '/admin/posts' });
   await fastify.register(import('./routes/comments.routes.js'), { prefix: '/admin/posts/:postId/comments' });
   await fastify.register(import('./routes/categories.routes.js'), { prefix: '/admin/categories' });
+  await fastify.register(import('./routes/projects.routes.js'), { prefix: '/admin/projects' });
   await fastify.register(import('./routes/tags.routes.js'), { prefix: '/admin/tags' });
   await fastify.register(import('./routes/users.routes.js'), { prefix: '/admin/users' });
   await fastify.register(import('./routes/subscribers.routes.js'), { prefix: '/admin/subscribers' });
