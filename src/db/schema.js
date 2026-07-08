@@ -146,6 +146,20 @@ export const categoriesRelations = relations(categories, ({ many }) => ({
 }));
 
 // ============================================
+// PROJECTS
+// ============================================
+
+export const projects = mysqlTable('projects', {
+  id: idColumn().primaryKey(),
+  name: varchar('name', { length: 150 }).notNull(),
+  description: text('description').notNull(),
+  technologies: varchar('technologies', { length: 500 }).notNull(),
+  website: varchar('website', { length: 500 }),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+});
+
+// ============================================
 // TAGS
 // ============================================
 

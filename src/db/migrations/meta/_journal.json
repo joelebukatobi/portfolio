@@ -43,6 +43,13 @@
       "when": 1780440000000,
       "tag": "0005_add_user_totp",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1783526565531,
+      "tag": "0006_clean_blazing_skull",
+      "breakpoints": true
     }
   ]
 }
