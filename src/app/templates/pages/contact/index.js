@@ -3,7 +3,7 @@ import { layoutPage } from '../../partials/layout-page.js';
 export function contactMeta() {
   return {
     title: 'Contact | Joel Ebuka Tobi',
-    url: 'https://www.joelebukatobi.dev/contact',
+    url: 'https://joelebukatobi.dev/contact',
   };
 }
 

@@ -110,7 +110,7 @@ function filterPanel({ className, tabId, title, listContent }) {
 }
 
 function blogShareUrl({ slug, filters = {} } = {}) {
-  const base = 'https://www.joelebukatobi.dev';
+  const base = 'https://joelebukatobi.dev';
   if (slug) return `${base}/blog/${slug}`;
   return `${base}${buildBlogQuery(filters)}`;
 }

@@ -4,7 +4,9 @@ import { projectsGrid } from '../../components/project-card.js';
 export function projectsMeta() {
   return {
     title: 'Projects | Joel Ebuka Tobi',
-    url: 'https://www.joelebukatobi.dev/projects',
+    description:
+      'A showcase of web applications and platforms built by Joel Onwuanaku, spanning e-commerce, healthcare, and remote-team tooling.',
+    url: 'https://joelebukatobi.dev/projects',
   };
 }
 

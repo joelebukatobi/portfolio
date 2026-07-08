@@ -8,6 +8,10 @@ import { blogListQuerySchema, slugParamSchema } from '../../admin/schemas/common
 import { buildComingSoonShell } from '../templates/layouts/portfolio.js';
 import { comingSoonContent } from '../../admin/templates/pages/coming-soon.js';
 import { renderComingSoonPage } from '../render.js';
+import { fetchPosts, fetchCategories } from '../utils/api.js';
+
+const SITE_URL = 'https://joelebukatobi.dev';
+const STATIC_SITEMAP_PATHS = ['/', '/about', '/projects', '/resume', '/contact'];
 
 export default async function publicRoutes(fastify) {
   fastify.get('/', {
@@ -41,5 +45,42 @@ export default async function publicRoutes(fastify) {
       reply,
       buildComingSoonShell({ content: comingSoonContent() }),
     );
+  });
+
+  fastify.get('/robots.txt', async (_request, reply) => {
+    reply.type('text/plain');
+    return [
+      'User-agent: *',
+      'Disallow: /admin',
+      'Disallow: /setup',
+      '',
+      `Sitemap: ${SITE_URL}/sitemap.xml`,
+    ].join('\n');
+  });
+
+  fastify.get('/sitemap.xml', async (_request, reply) => {
+    const [{ posts }, categories] = await Promise.all([
+      fetchPosts(fastify, { limit: 100, page: 1 }),
+      fetchCategories(fastify),
+    ]);
+
+    const urls = [
+      ...STATIC_SITEMAP_PATHS.map((path) => ({ loc: `${SITE_URL}${path}` })),
+      ...posts.map((post) => ({
+        loc: `${SITE_URL}/blog/${post.slug}`,
+        lastmod: post.updated_at?.slice(0, 10),
+      })),
+      ...categories.map((category) => ({ loc: `${SITE_URL}/blog/category/${category.slug}` })),
+    ];
+
+    const body = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((u) => `  <url>
+    <loc>${u.loc}</loc>${u.lastmod ? `\n    <lastmod>${u.lastmod}</lastmod>` : ''}
+  </url>`).join('\n')}
+</urlset>`;
+
+    reply.type('application/xml');
+    return body;
   });
 }

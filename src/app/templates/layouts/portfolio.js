@@ -18,6 +18,9 @@ export function buildPortfolioShell({ content, meta = {} }) {
   const articleAuthor = escapeHtml(seo.article_author);
   const articleSection = escapeHtml(seo.article_section || '');
   const robots = escapeHtml(seo.robots || 'index,follow');
+  const structuredDataJson = meta.structuredData
+    ? JSON.stringify(meta.structuredData).replace(/</g, '\\u003c')
+    : '';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -38,6 +41,7 @@ export function buildPortfolioShell({ content, meta = {} }) {
     <meta name="description" content="${description}" />
     <meta name="keywords" content="${keywords}" />
     <meta name="robots" content="${robots}" />
+    <link rel="canonical" href="${url}" />
     <meta property="og:site_name" content="${siteName}" />
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${description}" />
@@ -54,6 +58,7 @@ export function buildPortfolioShell({ content, meta = {} }) {
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:image" content="${image}" />
     <meta property="twitter:site" content="@joelebukatobi" />
+    ${structuredDataJson ? `<script type="application/ld+json">${structuredDataJson}</script>` : ''}
     <link rel="icon" type="image/svg+xml" href="/images/icons/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

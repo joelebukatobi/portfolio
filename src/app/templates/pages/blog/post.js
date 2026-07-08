@@ -15,17 +15,34 @@ import {
 export function blogPostMeta({ post, apiUrl = '' } = {}) {
   const image = imageUrl(apiUrl, post?.image) || post?.image;
   const ext = post?.image?.includes('.') ? post.image.slice(post.image.indexOf('.') + 1) : 'jpg';
+  const postUrl = `https://joelebukatobi.dev/blog/${post?.slug || ''}`;
+  const authorName = getPostAuthorName(post);
+  const publishedAt = getPostPublishedAt(post);
 
   return {
     title: post?.title || 'Blog Post',
     description: truncate(post?.description || '', 200),
-    url: `https://www.joelebukatobi.dev/blog/${post?.slug || ''}`,
+    url: postUrl,
     site_name: 'Blog | Joel Ebuka Tobi',
     type: 'article',
     image,
     image_type: `image/${ext}`,
     image_alt: `${post?.slug || 'post'}-thumbnail`,
     article_section: post?.category?.name || '',
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post?.title || 'Blog Post',
+      description: truncate(post?.description || '', 200),
+      url: postUrl,
+      mainEntityOfPage: postUrl,
+      ...(image ? { image } : {}),
+      ...(publishedAt ? { datePublished: publishedAt } : {}),
+      author: {
+        '@type': 'Person',
+        name: authorName || 'Joel Ebuka Tobi',
+      },
+    },
   };
 }
 

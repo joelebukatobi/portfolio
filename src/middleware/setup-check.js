@@ -17,7 +17,9 @@ export async function checkSetupStatus(fastify) {
         pathname.startsWith('/admin/auth/') ||
         pathname === '/favicon.ico' ||
         pathname === '/favicon.svg' ||
-        pathname === '/images/icons/favicon.svg') {
+        pathname === '/images/icons/favicon.svg' ||
+        pathname === '/robots.txt' ||
+        pathname === '/sitemap.xml') {
       return;
     }
 

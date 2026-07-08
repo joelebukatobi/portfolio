@@ -4,7 +4,7 @@ export function notFoundMeta() {
   return {
     title: '404 | Joel Ebuka Tobi',
     description: 'Page not found.',
-    url: 'https://www.joelebukatobi.dev/404',
+    url: 'https://joelebukatobi.dev/404',
     robots: 'noindex,nofollow',
   };
 }

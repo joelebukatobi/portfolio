@@ -6,7 +6,7 @@ export function blogCategoryMeta({ category } = {}) {
   return {
     title: category?.name || 'Blog Category',
     description: truncate(category?.description || '', 100),
-    url: `https://www.joelebukatobi.dev/blog/category/${category?.slug || ''}`,
+    url: `https://joelebukatobi.dev/blog/category/${category?.slug || ''}`,
     site_name: 'Blog | Joel Ebuka Tobi',
     article_section: category?.name || '',
   };

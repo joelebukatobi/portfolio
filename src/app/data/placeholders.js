@@ -7,7 +7,7 @@ export const PLACEHOLDER_PROJECTS = [
     name: 'all fields global',
     description: 'A global agriculture and logistics platform for field operations and supply chain visibility.',
     technologies: 'wintercms - laravel - bootstrap',
-    website: 'https://www.joelebukatobi.dev',
+    website: 'https://joelebukatobi.dev',
     image: PLACEHOLDER_IMAGE,
   },
   {
@@ -15,7 +15,7 @@ export const PLACEHOLDER_PROJECTS = [
     name: 'xpathedge',
     description: 'A modern web platform for remote teams with dashboards, workflows, and client portals.',
     technologies: 'laravel - alpinejs - bootstrap - mysql',
-    website: 'https://www.joelebukatobi.dev',
+    website: 'https://joelebukatobi.dev',
     image: PLACEHOLDER_IMAGE,
   },
   {
@@ -23,7 +23,7 @@ export const PLACEHOLDER_PROJECTS = [
     name: 'santis-med',
     description: 'A healthcare services site focused on patient intake, appointments, and provider information.',
     technologies: 'mysql - tailwindcss - alpinejs',
-    website: 'https://www.joelebukatobi.dev',
+    website: 'https://joelebukatobi.dev',
     image: PLACEHOLDER_IMAGE,
   },
 ];

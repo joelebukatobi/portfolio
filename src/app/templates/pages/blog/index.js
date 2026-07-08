@@ -5,9 +5,18 @@ import { escapeHtml } from '../../utils/helpers.js';
 
 export function blogIndexMeta() {
   return {
-    title: 'Joel Ebuka Tobi | Product Manager',
-    url: 'https://www.joelebukatobi.dev',
-    site_name: 'Joel Ebuka Tobi | Product Manager',
+    title: "Joel's Blog",
+    description:
+      'A blog about product management, software engineering, and AI — from LLMs and agentic systems to cloud infrastructure and devops, written by Joel Onwuanaku.',
+    url: 'https://joelebukatobi.dev',
+    site_name: "Joel's Blog",
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: 'Joel Ebuka Tobi',
+      url: 'https://joelebukatobi.dev',
+      jobTitle: 'Product Manager',
+    },
   };
 }
 

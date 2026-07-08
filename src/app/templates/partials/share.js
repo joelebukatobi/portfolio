@@ -1,5 +1,5 @@
 export function shareIconLinks({ slug, url } = {}) {
-  const shareUrl = url || `https://www.joelebukatobi.dev/blog/${slug}`;
+  const shareUrl = url || `https://joelebukatobi.dev/blog/${slug}`;
 
   return `
     <li>
