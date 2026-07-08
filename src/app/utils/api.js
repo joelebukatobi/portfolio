@@ -81,6 +81,8 @@ export async function fetchCategoryPosts(server, slug, { page = 1, limit = 50 } 
   };
 }
 
-export async function fetchProjects(_server) {
-  return [];
+export async function fetchProjects(server) {
+  const result = await injectJson(server, '/api/v1/projects');
+  if (!result.ok) return [];
+  return result.data?.data || [];
 }
