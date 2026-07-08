@@ -179,6 +179,7 @@ export default async function app(fastify, opts) {
   // Register public API routes (v1)
   await fastify.register(import('./admin/routes/api/posts.routes.js'), { prefix: '/api/v1/posts' });
   await fastify.register(import('./admin/routes/api/categories.routes.js'), { prefix: '/api/v1/categories' });
+  await fastify.register(import('./admin/routes/api/projects.routes.js'), { prefix: '/api/v1/projects' });
   await fastify.register(import('./admin/routes/api/tags.routes.js'), { prefix: '/api/v1/tags' });
   await fastify.register(import('./admin/routes/api/comments.routes.js'), { prefix: '/api/v1' });
    await fastify.register(import('./admin/routes/api/images.routes.js'), { prefix: '/api/v1/images' });
