@@ -15,7 +15,10 @@ export function projectsContent({ projects = [], apiUrl = '' } = {}) {
 <section id="projects" class="works container">
   ${
     projects.length === 0
-      ? '<p class="works__empty">Projects are on the way — check back soon.</p>'
+      ? `<div class="works__empty">
+          <img src="/images/pics/under_construction.jpg" alt="" width="240" height="240" />
+          <p>Projects are on the way — check back soon.</p>
+        </div>`
       : `<div class="works__grid">${projectsGrid({ projects, apiUrl })}</div>`
   }
 </section>`;
