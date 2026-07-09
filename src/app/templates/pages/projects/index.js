@@ -13,9 +13,11 @@ export function projectsMeta() {
 export function projectsContent({ projects = [], apiUrl = '' } = {}) {
   const content = `
 <section id="projects" class="works container">
-  <div class="works__grid">
-    ${projectsGrid({ projects, apiUrl })}
-  </div>
+  ${
+    projects.length === 0
+      ? '<p class="works__empty">Projects are on the way — check back soon.</p>'
+      : `<div class="works__grid">${projectsGrid({ projects, apiUrl })}</div>`
+  }
 </section>`;
 
   return layoutPage({

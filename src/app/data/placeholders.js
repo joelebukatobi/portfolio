@@ -1,33 +1,3 @@
-/** Site logo used as thumbnail fallback for project placeholders */
-export const PLACEHOLDER_IMAGE = '/images/icons/favicon.svg';
-
-export const PLACEHOLDER_PROJECTS = [
-  {
-    id: 1,
-    name: 'all fields global',
-    description: 'A global agriculture and logistics platform for field operations and supply chain visibility.',
-    technologies: 'wintercms - laravel - bootstrap',
-    website: 'https://joelebukatobi.dev',
-    image: PLACEHOLDER_IMAGE,
-  },
-  {
-    id: 2,
-    name: 'xpathedge',
-    description: 'A modern web platform for remote teams with dashboards, workflows, and client portals.',
-    technologies: 'laravel - alpinejs - bootstrap - mysql',
-    website: 'https://joelebukatobi.dev',
-    image: PLACEHOLDER_IMAGE,
-  },
-  {
-    id: 3,
-    name: 'santis-med',
-    description: 'A healthcare services site focused on patient intake, appointments, and provider information.',
-    technologies: 'mysql - tailwindcss - alpinejs',
-    website: 'https://joelebukatobi.dev',
-    image: PLACEHOLDER_IMAGE,
-  },
-];
-
 export const PLACEHOLDER_POSTS = [
   {
     id: 1,
@@ -51,12 +21,3 @@ export const PLACEHOLDER_POSTS = [
       'A concise checklist for auditing bundle size, image delivery, font loading, and critical rendering path issues on production sites.',
   },
 ];
-
-/**
- * Use placeholders when live data is empty (styling/dev preview without APIs).
- * @param {Array} items
- * @param {Array} fallback
- */
-export function withPlaceholders(items, fallback) {
-  return items?.length ? items : fallback;
-}

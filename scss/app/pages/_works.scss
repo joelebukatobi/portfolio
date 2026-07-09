@@ -1,6 +1,11 @@
 @use '../base/variables' as *;
 
 .works {
+  &__empty {
+    text-transform: none;
+    color: $color-grey;
+  }
+
   &__grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
