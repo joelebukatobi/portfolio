@@ -118,10 +118,7 @@ html.theme-light {
 
     &__image svg {
       fill: $color-light-orange;
-
-      path {
-        fill-opacity: 0.28;
-      }
+      opacity: 0.28;
     }
   }
 
