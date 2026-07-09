@@ -16,7 +16,7 @@ export function projectsContent({ projects = [], apiUrl = '' } = {}) {
   ${
     projects.length === 0
       ? `<div class="works__empty">
-          <img src="/images/pics/under_construction.jpg" alt="" width="240" height="240" />
+          <img src="/images/pics/under_construction.png" alt="" width="240" height="240" />
           <p>Projects are on the way — check back soon.</p>
         </div>`
       : `<div class="works__grid">${projectsGrid({ projects, apiUrl })}</div>`
