@@ -4,7 +4,13 @@
   position: sticky;
   top: 10vh;
   z-index: 5;
-  margin-bottom: 4rem;
+}
+
+.header-buffer {
+  width: 100%;
+  height: 4rem;
+  background-color: $color-dark-orange;
+  border: none;
 }
 
 .header {

@@ -9,5 +9,6 @@ export function headerPartial({ header = '' } = {}) {
         <svg><use href="/images/icons/about.svg" /></svg>
       </div>
     </header>
+    <div class="header-buffer"></div>
   </div>`;
 }

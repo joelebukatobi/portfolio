@@ -122,6 +122,10 @@ html.theme-light {
     }
   }
 
+  .header-buffer {
+    background-color: $color-off-white;
+  }
+
   .about {
     &__hello {
       color: $color-dark-orange;
