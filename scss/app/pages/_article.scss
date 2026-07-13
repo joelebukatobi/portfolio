@@ -107,6 +107,35 @@
     }
   }
 
+  &__like {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: 0.8rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+
+    .blogpost__like-icon {
+      width: 1.8rem;
+      height: 1.8rem;
+      stroke: currentColor;
+      fill: none;
+    }
+
+    &[data-liked='true'] .blogpost__like-icon {
+      stroke: $color-orange;
+      fill: $color-orange;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+  }
+
   &__content {
     & p {
       line-height: 2.4rem;

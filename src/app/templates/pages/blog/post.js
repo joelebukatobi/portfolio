@@ -61,6 +61,8 @@ export function blogPostContent({
   const publishedLabel = escapeHtml(formatSiteDate(publishedAt, siteSettings));
   const readTime = escapeHtml(formatReadingTime(estimateReadingMinutes(post?.post || post?.description || '')));
   const publishedIso = escapeHtml(publishedAt || '');
+  const likeCount = post.likes || 0;
+  const likedByViewer = !!post.liked_by_viewer;
 
   return `
 ${navbar({ activePage: null })}
@@ -78,6 +80,17 @@ ${navbar({ activePage: null })}
         ${publishedAt ? `<span class="blogpost__meta-sep" aria-hidden="true">·</span><time class="blogpost__meta-date" datetime="${publishedIso}">${publishedLabel}</time>` : ''}
         <span class="blogpost__meta-sep" aria-hidden="true">·</span>
         <span class="blogpost__meta-read">${readTime}</span>
+        <button
+          type="button"
+          class="blogpost__like"
+          id="like-button"
+          data-liked="${likedByViewer ? 'true' : 'false'}"
+          aria-pressed="${likedByViewer ? 'true' : 'false'}"
+          aria-label="${likedByViewer ? 'Unlike this post' : 'Like this post'}"
+        >
+          <svg class="blogpost__like-icon" aria-hidden="true"><use href="/images/icons/heart.svg" /></svg>
+          <span class="blogpost__like-count" id="like-count">${likeCount}</span>
+        </button>
       </div>
       <h3>${title}</h3>
       <hr class="blogpost__title-divider" />
@@ -104,6 +117,31 @@ ${navbar({ activePage: null })}
         if (figure) figure.style.display = 'none';
       }, { once: true });
     });
+
+    const likeButton = document.getElementById('like-button');
+    const likeCountEl = document.getElementById('like-count');
+    if (likeButton && likeCountEl) {
+      const slug = ${JSON.stringify(post.slug)};
+
+      likeButton.addEventListener('click', async () => {
+        likeButton.disabled = true;
+        try {
+          const res = await fetch('/api/v1/posts/' + encodeURIComponent(slug) + '/like', {
+            method: 'POST',
+          });
+          if (!res.ok) return;
+          const data = await res.json();
+          likeButton.dataset.liked = data.liked ? 'true' : 'false';
+          likeButton.setAttribute('aria-pressed', data.liked ? 'true' : 'false');
+          likeButton.setAttribute('aria-label', data.liked ? 'Unlike this post' : 'Like this post');
+          likeCountEl.textContent = data.likeCount;
+        } catch (error) {
+          console.error('Like failed:', error);
+        } finally {
+          likeButton.disabled = false;
+        }
+      });
+    }
 
     function isCodeParagraph(p) {
       const code = p.querySelector(':scope > code');
