@@ -2,8 +2,8 @@ export function getApiUrl() {
   return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || '';
 }
 
-export async function injectJson(server, url) {
-  const response = await server.inject({ method: 'GET', url });
+export async function injectJson(server, url, { headers } = {}) {
+  const response = await server.inject({ method: 'GET', url, headers });
   if (response.statusCode !== 200) {
     return { ok: false, statusCode: response.statusCode, data: null };
   }
@@ -31,8 +31,10 @@ export async function fetchPosts(server, {
   };
 }
 
-export async function fetchPostBySlug(server, slug) {
-  const result = await injectJson(server, `/api/v1/posts/${encodeURIComponent(slug)}`);
+export async function fetchPostBySlug(server, slug, { cookie } = {}) {
+  const result = await injectJson(server, `/api/v1/posts/${encodeURIComponent(slug)}`, {
+    headers: cookie ? { cookie } : undefined,
+  });
   if (!result.ok) return { ok: false, post: null };
   return { ok: true, post: result.data };
 }

@@ -63,7 +63,7 @@ class BlogController {
 
   async show(request, reply) {
     const { slug } = request.params;
-    const { ok, post } = await fetchPostBySlug(request.server, slug);
+    const { ok, post } = await fetchPostBySlug(request.server, slug, { cookie: request.headers.cookie });
 
     if (!ok || !post) {
       reply.code(404);
