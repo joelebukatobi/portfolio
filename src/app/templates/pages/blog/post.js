@@ -80,6 +80,7 @@ ${navbar({ activePage: null })}
         ${publishedAt ? `<span class="blogpost__meta-sep" aria-hidden="true">·</span><time class="blogpost__meta-date" datetime="${publishedIso}">${publishedLabel}</time>` : ''}
         <span class="blogpost__meta-sep" aria-hidden="true">·</span>
         <span class="blogpost__meta-read">${readTime}</span>
+        <span class="blogpost__meta-sep" aria-hidden="true">·</span>
         <button
           type="button"
           class="blogpost__like"
