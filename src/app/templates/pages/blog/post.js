@@ -89,7 +89,9 @@ ${navbar({ activePage: null })}
           aria-pressed="${likedByViewer ? 'true' : 'false'}"
           aria-label="${likedByViewer ? 'Unlike this post' : 'Like this post'}"
         >
-          <svg class="blogpost__like-icon" aria-hidden="true"><use href="/images/icons/heart.svg" /></svg>
+          <svg class="blogpost__like-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 21C12 21 3 15.5 3 9.5C3 6.5 5.5 4 8.5 4C10.2 4 11.5 4.8 12 6C12.5 4.8 13.8 4 15.5 4C18.5 4 21 6.5 21 9.5C21 15.5 12 21 12 21Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
           <span class="blogpost__like-count" id="like-count">${likeCount}</span>
         </button>
       </div>
