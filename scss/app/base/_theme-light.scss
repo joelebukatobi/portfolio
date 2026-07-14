@@ -370,6 +370,11 @@ html.theme-light {
 
     &__like {
       color: $color-orange;
+
+      &[data-liked='true'] .blogpost__like-icon {
+        stroke: $color-orange;
+        fill: $color-orange;
+      }
     }
 
     &__title-divider {

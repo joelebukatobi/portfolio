@@ -132,8 +132,8 @@
     }
 
     &[data-liked='true'] .blogpost__like-icon {
-      stroke: $color-orange;
-      fill: $color-orange;
+      stroke: $color-light-orange;
+      fill: $color-light-orange;
     }
 
     &:disabled {
