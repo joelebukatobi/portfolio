@@ -126,6 +126,9 @@
       height: 1.8rem;
       stroke: currentColor;
       fill: none;
+      // Optical correction: the heart glyph's bottom point otherwise droops
+      // below the text baseline it sits next to.
+      transform: translateY(-0.2rem);
     }
 
     &[data-liked='true'] .blogpost__like-icon {
