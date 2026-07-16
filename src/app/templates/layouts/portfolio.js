@@ -46,6 +46,7 @@ export function buildPortfolioShell({ content, meta = {} }) {
     <link rel="canonical" href="${url}" />
     ${prevUrl ? `<link rel="prev" href="${prevUrl}" />` : ''}
     ${nextUrl ? `<link rel="next" href="${nextUrl}" />` : ''}
+    <link rel="alternate" type="application/rss+xml" title="Joel's Blog" href="https://joelebukatobi.dev/feed.xml" />
     <meta property="og:site_name" content="${siteName}" />
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${description}" />
