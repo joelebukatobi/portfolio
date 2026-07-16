@@ -38,6 +38,7 @@ class BlogController {
       year: year || '',
       search: search || '',
     };
+    const hasFilters = Boolean(filters.category || filters.tag || filters.year || filters.search);
 
     const [{ posts, meta }, categories, tags, years] = await Promise.all([
       fetchPosts(request.server, {
@@ -56,7 +57,7 @@ class BlogController {
     return renderAppPage(
       request,
       reply,
-      blogIndexMeta(),
+      blogIndexMeta({ page, lastPage: meta.last_page || 1, hasFilters }),
       blogIndexContent({ posts, meta, categories, tags, years, filters }),
     );
   }
