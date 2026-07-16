@@ -122,6 +122,13 @@ ${navbar({ activePage: null })}
       }, { once: true });
     });
 
+    const featuredImage = document.getElementById('featured-image');
+    if (featuredImage) {
+      featuredImage.addEventListener('error', () => {
+        featuredImage.src = ${JSON.stringify(DEFAULT_PLACEHOLDER_IMAGE_URL)};
+      }, { once: true });
+    }
+
     const likeButton = document.getElementById('like-button');
     const likeCountEl = document.getElementById('like-count');
     if (likeButton && likeCountEl) {
