@@ -7,6 +7,8 @@ export function buildPortfolioShell({ content, meta = {} }) {
   const description = escapeHtml(seo.description);
   const keywords = escapeHtml(seo.keywords);
   const url = escapeHtml(seo.url);
+  const prevUrl = escapeHtml(seo.prevUrl);
+  const nextUrl = escapeHtml(seo.nextUrl);
   const siteName = escapeHtml(seo.site_name);
   const type = escapeHtml(seo.type);
   const image = escapeHtml(seo.image);
@@ -42,6 +44,8 @@ export function buildPortfolioShell({ content, meta = {} }) {
     <meta name="keywords" content="${keywords}" />
     <meta name="robots" content="${robots}" />
     <link rel="canonical" href="${url}" />
+    ${prevUrl ? `<link rel="prev" href="${prevUrl}" />` : ''}
+    ${nextUrl ? `<link rel="next" href="${nextUrl}" />` : ''}
     <meta property="og:site_name" content="${siteName}" />
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${description}" />
