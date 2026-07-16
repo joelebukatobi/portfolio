@@ -3,18 +3,26 @@ import { aside, blogSearchForm } from '../../partials/aside.js';
 import { blogListPanel } from '../../partials/blog-list.js';
 import { escapeHtml } from '../../utils/helpers.js';
 
-export function blogIndexMeta() {
+export function blogIndexMeta({ page = 1, lastPage = 1, hasFilters = false } = {}) {
+  const base = 'https://joelebukatobi.dev';
+  const isSelfCanonical = !hasFilters && page > 1;
+  const url = isSelfCanonical ? `${base}/?page=${page}` : base;
+  const prevUrl = isSelfCanonical ? (page - 1 > 1 ? `${base}/?page=${page - 1}` : base) : undefined;
+  const nextUrl = !hasFilters && page < lastPage ? `${base}/?page=${page + 1}` : undefined;
+
   return {
     title: "Joel's Blog",
     description:
       'A blog about product management, software engineering, and AI — from LLMs and agentic systems to cloud infrastructure and devops, written by Joel Onwuanaku.',
-    url: 'https://joelebukatobi.dev',
+    url,
     site_name: "Joel's Blog",
+    prevUrl,
+    nextUrl,
     structuredData: {
       '@context': 'https://schema.org',
       '@type': 'Person',
       name: 'Joel Ebuka Tobi',
-      url: 'https://joelebukatobi.dev',
+      url: base,
       jobTitle: 'Product Manager',
     },
   };
