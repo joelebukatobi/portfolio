@@ -1,5 +1,6 @@
 import { escapeHtml, truncate, imageUrl } from '../../utils/helpers.js';
 import { rewriteContentMediaUrls, addLazyLoadingToImages } from '../../../../lib/media-paths.js';
+import { DEFAULT_PLACEHOLDER_IMAGE_URL } from '../../../../lib/media-defaults.js';
 import { navbar } from '../../partials/navbar.js';
 import { footer } from '../../partials/footer.js';
 import { asideForPost } from '../../partials/aside.js';
@@ -54,7 +55,7 @@ export function blogPostContent({
   moderateComments = false,
   siteSettings = {},
 } = {}) {
-  const img = escapeHtml(imageUrl(apiUrl, post.image));
+  const img = escapeHtml(post.image ? imageUrl(apiUrl, post.image) : DEFAULT_PLACEHOLDER_IMAGE_URL);
   const title = escapeHtml(post?.title || '');
   const author = escapeHtml(getPostAuthorName(post));
   const publishedAt = getPostPublishedAt(post);
@@ -68,7 +69,7 @@ export function blogPostContent({
 ${navbar({ activePage: null })}
 <section class="blogpost container">
   <div class="blogpost__image">
-    <img src="${img}" alt="post-thumbnail" />
+    <img id="featured-image" src="${img}" alt="post-thumbnail" />
   </div>
   <div class="blogpost__main">
     <div class="blogpost__aside">
