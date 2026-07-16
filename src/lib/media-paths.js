@@ -110,3 +110,18 @@ export function rewriteContentMediaUrls(html) {
     (_, before, _origin, pathname, after) => `${before}${toPublicMediaUrl(pathname)}${after}`,
   );
 }
+
+/**
+ * Add loading="lazy" to <img> tags in post HTML that don't already have a
+ * loading attribute. Does not touch <video>/<source> tags.
+ * @param {string|null|undefined} html
+ * @returns {string}
+ */
+export function addLazyLoadingToImages(html) {
+  if (!html || typeof html !== 'string') return '';
+
+  return html.replace(
+    /<img\b(?![^>]*\sloading=)([^>]*)>/gi,
+    (_, attrs) => `<img loading="lazy"${attrs}>`,
+  );
+}
