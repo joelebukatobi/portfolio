@@ -69,7 +69,7 @@ export function blogPostContent({
 ${navbar({ activePage: null })}
 <section class="blogpost container">
   <div class="blogpost__image">
-    <img id="featured-image" src="${img}" alt="post-thumbnail" />
+    <img id="featured-image" src="${img}" alt="${title}" />
   </div>
   <div class="blogpost__main">
     <div class="blogpost__aside">
