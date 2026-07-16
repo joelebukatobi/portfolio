@@ -1,5 +1,5 @@
 import { escapeHtml, truncate, imageUrl } from '../../utils/helpers.js';
-import { rewriteContentMediaUrls } from '../../../../lib/media-paths.js';
+import { rewriteContentMediaUrls, addLazyLoadingToImages } from '../../../../lib/media-paths.js';
 import { navbar } from '../../partials/navbar.js';
 import { footer } from '../../partials/footer.js';
 import { asideForPost } from '../../partials/aside.js';
@@ -97,7 +97,7 @@ ${navbar({ activePage: null })}
       </div>
       <h3>${title}</h3>
       <hr class="blogpost__title-divider" />
-      ${rewriteContentMediaUrls(post.post || '')}
+      ${addLazyLoadingToImages(rewriteContentMediaUrls(post.post || ''))}
       ${postComments({
         slug: post.slug,
         comments,
