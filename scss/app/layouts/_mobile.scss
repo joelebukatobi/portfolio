@@ -97,21 +97,16 @@
 
 .about {
   @media (min-width: 320px) and (max-width: 1024px) {
-    &__headline {
-      flex-direction: row;
-      align-items: center;
-      gap: 1.6rem;
-      text-align: left;
-    }
+    flex-direction: column;
+    gap: 2.4rem;
 
-    &__photo {
-      width: 10rem;
-      height: 10rem;
+    &__media {
+      flex: none;
+      width: 100%;
+      max-width: 28rem;
     }
 
     &__hello {
-      flex: 1;
-      min-width: 0;
       text-align: left;
       font-size: 2.4rem;
       line-height: 1.3;

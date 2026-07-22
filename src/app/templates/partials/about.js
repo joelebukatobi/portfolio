@@ -1,20 +1,19 @@
 export function about() {
   return `
 <section class="about container">
-  <div class="about__headline">
-    <div class="about__photo">
-      <img
-        src="/images/pics/profile.png"
-        width="160"
-        height="160"
-        alt="Joel Onwuanaku"
-      />
-    </div>
+  <div class="about__media">
+    <img
+      src="/images/pics/image-one.jpg"
+      width="900"
+      height="1200"
+      alt="Joel Onwuanaku"
+    />
+  </div>
+  <div class="about__content">
     <h3 class="about__hello">
       Hello, 👋🏾 I'm Joel Onwuanaku,<br />Welcome To My Blog
     </h3>
-  </div>
-  <div class="about__bio">
+    <div class="about__bio">
     <p>
       My background is rooted deeply in the technical trenches. Before pivoting into product management, 
       early in my career I was building full-stack web across multiple domains and later went on to lead agile engineering teams 
@@ -31,7 +30,7 @@ export function about() {
       and the business strategies that turn technical execution into real-world value. Asides from writing, I am an avid reader, football fan (COYG), gadget enthusiast,
       married to my best friend and a lover of YHWH (ICFCWJ).
     </p>
- 
+    </div>
   </div>
 </section>`;
 }
