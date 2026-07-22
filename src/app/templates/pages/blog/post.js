@@ -1,6 +1,7 @@
 import { escapeHtml, truncate, imageUrl } from '../../utils/helpers.js';
 import { rewriteContentMediaUrls, addLazyLoadingToImages } from '../../../../lib/media-paths.js';
 import { DEFAULT_PLACEHOLDER_IMAGE_URL } from '../../../../lib/media-defaults.js';
+import { icon } from '../../../../lib/icons.js';
 import { navbar } from '../../partials/navbar.js';
 import { footer } from '../../partials/footer.js';
 import { asideForPost } from '../../partials/aside.js';
@@ -90,9 +91,7 @@ ${navbar({ activePage: null })}
           aria-pressed="${likedByViewer ? 'true' : 'false'}"
           aria-label="${likedByViewer ? 'Unlike this post' : 'Like this post'}"
         >
-          <svg class="blogpost__like-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 21C12 21 3 15.5 3 9.5C3 6.5 5.5 4 8.5 4C10.2 4 11.5 4.8 12 6C12.5 4.8 13.8 4 15.5 4C18.5 4 21 6.5 21 9.5C21 15.5 12 21 12 21Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-          </svg>
+          ${icon('heart', { className: 'blogpost__like-icon' })}
           <span class="blogpost__like-count" id="like-count">${likeCount}</span>
         </button>
       </div>
@@ -185,13 +184,8 @@ ${navbar({ activePage: null })}
       ...[...content.querySelectorAll('p')].filter(isCodeParagraph),
     ];
 
-    const copyIconSvg = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">'
-      + '<path d="M20 9H11C9.89543 9 9 9.89543 9 11V20C9 21.1046 9.89543 22 11 22H20C21.1046 22 22 21.1046 22 20V11C22 9.89543 21.1046 9 20 9Z" stroke="currentColor" stroke-width="2"/>'
-      + '<path d="M5 15H4C2.89543 15 2 14.1046 2 13V4C2 2.89543 2.89543 2 4 2H13C14.1046 2 15 2.89543 15 4V5" stroke="currentColor" stroke-width="2"/>'
-      + '</svg>';
-    const checkIconSvg = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">'
-      + '<path d="M20.7069 6.29303C20.8944 6.48056 20.9997 6.73487 20.9997 7.00003C20.9997 7.26519 20.8944 7.5195 20.7069 7.70703L10.7069 17.707C10.5194 17.8945 10.2651 17.9998 9.99992 17.9998C9.73475 17.9998 9.48045 17.8945 9.29292 17.707L4.29292 12.707C4.11076 12.5184 4.00997 12.2658 4.01224 12.0036C4.01452 11.7414 4.11969 11.4906 4.3051 11.3052C4.49051 11.1198 4.74132 11.0146 5.00352 11.0124C5.26571 11.0101 5.51832 11.1109 5.70692 11.293L9.99992 15.586L19.2929 6.29303C19.4804 6.10556 19.7348 6.00024 19.9999 6.00024C20.2651 6.00024 20.5194 6.10556 20.7069 6.29303Z" fill="currentColor"/>'
-      + '</svg>';
+    const copyIconSvg = ${JSON.stringify(icon('copy'))};
+    const checkIconSvg = ${JSON.stringify(icon('check'))};
 
     blocks.forEach((block) => {
       const wrapper = document.createElement('div');
