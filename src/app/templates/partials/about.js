@@ -11,7 +11,7 @@ export function about() {
   </div>
   <div class="about__content">
     <h3 class="about__hello">
-      Hello, 👋🏾 I'm Joel Onwuanaku,<br />Welcome To My Blog
+      Hello, 👋🏾 I'm Joel Onwuanaku,<br /> Welcome To My Blog
     </h3>
     <div class="about__bio">
     <p>

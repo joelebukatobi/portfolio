@@ -7,7 +7,7 @@ export function resume() {
     <li>
       ${icon('download')}
       <a href="https://docs.google.com/document/d/1mSW8ae8Dpoojbqee7XjOWQMRpL41PzJtEfzK8B8M3WM/edit?usp=sharing">Resume</a>
-    </li>
+    10|    </li>
     <li>
       ${icon('download')}
       <a href="https://docs.google.com/document/d/1pLffM_nQwl2bsBqcBk455NHh9sAe5yMrVCefXl55lvc/edit?usp=sharing">Cover Letter</a>
@@ -17,7 +17,7 @@ export function resume() {
     <div class="resume__left">
       <div class="resume__card">
         <h6 class="title">skills</h6>
-        <ul class="list">
+    20|        <ul class="list">
           <li class="item"><span>~</span><p><strong>Product:</strong> Product Life Cycle Management (PLM), Stakeholder Alignment, Agile/Scrum (Jira/Bitbucket), User Experience &amp; Strategic Planning.</p></li>
           <li class="item"><span>~</span><p><strong>Frontend:</strong> React.js, Next.js, TypeScript, JavaScript (ES6+), Redux/RTK Query, Vue.js, Alpine.js, Tailwind, SCSS, Cypress.js, &amp; Vite.</p></li>
           <li class="item"><span>~</span><p><strong>Backend:</strong> Node.js, Strapi.js, PHP/Laravel, Python, REST/GraphQL APIs, MySQL, Postgres, &amp; MongoDB.</p></li>
@@ -27,8 +27,8 @@ export function resume() {
         </ul>
       </div>
       <div class="resume__card">
-        <h6 class="title">experience</h6>
-        <p class="description">Amazon - Senior Product Manager – Technical (Intern)</p>
+    30|        <h6 class="title">experience</h6>
+        <h6 class="description">Amazon - Senior Product Manager – Technical (Intern)</h6>
         <p class="date">Customer Experience Impressions (SCOT-AIM) <span class="date__sep">|</span> Bellevue, Washington <span class="date__sep">|</span> May 2025 - August 2025</p>
         <ul class="list">
           <li class="item"><span>~</span><p>Managed product development life cycle, from conceptualization to launch, for the expansion of a core data product used by over 600 internal teams.</p></li>
@@ -37,8 +37,8 @@ export function resume() {
           <li class="item"><span>~</span><p>Delivered an expanded data product with an increase in the number of product impressions of ASINs (3x) and a better overview of customer experience and engagement across major surfaces (page types).</p></li>
         </ul>
       </div>
-      <div class="resume__card">
-        <p class="description">Numinix Web Development Limited - Senior Frontend Developer (Remote)</p>
+    40|      <div class="resume__card">
+        <h6 class="description">Numinix Web Development Limited - Senior Frontend Developer (Remote)</h6>
         <p class="date">e-Commerce Company <span class="date__sep">|</span> Vancouver, BC Canada <span class="date__sep">|</span> December 2023 - July 2024</p>
         <ul class="list">
           <li class="item"><span>~</span><p>Optimized e-commerce websites for over 1,000 users by implementing user-friendly experiences and improving search engine visibility by 40% through SEO best practices &amp; rigorous usability testing.</p></li>
@@ -47,9 +47,9 @@ export function resume() {
         </ul>
       </div>
     </div>
-    <div class="resume__right">
+    50|    <div class="resume__right">
       <div class="resume__card">
-        <p class="description">MKEL Networks Limited - Web Developer</p>
+        <h6 class="description">MKEL Networks Limited - Web Developer</h6>
         <p class="date">Telecommunications and IT <span class="date__sep">|</span> Abuja, Nigeria <span class="date__sep">|</span> March 2022 - December 2023</p>
         <ul class="list">
           <li class="item"><span>~</span><p>Engaged with a broad team on complex network projects, reduced downtime by 25%, and boosted system efficiency by 30%.</p></li>
@@ -57,27 +57,27 @@ export function resume() {
           <li class="item"><span>~</span><p>Cultivated strategic partnerships with MNOs &amp; VOIP service providers.</p></li>
           <li class="item"><span>~</span><p>Engineered web applications with JavaScript frameworks. Leveraged Docker, Kubernetes, CI/CD pipelines as well as Git to boost deployment efficiency by 45%, enhance application speed by 35% with a reduction in load time by 25%.</p></li>
           <li class="item"><span>~</span><p>Mentored 3 software engineering interns, increasing team productivity by 20%, facilitating the completion of two in-house web application projects.</p></li>
-        </ul>
+    60|        </ul>
       </div>
       <div class="resume__card">
-        <p class="description">xPathEdge LLC - Web Developer (Part-time Remote)</p>
+        <h6 class="description">xPathEdge LLC - Web Developer (Part-time Remote)</h6>
         <p class="date">IT Services and Consulting <span class="date__sep">|</span> Arlington, TX United States <span class="date__sep">|</span> March 2022 - March 2024</p>
         <ul class="list">
           <li class="item"><span>~</span><p>Developed and maintained web pages using Next.js and Laravel Framework, ensuring accurate design implementation and mobile responsiveness.</p></li>
           <li class="item"><span>~</span><p>Used Git for version control and built reusable components to streamline web pages for scalability and speed.</p></li>
           <li class="item"><span>~</span><p>Conducted usability testing to enhance user experience and incorporated SEO best practices to improve search engine visibility.</p></li>
           <li class="item"><span>~</span><p>Collaborated with a cross-functional team to design, develop, and deploy high-quality web pages that meet project objectives and exceed stakeholder requirements.</p></li>
-          <li class="item"><span>~</span><p>Wrote tests that cover all aspects of the application, including user interface, functionality, and performance with Cypress.js.</p></li>
+    70|          <li class="item"><span>~</span><p>Wrote tests that cover all aspects of the application, including user interface, functionality, and performance with Cypress.js.</p></li>
         </ul>
       </div>
       <div class="resume__card">
-        <p class="description">Datatac Nigeria Limited - Web Developer</p>
+        <h6 class="description">Datatac Nigeria Limited - Web Developer</h6>
         <p class="date">Web Design and Development Agency <span class="date__sep">|</span> Abuja, Nigeria <span class="date__sep">|</span> March 2021 - February 2022</p>
         <ul class="list">
           <li class="item"><span>~</span><p>Led an agile team of 10 people across different domains, from design to development to deliver web projects, delegating tasks, and assigning teams based on project requirements. Ensured 100% on-time delivery by adhering to agile principles.</p></li>
           <li class="item"><span>~</span><p>Engaged with clients to gather requirements, outline digital marketing processes, and attained a 30% increase in project efficiency as a result.</p></li>
           <li class="item"><span>~</span><p>Developed proposals for projects. Met project goals within budget while on schedule, achieving a 25% increase in project success rate.</p></li>
-          <li class="item"><span>~</span><p>Mentored 2 interns, offering a broad understanding of software engineering. Resulted in top grades upon returning to school.</p></li>
+    80|          <li class="item"><span>~</span><p>Mentored 2 interns, offering a broad understanding of software engineering. Resulted in top grades upon returning to school.</p></li>
         </ul>
       </div>
     </div>
