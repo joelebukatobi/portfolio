@@ -478,10 +478,11 @@ html.theme-light {
       }
 
       .date {
-        color: $color-orange;
+        background-color: $color-dark-orange;
+        color: $color-white;
 
         .date__sep {
-          color: $color-dark-orange;
+          color: $color-orange;
         }
       }
 

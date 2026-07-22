@@ -50,9 +50,12 @@
       color: $color-light-orange;
       font-style: normal;
       text-transform: none;
+      background-color: #353432;
+      padding: 1.6rem;
+      border-radius: 0.5rem;
 
       & .date__sep {
-        color: $color-orange;
+        color: $color-white;
       }
     }
     & .description {
