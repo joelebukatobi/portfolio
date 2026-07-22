@@ -1,4 +1,5 @@
 import { escapeHtml } from '../utils/helpers.js';
+import { icon } from '../../../lib/icons.js';
 
 export function projectCard({ project }) {
   const website = escapeHtml(project.website || '#');
@@ -11,7 +12,7 @@ export function projectCard({ project }) {
   <div class="works__card__group">
     <a href="${website}" target="_blank" rel="noopener noreferrer">
       <div class="works__card__project">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="/images/icons/link.svg" /></svg>
+        ${icon('link')}
         <p>Live</p>
       </div>
     </a>

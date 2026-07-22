@@ -1,13 +1,15 @@
+import { icon } from '../../../lib/icons.js';
+
 export function resume() {
   return `
 <section id="resume" class="resume container">
   <ul class="resume__external">
     <li>
-      <svg><use href="/images/icons/download.svg" /></svg>
+      ${icon('download')}
       <a href="https://docs.google.com/document/d/1mSW8ae8Dpoojbqee7XjOWQMRpL41PzJtEfzK8B8M3WM/edit?usp=sharing">Resume</a>
     </li>
     <li>
-      <svg><use href="/images/icons/download.svg" /></svg>
+      ${icon('download')}
       <a href="https://docs.google.com/document/d/1pLffM_nQwl2bsBqcBk455NHh9sAe5yMrVCefXl55lvc/edit?usp=sharing">Cover Letter</a>
     </li>
   </ul>
@@ -26,8 +28,8 @@ export function resume() {
       </div>
       <div class="resume__card">
         <h6 class="title">experience</h6>
-        <p class="description">Amazon - Senior Product Manager – Technical (Intern)</p>
-        <p class="date">Customer Experience Impressions (SCOT-AIM) | Bellevue, Washington | May 2025 - August 2025</p>
+        <h6 class="description">Amazon - Senior Product Manager – Technical (Intern)</h6>
+        <p class="date">Customer Experience Impressions (SCOT-AIM) <span class="date__sep">|</span> Bellevue, Washington <span class="date__sep">|</span> May 2025 - August 2025</p>
         <ul class="list">
           <li class="item"><span>~</span><p>Managed product development life cycle, from conceptualization to launch, for the expansion of a core data product used by over 600 internal teams.</p></li>
           <li class="item"><span>~</span><p>Drove requirements gathering and stakeholder alignment with the engineering and business teams, with the end goal of building a more comprehensive data product that provides actionable signals for internal teams consuming these metrics.</p></li>
@@ -36,8 +38,8 @@ export function resume() {
         </ul>
       </div>
       <div class="resume__card">
-        <p class="description">Numinix Web Development Limited - Senior Frontend Developer (Remote)</p>
-        <p class="date">e-Commerce Company | Vancouver, BC Canada | December 2023 - July 2024</p>
+        <h6 class="description">Numinix Web Development Limited - Senior Frontend Developer (Remote)</h6>
+        <p class="date">e-Commerce Company <span class="date__sep">|</span> Vancouver, BC Canada <span class="date__sep">|</span> December 2023 - July 2024</p>
         <ul class="list">
           <li class="item"><span>~</span><p>Optimized e-commerce websites for over 1,000 users by implementing user-friendly experiences and improving search engine visibility by 40% through SEO best practices &amp; rigorous usability testing.</p></li>
           <li class="item"><span>~</span><p>Collaborated with a cross-functional agile team to design, develop, &amp; deploy high-quality e-commerce web pages, achieving a 95% on-time delivery rate.</p></li>
@@ -47,8 +49,8 @@ export function resume() {
     </div>
     <div class="resume__right">
       <div class="resume__card">
-        <p class="description">MKEL Networks Limited - Web Developer</p>
-        <p class="date">Telecommunications and IT | Abuja, Nigeria | March 2022 - December 2023</p>
+        <h6 class="description">MKEL Networks Limited - Web Developer</h6>
+        <p class="date">Telecommunications and IT <span class="date__sep">|</span> Abuja, Nigeria <span class="date__sep">|</span> March 2022 - December 2023</p>
         <ul class="list">
           <li class="item"><span>~</span><p>Engaged with a broad team on complex network projects, reduced downtime by 25%, and boosted system efficiency by 30%.</p></li>
           <li class="item"><span>~</span><p>Managed VOIP call rates from Q1 to Q3 in 2023, identifying new margins leading to a 20% increase in revenue for VOIP calls.</p></li>
@@ -58,8 +60,8 @@ export function resume() {
         </ul>
       </div>
       <div class="resume__card">
-        <p class="description">xPathEdge LLC - Web Developer (Part-time Remote)</p>
-        <p class="date">IT Services and Consulting | Arlington, TX United States | March 2022 - March 2024</p>
+        <h6 class="description">xPathEdge LLC - Web Developer (Part-time Remote)</h6>
+        <p class="date">IT Services and Consulting <span class="date__sep">|</span> Arlington, TX United States <span class="date__sep">|</span> March 2022 - March 2024</p>
         <ul class="list">
           <li class="item"><span>~</span><p>Developed and maintained web pages using Next.js and Laravel Framework, ensuring accurate design implementation and mobile responsiveness.</p></li>
           <li class="item"><span>~</span><p>Used Git for version control and built reusable components to streamline web pages for scalability and speed.</p></li>
@@ -69,8 +71,8 @@ export function resume() {
         </ul>
       </div>
       <div class="resume__card">
-        <p class="description">Datatac Nigeria Limited - Web Developer</p>
-        <p class="date">Web Design and Development Agency | Abuja, Nigeria | March 2021 - February 2022</p>
+        <h6 class="description">Datatac Nigeria Limited - Web Developer</h6>
+        <p class="date">Web Design and Development Agency <span class="date__sep">|</span> Abuja, Nigeria <span class="date__sep">|</span> March 2021 - February 2022</p>
         <ul class="list">
           <li class="item"><span>~</span><p>Led an agile team of 10 people across different domains, from design to development to deliver web projects, delegating tasks, and assigning teams based on project requirements. Ensured 100% on-time delivery by adhering to agile principles.</p></li>
           <li class="item"><span>~</span><p>Engaged with clients to gather requirements, outline digital marketing processes, and attained a 30% increase in project efficiency as a result.</p></li>

@@ -109,7 +109,7 @@ $filter-control-border: 0.2rem solid rgba($color-light-orange, 0.6);
     font-family: $font-primary;
     font-size: 2.1rem;
     font-weight: 500;
-    color: $color-white;
+    color: $color-off-white;
     outline: none;
 
     &::-webkit-search-cancel-button,
@@ -125,7 +125,7 @@ $filter-control-border: 0.2rem solid rgba($color-light-orange, 0.6);
 
     &:focus {
       background-color: transparent;
-      color: $color-white;
+      color: $color-off-white;
       border: none;
     }
 
@@ -180,7 +180,7 @@ $filter-control-border: 0.2rem solid rgba($color-light-orange, 0.6);
       font-family: $font-primary;
       font-size: 1.8rem;
       font-weight: 700;
-      color: $color-white;
+      color: $color-off-white;
       text-transform: capitalize;
     }
     & hr {
@@ -204,7 +204,7 @@ $filter-control-border: 0.2rem solid rgba($color-light-orange, 0.6);
         & a.blog__aside-link {
           font-size: 1.8rem;
           font-weight: 500;
-          color: $color-white;
+          color: $color-off-white;
           text-transform: capitalize;
           white-space: nowrap;
 
@@ -276,6 +276,7 @@ $filter-control-border: 0.2rem solid rgba($color-light-orange, 0.6);
   &__card {
     background-color: #353432;
     border-radius: 0.5rem;
+    box-shadow: $shadow-sm;
     padding: 1.6rem;
     width: 46.87%;
     // height: 20.5rem;
@@ -289,7 +290,7 @@ $filter-control-border: 0.2rem solid rgba($color-light-orange, 0.6);
 
     & h4 {
       font-family: $font-primary;
-      color: $color-white;
+      color: $color-off-white;
       text-transform: lowercase;
     }
 

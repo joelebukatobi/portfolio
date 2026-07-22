@@ -1,9 +1,11 @@
+import { icon } from '../../../lib/icons.js';
+
 export function successPartial() {
   return `
 <section class="flex success" id="contact-result">
   <div class="success__main">
     <div class="success__icon">
-      <svg><use href="/images/icons/check.svg" /></svg>
+      ${icon('check')}
     </div>
     <h5>Message Sent!</h5>
     <hr />

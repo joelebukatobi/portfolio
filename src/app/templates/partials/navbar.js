@@ -1,28 +1,10 @@
 import { activeNavClass } from '../utils/helpers.js';
+import { icon } from '../../../lib/icons.js';
 
-const sunIcon = `
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" />
-  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-</svg>`;
-
-const moonIcon = `
-<svg class="navbar__theme-icon--moon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-</svg>`;
-
-const menuIcon = `
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <path d="M6 6H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M6 18H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M10 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-</svg>`;
-
-const closeIcon = `
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-  <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-</svg>`;
+const sunIcon = icon('sun');
+const moonIcon = icon('moon', { className: 'navbar__theme-icon--moon' });
+const menuIcon = icon('navbar-menu');
+const closeIcon = icon('navbar-close');
 
 function themeToggleButton() {
   return `

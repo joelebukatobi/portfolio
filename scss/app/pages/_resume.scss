@@ -46,15 +46,23 @@
     }
     & .date {
       color: $color-light-orange;
-      font-size: 1.4rem;
-      font-weight: 600;
+      font-size: 1.8rem;
+      font-weight: 700;
       font-style: normal;
       text-transform: none;
+      padding: 0;
+      border-radius: 0;
+
+      & .date__sep {
+        color: $color-orange;
+      }
     }
     & .description {
-      color: $color-white;
-      text-transform: capitalize;
+      font-family: $font-primary;
+      font-size: 1.8rem;
       font-weight: 700;
+      color: $color-off-white;
+      text-transform: capitalize;
     }
 
     & ul {
@@ -85,7 +93,7 @@
       margin-right: 1.6rem;
       height: 2.4rem;
       & svg {
-        fill: $color-light-orange;
+        color: $color-light-orange;
         height: 2.4rem;
         width: 2.4rem;
         margin-right: 0.8rem;
@@ -99,7 +107,7 @@
 
       &:hover {
         a {
-          color: $color-white;
+          color: $color-off-white;
         }
       }
     }

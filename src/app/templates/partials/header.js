@@ -1,4 +1,5 @@
 import { escapeHtml } from '../utils/helpers.js';
+import { icon } from '../../../lib/icons.js';
 
 export function headerPartial({ header = '' } = {}) {
   return `
@@ -6,7 +7,7 @@ export function headerPartial({ header = '' } = {}) {
     <header class="header">
       <div class="header__title"><h4>${escapeHtml(header)}</h4></div>
       <div class="header__image">
-        <svg><use href="/images/icons/about.svg" /></svg>
+        ${icon('about')}
       </div>
     </header>
     <div class="header-buffer"></div>

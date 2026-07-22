@@ -1,6 +1,7 @@
 import { escapeHtml, truncate, imageUrl } from '../../utils/helpers.js';
 import { rewriteContentMediaUrls, addLazyLoadingToImages } from '../../../../lib/media-paths.js';
 import { DEFAULT_PLACEHOLDER_IMAGE_URL } from '../../../../lib/media-defaults.js';
+import { icon } from '../../../../lib/icons.js';
 import { navbar } from '../../partials/navbar.js';
 import { footer } from '../../partials/footer.js';
 import { asideForPost } from '../../partials/aside.js';
@@ -90,9 +91,7 @@ ${navbar({ activePage: null })}
           aria-pressed="${likedByViewer ? 'true' : 'false'}"
           aria-label="${likedByViewer ? 'Unlike this post' : 'Like this post'}"
         >
-          <svg class="blogpost__like-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M12 21C12 21 3 15.5 3 9.5C3 6.5 5.5 4 8.5 4C10.2 4 11.5 4.8 12 6C12.5 4.8 13.8 4 15.5 4C18.5 4 21 6.5 21 9.5C21 15.5 12 21 12 21Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-          </svg>
+          ${icon('heart', { className: 'blogpost__like-icon' })}
           <span class="blogpost__like-count" id="like-count">${likeCount}</span>
         </button>
       </div>
@@ -185,6 +184,9 @@ ${navbar({ activePage: null })}
       ...[...content.querySelectorAll('p')].filter(isCodeParagraph),
     ];
 
+    const copyIconSvg = ${JSON.stringify(icon('copy'))};
+    const checkIconSvg = ${JSON.stringify(icon('check'))};
+
     blocks.forEach((block) => {
       const wrapper = document.createElement('div');
       wrapper.className = 'blogpost__code';
@@ -195,20 +197,19 @@ ${navbar({ activePage: null })}
       btn.type = 'button';
       btn.className = 'blogpost__code-copy';
       btn.setAttribute('aria-label', 'Copy code');
-      btn.innerHTML = '<svg aria-hidden="true"><use href="/images/icons/copy.svg" /></svg>';
+      btn.innerHTML = copyIconSvg;
       wrapper.appendChild(btn);
 
       btn.addEventListener('click', async () => {
         try {
           await copyText(getCodeText(block));
-          const icon = btn.querySelector('use');
           btn.classList.add('is-copied');
           btn.setAttribute('aria-label', 'Copied');
-          if (icon) icon.setAttribute('href', '/images/icons/check.svg');
+          btn.innerHTML = checkIconSvg;
           setTimeout(() => {
             btn.classList.remove('is-copied');
             btn.setAttribute('aria-label', 'Copy code');
-            if (icon) icon.setAttribute('href', '/images/icons/copy.svg');
+            btn.innerHTML = copyIconSvg;
           }, 2000);
         } catch (error) {
           console.error('Copy failed:', error);

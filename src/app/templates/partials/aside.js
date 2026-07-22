@@ -1,5 +1,6 @@
 import { escapeHtml, buildBlogQuery, BLOG_SHELL_HTMX } from '../utils/helpers.js';
 import { shareIconLinks } from './share.js';
+import { icon } from '../../../lib/icons.js';
 
 function filterHref({ filters, clear = [] }) {
   const next = { ...filters, page: 1 };
@@ -58,11 +59,7 @@ export function blogSearchForm({ filters = {}, htmx = true, modifier = '' } = {}
       x-cloak
       @click="searchQuery = ''; $refs.searchInput.value = ''; $refs.searchInput.focus(); $el.closest('form').requestSubmit()"
     >
-      <svg viewBox="0 0 25 25" fill="none" aria-hidden="true">
-        <path d="M12.1611 22.064C17.684 22.064 22.1611 17.5868 22.1611 12.064C22.1611 6.54112 17.684 2.06396 12.1611 2.06396C6.63829 2.06396 2.16113 6.54112 2.16113 12.064C2.16113 17.5868 6.63829 22.064 12.1611 22.064Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M15.1611 9.06396L9.16113 15.064" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="M9.16113 9.06396L15.1611 15.064" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
+      ${icon('close')}
     </button>
   </div>
 </form>`;

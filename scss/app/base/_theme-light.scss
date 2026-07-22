@@ -277,24 +277,6 @@ html.theme-light {
       background-color: $color-orange;
     }
 
-    @media (min-width: 320px) and (max-width: 1024px) {
-      &__filters {
-        background-color: $light-orange-5;
-      }
-
-      &__filters-tab {
-        color: $color-dark-orange;
-
-        &.is-active {
-          color: $color-orange;
-        }
-      }
-
-      &__filters-divider {
-        background-color: $color-black;
-      }
-    }
-
     &__categories ul li a.blog__aside-link,
     &__tags ul li a.blog__aside-link,
     &__date ul li a.blog__aside-link {
@@ -314,14 +296,46 @@ html.theme-light {
     }
 
     &__share .brand-icon {
-      @media (max-width: 1024px) {
-        filter: brightness(0) saturate(100%) invert(88%) sepia(15%) saturate(707%) hue-rotate(314deg)
-          brightness(102%) contrast(98%);
-      }
-
       @media (min-width: 1025px) {
         filter: brightness(0) saturate(100%) invert(9%) sepia(4%) saturate(13%) hue-rotate(314deg)
           brightness(95%) contrast(91%);
+      }
+    }
+
+    @media (min-width: 320px) and (max-width: 1024px) {
+      &__filters {
+        background-color: $color-dark-orange;
+      }
+
+      &__filters-tab {
+        color: $color-off-white;
+
+        &.is-active {
+          color: $color-orange;
+        }
+      }
+
+      &__filters-divider {
+        background-color: $color-off-white;
+      }
+
+      &__filters-panel.blog__share {
+        background-color: transparent;
+        padding: 0;
+      }
+
+      &__categories ul li a.blog__aside-link,
+      &__tags ul li a.blog__aside-link,
+      &__date ul li a.blog__aside-link {
+        color: $color-off-white;
+
+        &.is-active {
+          color: $color-orange;
+        }
+
+        &:hover:not(.is-active) {
+          color: $color-orange;
+        }
       }
     }
   }
@@ -460,11 +474,6 @@ html.theme-light {
       border-radius: 0.5rem;
 
       li {
-        svg {
-          fill: $color-orange;
-          stroke: $color-orange;
-        }
-
         a {
           color: $color-off-white;
         }
@@ -472,11 +481,6 @@ html.theme-light {
         &:hover {
           a {
             color: $color-orange;
-          }
-
-          svg {
-            fill: $color-light-orange;
-            stroke: $color-light-orange;
           }
         }
       }
@@ -488,7 +492,13 @@ html.theme-light {
       }
 
       .date {
-        color: $color-dark-orange;
+        background-color: transparent;
+        color: $color-orange;
+        font-size: 1.8rem;
+
+        .date__sep {
+          color: $color-dark-orange;
+        }
       }
 
       .description {
