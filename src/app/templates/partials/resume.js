@@ -1,13 +1,21 @@
+function downloadIcon() {
+  return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M20 14.6667V18.2223C20 18.6938 19.8127 19.146 19.4793 19.4794C19.1459 19.8128 18.6937 20.0001 18.2222 20.0001H5.77778C5.30628 20.0001 4.8541 19.8128 4.5207 19.4794C4.1873 19.146 4 18.6938 4 18.2223V14.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M7.55554 10.2222L12 14.6666L16.4444 10.2222" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12 14.6667V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+
 export function resume() {
   return `
 <section id="resume" class="resume container">
   <ul class="resume__external">
     <li>
-      <svg><use href="/images/icons/download.svg" /></svg>
+      ${downloadIcon()}
       <a href="https://docs.google.com/document/d/1mSW8ae8Dpoojbqee7XjOWQMRpL41PzJtEfzK8B8M3WM/edit?usp=sharing">Resume</a>
     </li>
     <li>
-      <svg><use href="/images/icons/download.svg" /></svg>
+      ${downloadIcon()}
       <a href="https://docs.google.com/document/d/1pLffM_nQwl2bsBqcBk455NHh9sAe5yMrVCefXl55lvc/edit?usp=sharing">Cover Letter</a>
     </li>
   </ul>

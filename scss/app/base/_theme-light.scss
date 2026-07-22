@@ -461,8 +461,7 @@ html.theme-light {
 
       li {
         svg {
-          fill: $color-orange;
-          stroke: $color-orange;
+          color: $color-orange;
         }
 
         a {
@@ -475,8 +474,7 @@ html.theme-light {
           }
 
           svg {
-            fill: $color-light-orange;
-            stroke: $color-light-orange;
+            color: $color-light-orange;
           }
         }
       }
