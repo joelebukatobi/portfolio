@@ -460,10 +460,6 @@ html.theme-light {
       border-radius: 0.5rem;
 
       li {
-        svg {
-          color: $color-orange;
-        }
-
         a {
           color: $color-off-white;
         }
@@ -471,10 +467,6 @@ html.theme-light {
         &:hover {
           a {
             color: $color-orange;
-          }
-
-          svg {
-            color: $color-light-orange;
           }
         }
       }
