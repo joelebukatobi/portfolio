@@ -45,11 +45,15 @@
       color: $color-orange;
     }
     & .date {
+      // Size/weight deliberately left unset so it matches the job-description
+      // bullet text below it.
       color: $color-light-orange;
-      font-size: 1.4rem;
-      font-weight: 600;
       font-style: normal;
       text-transform: none;
+
+      & .date__sep {
+        color: $color-orange;
+      }
     }
     & .description {
       color: $color-white;

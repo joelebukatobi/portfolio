@@ -478,7 +478,11 @@ html.theme-light {
       }
 
       .date {
-        color: $color-dark-orange;
+        color: $color-orange;
+
+        .date__sep {
+          color: $color-dark-orange;
+        }
       }
 
       .description {
