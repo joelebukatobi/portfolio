@@ -2,18 +2,19 @@
 
 .about {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 4rem;
   padding-bottom: 1.6rem;
 
   &__media {
     flex: 0 0 30%;
     width: 30%;
+    align-self: stretch;
 
     img {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
       border-radius: 0.8rem;
       object-fit: cover;
       object-position: center;

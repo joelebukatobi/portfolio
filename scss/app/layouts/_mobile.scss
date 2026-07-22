@@ -102,8 +102,13 @@
 
     &__media {
       flex: none;
+      align-self: flex-start;
       width: 100%;
       max-width: 28rem;
+
+      img {
+        height: auto;
+      }
     }
 
     &__hello {
