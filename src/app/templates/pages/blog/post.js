@@ -185,6 +185,14 @@ ${navbar({ activePage: null })}
       ...[...content.querySelectorAll('p')].filter(isCodeParagraph),
     ];
 
+    const copyIconSvg = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+      + '<path d="M20 9H11C9.89543 9 9 9.89543 9 11V20C9 21.1046 9.89543 22 11 22H20C21.1046 22 22 21.1046 22 20V11C22 9.89543 21.1046 9 20 9Z" stroke="currentColor" stroke-width="2"/>'
+      + '<path d="M5 15H4C2.89543 15 2 14.1046 2 13V4C2 2.89543 2.89543 2 4 2H13C14.1046 2 15 2.89543 15 4V5" stroke="currentColor" stroke-width="2"/>'
+      + '</svg>';
+    const checkIconSvg = '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+      + '<path d="M20.7069 6.29303C20.8944 6.48056 20.9997 6.73487 20.9997 7.00003C20.9997 7.26519 20.8944 7.5195 20.7069 7.70703L10.7069 17.707C10.5194 17.8945 10.2651 17.9998 9.99992 17.9998C9.73475 17.9998 9.48045 17.8945 9.29292 17.707L4.29292 12.707C4.11076 12.5184 4.00997 12.2658 4.01224 12.0036C4.01452 11.7414 4.11969 11.4906 4.3051 11.3052C4.49051 11.1198 4.74132 11.0146 5.00352 11.0124C5.26571 11.0101 5.51832 11.1109 5.70692 11.293L9.99992 15.586L19.2929 6.29303C19.4804 6.10556 19.7348 6.00024 19.9999 6.00024C20.2651 6.00024 20.5194 6.10556 20.7069 6.29303Z" fill="currentColor"/>'
+      + '</svg>';
+
     blocks.forEach((block) => {
       const wrapper = document.createElement('div');
       wrapper.className = 'blogpost__code';
@@ -195,20 +203,19 @@ ${navbar({ activePage: null })}
       btn.type = 'button';
       btn.className = 'blogpost__code-copy';
       btn.setAttribute('aria-label', 'Copy code');
-      btn.innerHTML = '<svg aria-hidden="true"><use href="/images/icons/copy.svg" /></svg>';
+      btn.innerHTML = copyIconSvg;
       wrapper.appendChild(btn);
 
       btn.addEventListener('click', async () => {
         try {
           await copyText(getCodeText(block));
-          const icon = btn.querySelector('use');
           btn.classList.add('is-copied');
           btn.setAttribute('aria-label', 'Copied');
-          if (icon) icon.setAttribute('href', '/images/icons/check.svg');
+          btn.innerHTML = checkIconSvg;
           setTimeout(() => {
             btn.classList.remove('is-copied');
             btn.setAttribute('aria-label', 'Copy code');
-            if (icon) icon.setAttribute('href', '/images/icons/copy.svg');
+            btn.innerHTML = copyIconSvg;
           }, 2000);
         } catch (error) {
           console.error('Copy failed:', error);

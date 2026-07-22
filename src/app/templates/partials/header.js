@@ -6,7 +6,11 @@ export function headerPartial({ header = '' } = {}) {
     <header class="header">
       <div class="header__title"><h4>${escapeHtml(header)}</h4></div>
       <div class="header__image">
-        <svg><use href="/images/icons/about.svg" /></svg>
+        <svg viewBox="0 0 488 320" fill="currentColor" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M141.743 83.2533L0.771118 163.524V202.844L141.743 282.934V226.219L62.7409 183.094L141.743 140.15V83.2533Z" fill="currentColor"/>
+          <path d="M200.995 0.445679H151.709L273.112 319.355H322.76L200.995 0.445679Z" fill="currentColor"/>
+          <path d="M487.289 163.524L346.497 83.2533V140.15L425.681 183.094L346.497 226.219V282.934L487.289 202.844V163.524Z" fill="currentColor"/>
+        </svg>
       </div>
     </header>
     <div class="header-buffer"></div>
