@@ -102,12 +102,18 @@
 
     &__media {
       flex: none;
-      align-self: flex-start;
+      align-self: stretch;
       width: 100%;
-      max-width: 28rem;
 
       img {
         height: auto;
+      }
+
+      // Below 768px the portrait spans the full column; from 768px up it is
+      // capped so a 3:4 image doesn't dominate tablet-width screens.
+      @media (min-width: 768px) {
+        align-self: flex-start;
+        max-width: 28rem;
       }
     }
 
