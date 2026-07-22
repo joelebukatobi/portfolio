@@ -1,5 +1,6 @@
 import { escapeHtml, truncate, imageUrl } from '../../utils/helpers.js';
-import { rewriteContentMediaUrls } from '../../../../lib/media-paths.js';
+import { rewriteContentMediaUrls, addLazyLoadingToImages } from '../../../../lib/media-paths.js';
+import { DEFAULT_PLACEHOLDER_IMAGE_URL } from '../../../../lib/media-defaults.js';
 import { navbar } from '../../partials/navbar.js';
 import { footer } from '../../partials/footer.js';
 import { asideForPost } from '../../partials/aside.js';
@@ -54,19 +55,21 @@ export function blogPostContent({
   moderateComments = false,
   siteSettings = {},
 } = {}) {
-  const img = escapeHtml(imageUrl(apiUrl, post.image));
+  const img = escapeHtml(post.image ? imageUrl(apiUrl, post.image) : DEFAULT_PLACEHOLDER_IMAGE_URL);
   const title = escapeHtml(post?.title || '');
   const author = escapeHtml(getPostAuthorName(post));
   const publishedAt = getPostPublishedAt(post);
   const publishedLabel = escapeHtml(formatSiteDate(publishedAt, siteSettings));
   const readTime = escapeHtml(formatReadingTime(estimateReadingMinutes(post?.post || post?.description || '')));
   const publishedIso = escapeHtml(publishedAt || '');
+  const likeCount = post.likes || 0;
+  const likedByViewer = !!post.liked_by_viewer;
 
   return `
 ${navbar({ activePage: null })}
 <section class="blogpost container">
   <div class="blogpost__image">
-    <img src="${img}" alt="post-thumbnail" />
+    <img id="featured-image" src="${img}" alt="${title}" />
   </div>
   <div class="blogpost__main">
     <div class="blogpost__aside">
@@ -78,10 +81,24 @@ ${navbar({ activePage: null })}
         ${publishedAt ? `<span class="blogpost__meta-sep" aria-hidden="true">·</span><time class="blogpost__meta-date" datetime="${publishedIso}">${publishedLabel}</time>` : ''}
         <span class="blogpost__meta-sep" aria-hidden="true">·</span>
         <span class="blogpost__meta-read">${readTime}</span>
+        <span class="blogpost__meta-sep" aria-hidden="true">·</span>
+        <button
+          type="button"
+          class="blogpost__like"
+          id="like-button"
+          data-liked="${likedByViewer ? 'true' : 'false'}"
+          aria-pressed="${likedByViewer ? 'true' : 'false'}"
+          aria-label="${likedByViewer ? 'Unlike this post' : 'Like this post'}"
+        >
+          <svg class="blogpost__like-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 21C12 21 3 15.5 3 9.5C3 6.5 5.5 4 8.5 4C10.2 4 11.5 4.8 12 6C12.5 4.8 13.8 4 15.5 4C18.5 4 21 6.5 21 9.5C21 15.5 12 21 12 21Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+          <span class="blogpost__like-count" id="like-count">${likeCount}</span>
+        </button>
       </div>
       <h3>${title}</h3>
       <hr class="blogpost__title-divider" />
-      ${rewriteContentMediaUrls(post.post || '')}
+      ${addLazyLoadingToImages(rewriteContentMediaUrls(post.post || ''))}
       ${postComments({
         slug: post.slug,
         comments,
@@ -104,6 +121,38 @@ ${navbar({ activePage: null })}
         if (figure) figure.style.display = 'none';
       }, { once: true });
     });
+
+    const featuredImage = document.getElementById('featured-image');
+    if (featuredImage) {
+      featuredImage.addEventListener('error', () => {
+        featuredImage.src = ${JSON.stringify(DEFAULT_PLACEHOLDER_IMAGE_URL)};
+      }, { once: true });
+    }
+
+    const likeButton = document.getElementById('like-button');
+    const likeCountEl = document.getElementById('like-count');
+    if (likeButton && likeCountEl) {
+      const slug = ${JSON.stringify(post.slug)};
+
+      likeButton.addEventListener('click', async () => {
+        likeButton.disabled = true;
+        try {
+          const res = await fetch('/api/v1/posts/' + encodeURIComponent(slug) + '/like', {
+            method: 'POST',
+          });
+          if (!res.ok) return;
+          const data = await res.json();
+          likeButton.dataset.liked = data.liked ? 'true' : 'false';
+          likeButton.setAttribute('aria-pressed', data.liked ? 'true' : 'false');
+          likeButton.setAttribute('aria-label', data.liked ? 'Unlike this post' : 'Like this post');
+          likeCountEl.textContent = data.likeCount;
+        } catch (error) {
+          console.error('Like failed:', error);
+        } finally {
+          likeButton.disabled = false;
+        }
+      });
+    }
 
     function isCodeParagraph(p) {
       const code = p.querySelector(':scope > code');

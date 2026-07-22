@@ -368,6 +368,15 @@ html.theme-light {
       color: rgba($color-dark-orange, 0.35);
     }
 
+    &__like {
+      color: $color-orange;
+
+      &[data-liked='true'] .blogpost__like-icon {
+        stroke: $color-orange;
+        fill: $color-orange;
+      }
+    }
+
     &__title-divider {
       background-color: rgba($color-dark-orange, 0.15);
     }

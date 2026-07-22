@@ -9,6 +9,8 @@ import { buildComingSoonShell } from '../templates/layouts/portfolio.js';
 import { comingSoonContent } from '../../admin/templates/pages/coming-soon.js';
 import { renderComingSoonPage } from '../render.js';
 import { fetchPosts, fetchCategories } from '../utils/api.js';
+import { escapeHtml, DEFAULT_SEO } from '../templates/utils/helpers.js';
+import { getPostPublishedAt } from '../../lib/post-meta.js';
 
 const SITE_URL = 'https://joelebukatobi.dev';
 const STATIC_SITEMAP_PATHS = ['/', '/about', '/projects', '/resume', '/contact'];
@@ -81,6 +83,38 @@ ${urls.map((u) => `  <url>
 </urlset>`;
 
     reply.type('application/xml');
+    return body;
+  });
+
+  fastify.get('/feed.xml', async (_request, reply) => {
+    const { posts } = await fetchPosts(fastify, { limit: 20, page: 1 });
+
+    const items = posts.map((post) => {
+      const link = `${SITE_URL}/blog/${post.slug}`;
+      const pubDate = new Date(getPostPublishedAt(post)).toUTCString();
+
+      return `  <item>
+    <title>${escapeHtml(post.title)}</title>
+    <link>${link}</link>
+    <guid>${link}</guid>
+    <description>${escapeHtml(post.description)}</description>
+    <pubDate>${pubDate}</pubDate>
+  </item>`;
+    }).join('\n');
+
+    const body = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>${escapeHtml(DEFAULT_SEO.site_name)}</title>
+    <link>${SITE_URL}</link>
+    <description>${escapeHtml(DEFAULT_SEO.description)}</description>
+    <language>en-us</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+${items}
+  </channel>
+</rss>`;
+
+    reply.type('application/rss+xml; charset=utf-8');
     return body;
   });
 }

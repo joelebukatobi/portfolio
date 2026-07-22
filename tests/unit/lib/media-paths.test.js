@@ -4,6 +4,7 @@ import {
   mediaItemPublicUrl,
   rewriteContentMediaUrls,
   isLocalDevMediaUrl,
+  addLazyLoadingToImages,
 } from '../../../src/lib/media-paths.js';
 
 describe('toPublicMediaUrl', () => {
@@ -45,6 +46,36 @@ describe('isLocalDevMediaUrl', () => {
   it('detects loopback editor URLs', () => {
     expect(isLocalDevMediaUrl('http://0.0.0.0:3000/public/uploads/posts/a.jpeg')).toBe(true);
     expect(isLocalDevMediaUrl('/public/uploads/posts/a.jpeg')).toBe(false);
+  });
+});
+
+describe('addLazyLoadingToImages', () => {
+  it('adds loading="lazy" to img tags without one', () => {
+    expect(addLazyLoadingToImages('<img src="/foo.jpg">')).toBe(
+      '<img loading="lazy" src="/foo.jpg">',
+    );
+  });
+
+  it('leaves img tags that already have a loading attribute untouched', () => {
+    const html = '<img src="/foo.jpg" loading="eager">';
+    expect(addLazyLoadingToImages(html)).toBe(html);
+  });
+
+  it('does not touch video or source tags', () => {
+    const html = '<video src="/foo.mp4"><source src="/bar.mp4"></video>';
+    expect(addLazyLoadingToImages(html)).toBe(html);
+  });
+
+  it('handles multiple images in one string', () => {
+    const html = '<p><img src="/a.jpg"></p><p><img src="/b.jpg"></p>';
+    expect(addLazyLoadingToImages(html)).toBe(
+      '<p><img loading="lazy" src="/a.jpg"></p><p><img loading="lazy" src="/b.jpg"></p>',
+    );
+  });
+
+  it('returns empty string for falsy input', () => {
+    expect(addLazyLoadingToImages(null)).toBe('');
+    expect(addLazyLoadingToImages('')).toBe('');
   });
 });
 
